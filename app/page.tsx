@@ -1,13 +1,25 @@
 import Navbar from "./components/sections/Navbar";
 import Hero from "./components/sections/Hero";
 import Educators from "./components/sections/Educators";
+import LearningPaths from "./components/sections/LearningPaths";
+import InsideApp from "./components/sections/InsideApp";
+import Languages from "./components/sections/Languages";
+import RealTools from "./components/sections/RealTools";
+import Certification from "./components/sections/Certification";
+import Stats from "./components/sections/Stats";
 
 export default function Home() {
   return (
-    <main className="bg-[#071122] min-h-screen">
+    <main className="bg-[#0b1424] min-h-screen">
       <Navbar />
       <Hero />
       <Educators />
+      <LearningPaths />
+      <InsideApp />
+      <Languages />
+      <RealTools />
+      <Certification />
+      <Stats />
     </main>
   );
 }

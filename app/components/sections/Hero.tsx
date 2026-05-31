@@ -47,138 +47,23 @@ function AppStoreBadge({ store }: { store: "apple" | "google" }) {
 
 /* ── Phone Mockup ────────────────────────────────────────────── */
 function PhoneMockup() {
-  const paths = [
-    {
-      title: "The AI Path",
-      desc: "Learn the fundamentals of AI and learn to build a multi-agent AI business step by step.",
-      color: "#4a8fff",
-    },
-    {
-      title: "The Creator Path",
-      desc: "Learn the fundamentals of AI and how to use it to solve real-world problems.",
-      color: "#6a9fff",
-    },
-  ];
-
   return (
-    <div className="relative flex justify-center" style={{ width: 340 }}>
+    <div className="relative flex justify-center" style={{ width: 380 }}>
 
-      {/* Phone shell */}
-      <div
-        className="relative z-10 rounded-[44px] overflow-hidden"
-        style={{
-          width: 300,
-          height: 620,
-          background: "linear-gradient(160deg,#162645 0%,#0a1628 60%,#07122a 100%)",
-          border: "1.5px solid rgba(255,255,255,0.13)",
-          boxShadow: "0 40px 80px rgba(0,50,180,0.45), 0 0 0 0.5px rgba(255,255,255,0.05) inset",
-        }}
-      >
-        {/* Dynamic island */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 z-20 bg-black rounded-full"
-          style={{ top: 12, width: 96, height: 28 }}
-        />
-
-        {/* Screen */}
-        <div
-          className="absolute inset-0 rounded-[44px]"
-          style={{ background: "linear-gradient(180deg,#0d1f45 0%,#080e28 100%)" }}
-        />
-
-        {/* Screen content */}
-        <div className="absolute inset-0 flex flex-col pt-[52px] px-4 pb-4 gap-3 overflow-hidden">
-
-          {/* Status bar */}
-          <div className="flex justify-between items-center px-1" style={{ fontSize: 11, color: "rgba(199,210,220,0.6)", fontFamily: "var(--font-body)", fontWeight: 600 }}>
-            <span>9:41</span>
-            <div className="flex items-center gap-1.5">
-              {/* Signal bars */}
-              <svg viewBox="0 0 17 12" className="w-4 h-3" fill="rgba(199,210,220,0.7)" aria-hidden>
-                <rect x="0" y="6" width="3" height="6" rx="0.5"/>
-                <rect x="4.5" y="4" width="3" height="8" rx="0.5"/>
-                <rect x="9" y="2" width="3" height="10" rx="0.5"/>
-                <rect x="13.5" y="0" width="3" height="12" rx="0.5" opacity="0.3"/>
-              </svg>
-              {/* WiFi */}
-              <svg viewBox="0 0 16 12" className="w-3.5 h-3" fill="rgba(199,210,220,0.7)" aria-hidden>
-                <path d="M8 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0-3.5c1.7 0 3.2.7 4.3 1.8L14 5.5C12.5 4 10.4 3 8 3S3.5 4 2 5.5l1.7 1.8C4.8 6.2 6.3 5.5 8 5.5zm0-4C10.8 1.5 13.3 2.6 15 4.4L16.5 2.8C14.4.9 11.3 0 8 0S1.6.9-.5 2.8L1 4.4C2.7 2.6 5.2 1.5 8 1.5z"/>
-              </svg>
-              {/* Battery */}
-              <svg viewBox="0 0 25 12" className="w-6 h-3" aria-hidden>
-                <rect x="0" y="1" width="21" height="10" rx="2.5" fill="none" stroke="rgba(199,210,220,0.5)" strokeWidth="1"/>
-                <rect x="22" y="4" width="2.5" height="4" rx="1" fill="rgba(199,210,220,0.4)"/>
-                <rect x="1.5" y="2.5" width="15" height="7" rx="1.5" fill="rgba(199,210,220,0.85)"/>
-              </svg>
-            </div>
-          </div>
-
-          {/* Header */}
-          <div className="flex items-center gap-2.5 px-0.5">
-            <button
-              className="w-6 h-6 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(255,255,255,0.1)" }}
-              aria-label="Back"
-            >
-              <svg viewBox="0 0 8 14" className="w-2 h-3" fill="none" stroke="rgba(199,210,220,0.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M7 1L1 7l6 6"/>
-              </svg>
-            </button>
-            <div>
-              <p style={{ fontSize: 13, color: "#c7d2dc", fontWeight: 700, fontFamily: "var(--font-body)", lineHeight: 1.2 }}>Learning Paths</p>
-              <p style={{ fontSize: 10, color: "rgba(199,210,220,0.4)", fontFamily: "var(--font-body)", lineHeight: 1.3 }}>A structured journey from fundamentals to mastery.</p>
-            </div>
-          </div>
-
-          {/* Path cards */}
-          {paths.map((p, i) => (
-            <div
-              key={i}
-              className="relative rounded-2xl overflow-hidden flex-shrink-0"
-              style={{
-                height: i === 0 ? 182 : 138,
-                background: `linear-gradient(135deg, #0a2050 0%, #071535 100%)`,
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-            >
-              {/* Glow */}
-              <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 75% 35%, ${p.color}25 0%, transparent 65%)` }} />
-              {/* Dot grid */}
-              <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle, ${p.color}40 1px, transparent 1px)`, backgroundSize: "16px 16px", opacity: 0.25 }} />
-              {/* Robot icon */}
-              <div
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl flex items-center justify-center"
-                style={{ width: 52, height: 52, background: `${p.color}18`, border: `1px solid ${p.color}35` }}
-              >
-                <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" aria-hidden>
-                  <circle cx="12" cy="7.5" r="3" stroke={p.color} strokeWidth="1.5"/>
-                  <rect x="5" y="13" width="14" height="8" rx="2" stroke={p.color} strokeWidth="1.5"/>
-                  <circle cx="9" cy="17" r="1" fill={p.color}/>
-                  <circle cx="15" cy="17" r="1" fill={p.color}/>
-                </svg>
-              </div>
-              {/* Text */}
-              <div className="absolute bottom-0 left-0 right-14 p-3">
-                <p style={{ fontSize: 12, color: "#c7d2dc", fontWeight: 700, fontFamily: "var(--font-body)", lineHeight: 1.3, marginBottom: 3 }}>{p.title}</p>
-                <p style={{ fontSize: 10, color: "rgba(199,210,220,0.45)", fontFamily: "var(--font-body)", lineHeight: 1.4, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{p.desc}</p>
-              </div>
-            </div>
-          ))}
-
-          {/* Peek of third card */}
-          <div className="rounded-2xl flex-shrink-0" style={{ height: 52, background: "linear-gradient(135deg,#0f1e3c 0%,#0a1530 100%)", border: "1px solid rgba(255,255,255,0.06)", opacity: 0.55 }} />
-        </div>
-
-        {/* Side buttons */}
-        <div className="absolute rounded-l-full" style={{ right: -2, top: 130, width: 3, height: 48, background: "rgba(255,255,255,0.1)" }} />
-        <div className="absolute rounded-r-full" style={{ left: -2, top: 108, width: 3, height: 32, background: "rgba(255,255,255,0.1)" }} />
-        <div className="absolute rounded-r-full" style={{ left: -2, top: 152, width: 3, height: 32, background: "rgba(255,255,255,0.1)" }} />
-      </div>
+      {/* Phone app screenshot */}
+      <Image
+        src="/phone-app-img/Background.png"
+        alt="brAInify app"
+        width={300}
+        height={620}
+        className="relative z-10 w-[300px] h-auto object-contain drop-shadow-[0_40px_80px_rgba(0,50,180,0.45)]"
+        priority
+      />
 
       {/* AI Robot — from Figma export */}
       <div
         className="absolute z-20 pointer-events-none"
-        style={{ bottom: -40, left: -50, width: 200, height: 240 }}
+        style={{ bottom: -40, left: -30, width: 200, height: 240 }}
         aria-hidden
       >
         <Image

@@ -51,6 +51,7 @@ function EducatorCard({
           width={80}
           height={80}
           className="object-cover w-full h-full"
+          loading="lazy"
         />
       </div>
 
