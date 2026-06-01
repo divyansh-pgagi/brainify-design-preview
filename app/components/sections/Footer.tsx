@@ -111,11 +111,11 @@ export default function Footer() {
               </p>
 
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 700, letterSpacing: "-0.8px", lineHeight: 1.12, marginBottom: 18, color: "#d0dce8" }}>
-                Can be{" "}
+                {" "}
                 <span style={{ color: "#ffffff", fontWeight: 800 }}>
                   OWN YOUR FUTURE
                 </span>{" "}
-                here
+             
               </h2>
 
               <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, color: "rgba(185,205,225,0.55)", lineHeight: 1.65, marginBottom: 32, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
