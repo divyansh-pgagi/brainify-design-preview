@@ -14,7 +14,7 @@ const PATHS = [
       "Understand, use, and build with AI. Automate your work, design smarter workflows, and turn AI fluency into real opportunity.",
     bullets: ["Ship real AI automations", "Design smarter workflows", "Turn fluency into income"],
     image: "/images/educators/ryan.png",
-    pathImage: "/learning path/AI Path.png",
+    pathImage: "/learning%20path/AI Path.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/af584818-a9ec-4d1c-890d-4462e9d93aca?language=en",
   },
   {
@@ -27,7 +27,7 @@ const PATHS = [
       "Master content strategy and creation. Build an audience, monetize your expertise, and grow a creator business from scratch.",
     bullets: ["Build a content engine", "Grow & monetize an audience", "Launch a creator business"],
     image: "/images/educators/sarah.png",
-    pathImage: "/learning path/content creator.png",
+    pathImage: "/learning%20path/content creator.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/b96ca1ea-a854-4255-bc96-1a5a2e192029?language=en",
   },
   {
@@ -40,7 +40,7 @@ const PATHS = [
       "Learn modern digital marketing from paid ads to SEO. Drive real growth for businesses and build a marketable skill set.",
     bullets: ["Run paid ad campaigns", "Master SEO & content", "Measure & scale growth"],
     image: "/images/educators/adam.png",
-    pathImage: "/learning path/digital marketing.png",
+    pathImage: "/learning%20path/digital-marketing.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/f1c4f685-5f92-4124-abe5-1884e44f87bd?language=en",
   },
   {
@@ -53,7 +53,7 @@ const PATHS = [
       "Understand money, investing, and building wealth. Go from financial basics to advanced strategies with real-world application.",
     bullets: ["Understand investing basics", "Build a wealth strategy", "Make money work for you"],
     image: "/images/educators/daniel.png",
-    pathImage: "/learning path/Financial literacy.png",
+    pathImage: "/learning%20path/financial-literacy.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/eefad282-400b-4c2b-aa27-6e96fc5f6b00?language=en",
   },
   {
@@ -66,7 +66,7 @@ const PATHS = [
       "Navigate Web3, crypto, and the on-chain economy. Learn to build, invest, and operate in the decentralised digital world.",
     bullets: ["Understand Web3 & crypto", "Build on-chain businesses", "Navigate DeFi & NFTs"],
     image: "/images/educators/steve.png",
-    pathImage: "/learning path/digital currency.png",
+    pathImage: "/learning%20path/digital currency.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/9929b3b5-d6e6-4cb9-8faf-39ef531a3099?language=en",
   },
   {
@@ -79,7 +79,7 @@ const PATHS = [
       "Designed for teens aged 13–18. Fun, project-based AI education that builds real skills and confidence for the future.",
     bullets: ["Learn AI without jargon", "Build first AI projects", "Future-proof your skills"],
     image: "/images/educators/luke.png",
-    pathImage: "/learning path/youth.png",
+    pathImage: "/learning%20path/youth.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/83152098-b1fe-4359-bdc9-275f76f38f8f?language=en",
   },
 ] as const;
