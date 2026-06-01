@@ -13,7 +13,7 @@ const PATHS = [
     description:
       "Understand, use, and build with AI. Automate your work, design smarter workflows, and turn AI fluency into real opportunity.",
     bullets: ["Ship real AI automations", "Design smarter workflows", "Turn fluency into income"],
-    image: "/images/educators/ryan.png",
+    image: "/images/educators/educator-ryan-CCpqKi0V.png",
     pathImage: "/learning-path/ai-path.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/af584818-a9ec-4d1c-890d-4462e9d93aca?language=en",
   },
@@ -26,7 +26,7 @@ const PATHS = [
     description:
       "Master content strategy and creation. Build an audience, monetize your expertise, and grow a creator business from scratch.",
     bullets: ["Build a content engine", "Grow & monetize an audience", "Launch a creator business"],
-    image: "/images/educators/sarah.png",
+    image: "/images/educators/educator-sarah-BA43zZQh.png",
     pathImage: "/learning-path/content-creator.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/b96ca1ea-a854-4255-bc96-1a5a2e192029?language=en",
   },
@@ -65,7 +65,7 @@ const PATHS = [
     description:
       "Navigate Web3, crypto, and the on-chain economy. Learn to build, invest, and operate in the decentralised digital world.",
     bullets: ["Understand Web3 & crypto", "Build on-chain businesses", "Navigate DeFi & NFTs"],
-    image: "/images/educators/steve.png",
+    image: "/images/educators/educator-steve-CUeAzAVg.png",
     pathImage: "/learning-path/digital-currency.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/9929b3b5-d6e6-4cb9-8faf-39ef531a3099?language=en",
   },
@@ -78,7 +78,7 @@ const PATHS = [
     description:
       "Designed for teens aged 13–18. Fun, project-based AI education that builds real skills and confidence for the future.",
     bullets: ["Learn AI without jargon", "Build first AI projects", "Future-proof your skills"],
-    image: "/images/educators/luke.png",
+    image: "/images/educators/educator-luke-DSwu5xqj.png",
     pathImage: "/learning-path/youth.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/83152098-b1fe-4359-bdc9-275f76f38f8f?language=en",
   },
@@ -197,11 +197,11 @@ export default function LearningPaths() {
                     boxShadow: active === i ? "0 0 20px rgba(74,158,255,0.12)" : "none",
                   }}
                 >
-                  {/* Avatar */}
+                  {/* Thumbnail */}
                   <div className="relative rounded-lg overflow-hidden shrink-0" style={{ width: 36, height: 36 }}>
                     <Image
-                      src={p.image}
-                      alt={p.educator}
+                      src={p.pathImage}
+                      alt={p.name}
                       width={36}
                       height={36}
                       className="object-cover w-full h-full"
@@ -246,8 +246,8 @@ export default function LearningPaths() {
                 <div className="flex items-center gap-3">
                   <div className="relative rounded-xl overflow-hidden shrink-0" style={{ width: 52, height: 52, border: "1.5px solid rgba(74,158,255,0.3)" }}>
                     <Image
-                      src={path.image}
-                      alt={path.educator}
+                      src={path.pathImage}
+                      alt={path.name}
                       width={52}
                       height={52}
                       className="object-cover w-full h-full"
