@@ -162,9 +162,14 @@ export default function Navbar() {
             >
               Watch intro
             </button>
-            <Button variant="primary" size="md" href="#paths">
-              Get started
-            </Button>
+            <a
+              href="https://app.brainify.world"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-sm font-medium text-white text-center transition-colors"
+            >
+              Login
+            </a>
           </div>
         </nav>
       </div>
