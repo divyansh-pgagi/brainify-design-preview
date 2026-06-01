@@ -59,7 +59,7 @@ function PhoneMockup() {
       `}</style>
 
       {/* Outer container — wide enough for the stacked phones */}
-      <div className="relative" style={{ width: 420, height: 600 }}>
+      <div className="relative scale-[0.78] md:scale-100 origin-top -translate-x-6 md:translate-x-0" style={{ width: 420, height: 600 }}>
 
         {/* Back phone — slightly behind and offset right */}
         <div
