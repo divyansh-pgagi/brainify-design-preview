@@ -195,18 +195,6 @@ export default function LearningPaths() {
                 {path.description}
               </p>
 
-              {/* Path image */}
-              <div className="relative w-full rounded-xl overflow-hidden" style={{ border: "1px solid rgba(74,158,255,0.15)" }}>
-                <Image
-                  src={path.pathImage}
-                  alt={`${path.name} preview`}
-                  width={800}
-                  height={420}
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-
               {/* Feature pills */}
               <div className="flex flex-wrap gap-3">
                 {path.bullets.map((b) => (
