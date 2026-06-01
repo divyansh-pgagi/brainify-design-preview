@@ -19,8 +19,8 @@ function EducatorCard({
         background: "linear-gradient(145deg, #0d1f40 0%, #091428 100%)",
         border: "1.5px solid rgba(74,158,255,0.22)",
         borderRadius: 16,
-        padding: "20px 16px 16px",
-        width: 148,
+        padding: "20px 14px 16px",
+        width: 140,
         gap: 10,
         boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
         transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s",
@@ -205,7 +205,7 @@ export default function Educators() {
         </div>
 
         {/* ── Cards ── */}
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap md:flex-nowrap justify-center gap-4">
           {EDUCATORS.map((educator) => (
             <EducatorCard
               key={educator.name}

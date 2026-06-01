@@ -29,11 +29,11 @@ export const MARQUEE_TEXT =
   "YouTube videos. Saved posts. Half-finished courses. Information isn't your problem. Structure is. · brAInify was built to fix the one thing the rest of the internet can't: a system that actually finishes you.";
 
 export const EDUCATORS = [
-  { name: "Ryan",   specialty: "AI",                 image: "/images/educators/ryan.png"   },
-  { name: "Sarah",  specialty: "Content Creator",    image: "/images/educators/sarah.png"  },
-  { name: "Adam",   specialty: "Digital Marketing",  image: "/images/educators/adam.png"   },
-  { name: "Daniel", specialty: "Financial Literacy", image: "/images/educators/daniel.png" },
-  { name: "Steve",  specialty: "Digital Economy",    image: "/images/educators/steve.png"  },
-  { name: "Luke",   specialty: "AI Youth",           image: "/images/educators/luke.png"   },
-  { name: "Carol",  specialty: "Tools",              image: "/images/educators/carol.png"  },
+  { name: "Ryan",   specialty: "AI",                 image: "/images/educators/educator-ryan-CCpqKi0V.png"   },
+  { name: "Sarah",  specialty: "Content Creator",    image: "/images/educators/educator-sarah-BA43zZQh.png"  },
+  { name: "Adam",   specialty: "Digital Marketing",  image: "/images/educators/educator-adam-hTD7sTlA.png"   },
+  { name: "Daniel", specialty: "Financial Literacy", image: "/images/educators/educator-daniel-gk8GJ7P9.png" },
+  { name: "Steve",  specialty: "Digital Economy",    image: "/images/educators/educator-steve-CUeAzAVg.png"  },
+  { name: "Luke",   specialty: "AI Youth",           image: "/images/educators/educator-luke-DSwu5xqj.png"   },
+  { name: "Carol",  specialty: "Tools",              image: "/images/educators/educator-carol-CqhkG2oi.png"  },
 ] as const;
