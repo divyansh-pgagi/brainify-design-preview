@@ -50,34 +50,70 @@ function AppStoreBadge({ store }: { store: "apple" | "google" }) {
 /* ── Phone Mockup ────────────────────────────────────────────── */
 function PhoneMockup() {
   return (
-    <div className="relative flex justify-center" style={{ width: 380 }}>
+    <>
+      <style>{`
+        @keyframes hero-float {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-14px); }
+        }
+      `}</style>
 
-      {/* Phone app screenshot */}
-      <Image
-        src="/phone-app-img/Background.png"
-        alt="brAInify app"
-        width={300}
-        height={620}
-        className="relative z-10 w-[300px] h-auto object-contain drop-shadow-[0_40px_80px_rgba(0,50,180,0.45)]"
-        priority
-      />
+      {/* Outer container — wide enough for the stacked phones */}
+      <div className="relative" style={{ width: 420, height: 600 }}>
 
-      {/* AI Robot — from Figma export */}
-      <div
-        className="absolute z-20 pointer-events-none"
-        style={{ bottom: -40, left: -30, width: 200, height: 240 }}
-        aria-hidden
-      >
-        <Image
-          src="/images/ai-robot.png"
-          alt=""
-          width={200}
-          height={240}
-          className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(74,158,255,0.5)]"
-          priority
-        />
+        {/* Back phone — slightly behind and offset right */}
+        <div
+          className="absolute z-10"
+          style={{ right: -40, top: 40, width: 230 }}
+        >
+          <Image
+            src="/phone-app-img/AiMentor2.png"
+            alt="brAInify app screen 2"
+            width={230}
+            height={480}
+            className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,40,160,0.5)]"
+            priority
+          />
+        </div>
+
+        {/* Front phone — main, slightly left */}
+        <div
+          className="absolute z-20"
+          style={{ left: 90, top: 60, width: 250 }}
+        >
+          <Image
+            src="/phone-app-img/AiMentor.png"
+            alt="brAInify app screen"
+            width={250}
+            height={520}
+            className="w-full h-auto object-contain drop-shadow-[0_40px_80px_rgba(0,50,200,0.55)]"
+            priority
+          />
+        </div>
+
+        {/* AI Robot — floating above the phones */}
+        <div
+          className="absolute z-30 pointer-events-none"
+          style={{
+            top: -20,
+            left: 75,
+            width: 120,
+            height: 145,
+            animation: "hero-float 3.8s ease-in-out infinite",
+          }}
+          aria-hidden
+        >
+          <Image
+            src="/images/ai-robot.png"
+            alt=""
+            width={120}
+            height={145}
+            className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(74,158,255,0.6)]"
+            priority
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -221,7 +257,7 @@ export default function Hero() {
           </div>
 
           {/* RIGHT — phone + robot */}
-          <div className="flex-shrink-0 flex justify-center md:justify-end pb-10 md:pb-0">
+          <div className="flex-shrink-0 flex justify-center md:justify-end pt-16 pb-10 md:pt-20 md:pb-0">
             <PhoneMockup />
           </div>
         </div>

@@ -85,31 +85,40 @@ export default function Footer() {
 
         <div className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 pt-4 pb-20">
           {/* Card */}
+          {/* gradient border wrapper */}
+          <div
+            className="relative rounded-2xl p-[1.5px]"
+            style={{
+              background: "linear-gradient(135deg, rgba(0,210,255,0.55) 0%, rgba(0,100,220,0.25) 40%, rgba(0,210,255,0.45) 100%)",
+              boxShadow: "0 0 60px rgba(0,180,255,0.18), 0 0 120px rgba(0,100,220,0.10)",
+            }}
+          >
           <div
             className="relative rounded-2xl overflow-hidden text-center"
             style={{
-              background: "linear-gradient(160deg, rgba(4,18,55,0.92) 0%, rgba(2,10,32,0.97) 100%)",
-              border: "1.5px solid rgba(0,195,235,0.22)",
-              boxShadow: "0 0 80px rgba(0,120,210,0.12)",
+              background: "linear-gradient(160deg, rgba(3,14,44,0.97) 0%, rgba(2,8,28,0.99) 100%)",
               padding: "52px 32px 44px",
             }}
           >
-            {/* card inner glow */}
-            <div aria-hidden className="absolute pointer-events-none inset-0" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(0,100,220,0.14) 0%, transparent 60%)" }} />
+            {/* card inner glow bottom */}
+            <div aria-hidden className="absolute pointer-events-none inset-0" style={{ background: "radial-gradient(ellipse at 50% 110%, rgba(0,120,255,0.18) 0%, transparent 60%)" }} />
+            {/* top-center cyan glow */}
+            <div aria-hidden className="absolute pointer-events-none" style={{ top: -60, left: "50%", transform: "translateX(-50%)", width: 500, height: 200, background: "radial-gradient(ellipse, rgba(0,200,255,0.10) 0%, transparent 70%)", filter: "blur(30px)" }} />
 
             <div className="relative z-10">
               <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 700, letterSpacing: "2.2px", textTransform: "uppercase", color: "rgba(160,210,255,0.70)", marginBottom: 18 }}>
-                Get brainified
+                GET BRAINIFIED
               </p>
 
               <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 700, letterSpacing: "-0.8px", lineHeight: 1.12, marginBottom: 18, color: "#d0dce8" }}>
-                Stop watching.{" "}
-                <span style={{ background: "linear-gradient(90deg,#4a9eff 0%,#00d8ff 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                  Start shipping.
-                </span>
+                Can be{" "}
+                <span style={{ color: "#ffffff", fontWeight: 800 }}>
+                  OWN YOUR FUTURE
+                </span>{" "}
+                here
               </h2>
 
-              <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, color: "rgba(185,205,225,0.55)", lineHeight: 1.65, marginBottom: 32, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, color: "rgba(185,205,225,0.55)", lineHeight: 1.65, marginBottom: 32, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
                 Pick your path. Meet your AI mentor. Ship your first project this week — and own the future before it owns you.
               </p>
 
@@ -139,9 +148,10 @@ export default function Footer() {
               </div>
 
               <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(185,205,225,0.38)", letterSpacing: "0.2px" }}>
-                iOS · Android · Live in 175 countries · 9 languages
+                iOS · Android · Live in 175 countries · 11 languages
               </p>
             </div>
+          </div>
           </div>
         </div>
       </section>

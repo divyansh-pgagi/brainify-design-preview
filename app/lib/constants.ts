@@ -12,7 +12,7 @@ export const HERO_TRUST_BADGES = [
   "Earn certified proof of skill",
 ] as const;
 
-export const HERO_BADGE_TEXT = "Live in 175 countries · 9 languages";
+export const HERO_BADGE_TEXT = "Live in 175 countries · 11 languages";
 
 export const HERO_HEADING = "The way you learn is about to";
 

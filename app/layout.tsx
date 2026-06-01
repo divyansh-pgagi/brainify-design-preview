@@ -19,7 +19,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "brAInify — The way you learn is about to change",
   description:
-    "brAInify isn't another course platform. It's a complete AI-powered learning ecosystem that guides you from foundation to mastery. Live in 175 countries · 9 languages.",
+    "brAInify isn't another course platform. It's a complete AI-powered learning ecosystem that guides you from foundation to mastery. Live in 175 countries · 11 languages.",
   keywords: ["AI learning", "online courses", "AI education", "learning ecosystem", "certification", "brAInify"],
   openGraph: {
     title: "brAInify — The way you learn is about to change",

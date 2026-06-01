@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const STAT_IMAGES = [
   { src: "/images/tools/tool-card-1.png", alt: "175 Countries live" },
-  { src: "/images/tools/tool-card-2.png", alt: "9 Languages" },
+  { src: "/images/tools/tool-card-2.png", alt: "11 Languages" },
   { src: "/images/tools/tool-card-3.png", alt: "6 Career paths" },
   { src: "/images/tools/tool-card-4.png", alt: "6 Ecosystem features" },
 ] as const;

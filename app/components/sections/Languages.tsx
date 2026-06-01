@@ -48,7 +48,7 @@ export default function Languages() {
             }}
           >
             Available in{" "}
-            <span style={{ color: "#4a9eff" }}>9 languages</span>
+            <span style={{ color: "#4a9eff" }}>11 languages</span>
             , live in 175 countries.
           </h2>
 

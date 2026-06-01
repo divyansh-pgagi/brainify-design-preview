@@ -136,7 +136,8 @@ export default function Educators() {
               marginBottom: 12,
             }}
           >
-            YouTube videos. Saved posts. Half-finished courses.{" "}
+            YouTube videos. Saved posts. Half-finished courses.
+            <br />
             <span style={{ color: "#4a9eff" }}>
               Information isn&apos;t your problem. Structure is.
             </span>
@@ -144,11 +145,12 @@ export default function Educators() {
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: 18,
+              fontSize: 14,
               fontWeight: 400,
               lineHeight: "29.25px",
               color: "rgba(199,210,220,0.7)",
-              maxWidth: 640,
+              maxWidth: 900,
+              whiteSpace: "nowrap",
               margin: "0 auto",
             }}
           >
