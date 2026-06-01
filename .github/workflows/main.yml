@@ -1,0 +1,32 @@
+name: Deploy Brainify Landing to Cloud Run
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Build and Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/650387564129/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: edtech-brainify-github-sa@ignite-486612.iam.gserviceaccount.com
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: brainify-landing
+          region: europe-west1
+          source: .
+          project_id: ignite-486612
