@@ -5,9 +5,58 @@ import Logo from "../ui/Logo";
 import Button from "../ui/Button";
 import { NAV_LINKS } from "@/app/lib/constants";
 
+const YT_VIDEO_ID = "0VDBMXkM6r0";
+
+function VideoModal({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(6px)" }}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full rounded-2xl overflow-hidden"
+        style={{ maxWidth: 860, aspectRatio: "16/9", boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 z-10 flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
+          style={{ width: 36, height: 36, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}
+          aria-label="Close video"
+        >
+          <svg viewBox="0 0 14 14" className="w-3.5 h-3.5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" aria-hidden>
+            <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
+          </svg>
+        </button>
+        <iframe
+          src={`https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&rel=0`}
+          title="brAInify Launch"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+          style={{ border: "none", display: "block" }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -16,6 +65,7 @@ export default function Navbar() {
   }, []);
 
   return (
+    <>
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
@@ -42,9 +92,9 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-2">
-          {/* Watch button — pill with play icon, matches Figma */}
-          <a
-            href="#intro"
+          {/* Watch button */}
+          <button
+            onClick={() => setVideoOpen(true)}
             className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-200 text-sm font-medium text-white backdrop-blur-sm"
           >
             <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/15">
@@ -53,17 +103,15 @@ export default function Navbar() {
               </svg>
             </span>
             Watch
-          </a>
-          {/* Theme toggle icon */}
-          <button
-            aria-label="Toggle theme"
-            className="w-8 h-8 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-200 flex items-center justify-center"
-          >
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-white/70" strokeWidth="1.8" aria-hidden>
-              <circle cx="12" cy="12" r="5" />
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" strokeLinecap="round" />
-            </svg>
           </button>
+          <a
+            href="https://app.brainify.world"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-200 text-sm font-medium text-white backdrop-blur-sm"
+          >
+            Login
+          </a>
         </div>
 
         {/* Mobile hamburger */}
@@ -108,9 +156,12 @@ export default function Navbar() {
             </a>
           ))}
           <div className="flex flex-col gap-3 pt-4">
-            <Button variant="outline" size="md" href="#intro">
+            <button
+              onClick={() => { setVideoOpen(true); setMobileOpen(false); }}
+              className="w-full px-4 py-2.5 rounded-xl border border-white/20 bg-white/5 text-sm font-medium text-white text-center transition-colors hover:bg-white/10"
+            >
               Watch intro
-            </Button>
+            </button>
             <Button variant="primary" size="md" href="#paths">
               Get started
             </Button>
@@ -118,5 +169,8 @@ export default function Navbar() {
         </nav>
       </div>
     </header>
+
+    {videoOpen && <VideoModal onClose={() => setVideoOpen(false)} />}
+    </>
   );
 }

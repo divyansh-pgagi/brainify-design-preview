@@ -5,31 +5,31 @@ import { useEffect, useRef, useState } from "react";
 const FAQS = [
   {
     q: "I'm a complete beginner. Is this for me?",
-    a: "Absolutely. Every path starts from zero — no prior knowledge needed. The AI-powered mentor adapts to your pace, and the project-led structure means you learn by doing from day one.",
+    a: "Yes. Every path begins at foundation. By the time you reach the build stage you'll have the vocabulary, projects, and confidence to use real tools without faking it.",
   },
   {
     q: "How is this different from the 100 AI courses online?",
-    a: "Most courses teach you to watch. brAInify teaches you to ship. Every path is a structured career arc ending in a certified, portfolio-ready project — not a completion certificate for watching videos.",
+    a: "Most courses are content. brAInify is an ecosystem: project-led video, gamified paths, an Application Lab to actually build, micro lessons, an AI mentor, and certification on real work. The structure is what makes you finish.",
   },
   {
     q: "Will I actually finish?",
-    a: "That's exactly what we built for. Gamified progress, daily XP streaks, a built-in AI mentor, and a clear 0–100% path make sure you don't just start — you finish.",
+    a: "The platform is engineered for adherence — bite-sized units, level progression, and an AI Mentor that catches you when you slip. Designed by educators, not just marketers.",
   },
   {
     q: "Is the AI Mentor really useful or a gimmick?",
-    a: "It's a 24/7 coach trained on the curriculum. It answers questions, explains concepts in your language, catches when you're stuck, and adapts explanations to your learning style. Not a chatbot.",
+    a: "The mentor knows your path, current chapter, XP, and last sticking point. It's a tutor available at 6am before work and at midnight before a deadline. That's the difference between a chatbot and a coach.",
   },
   {
     q: "What language can I learn in?",
-    a: "brAInify is live in 9 languages: English, Arabic, Hindi, French, Russian, Farsi, Tamil, Spanish, and Sinhala. More being added continuously.",
+    a: "English, Arabic, Hindi, French, Russian, Farsi, Tamil, Spanish, and Sinhala — without changing the curriculum.",
   },
   {
     q: "Is the certification recognised?",
-    a: "We're launching KHDA-accredited certification attested by the Dubai Government. In the meantime, every certificate comes with proof of a real project build — which speaks louder than a quiz score.",
+    a: "Certification is awarded on real project completion and skill validation — not attendance. KHDA accreditation via the Dubai Government is on the roadmap.",
   },
   {
     q: "Can teens use it?",
-    a: "Yes — the AI Youth Path is built specifically for teens aged 13–18, with age-appropriate content, fun project-based learning, and parental visibility built in.",
+    a: "Yes — the AI Youth Path is built specifically for young learners with parent-approved content and pacing.",
   },
 ] as const;
 
