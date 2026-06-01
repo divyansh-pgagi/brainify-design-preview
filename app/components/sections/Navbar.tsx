@@ -5,7 +5,7 @@ import Logo from "../ui/Logo";
 import Button from "../ui/Button";
 import { NAV_LINKS } from "@/app/lib/constants";
 
-const YT_VIDEO_ID = "0VDBMXkM6r0";
+const VIDEO_URL = "https://share.synthesia.io/embeds/videos/3d140381-ded2-45c3-973f-5a20da398bfb";
 
 function VideoModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {
@@ -20,34 +20,53 @@ function VideoModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(6px)" }}
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-8"
+      style={{ background: "rgba(3,8,20,0.88)", backdropFilter: "blur(8px)" }}
       onClick={onClose}
     >
       <div
-        className="relative w-full rounded-2xl overflow-hidden"
-        style={{ maxWidth: 860, aspectRatio: "16/9", boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}
+        className="relative w-full flex flex-col"
+        style={{ maxWidth: 900 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 z-10 flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
-          style={{ width: 36, height: 36, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}
-          aria-label="Close video"
+        {/* Header */}
+        <div
+          className="flex items-center justify-between px-5 py-3 rounded-t-2xl"
+          style={{ background: "rgba(7,28,70,0.98)", border: "1.5px solid rgba(74,158,255,0.3)", borderBottom: "none" }}
         >
-          <svg viewBox="0 0 14 14" className="w-3.5 h-3.5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" aria-hidden>
-            <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
-          </svg>
-        </button>
-        <iframe
-          src={`https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&rel=0`}
-          title="brAInify Launch"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full"
-          style={{ border: "none", display: "block" }}
-        />
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#c7d2dc" }}>
+            brAInify App Demo
+          </p>
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
+            style={{ width: 32, height: 32, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", flexShrink: 0 }}
+            aria-label="Close video"
+          >
+            <svg viewBox="0 0 14 14" className="w-3 h-3" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" aria-hidden>
+              <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Video */}
+        <div
+          className="relative w-full rounded-b-2xl overflow-hidden"
+          style={{ aspectRatio: "16/9", border: "1.5px solid rgba(74,158,255,0.3)", borderTop: "none", boxShadow: "0 40px 80px rgba(0,0,0,0.7)" }}
+        >
+          <iframe
+            src={VIDEO_URL}
+            title="brAInify App Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+            className="w-full h-full"
+            style={{ border: "none", display: "block" }}
+          />
+        </div>
+
+        <p className="text-center mt-3" style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(199,210,220,0.3)" }}>
+          Press ESC or click outside to close
+        </p>
       </div>
     </div>
   );
