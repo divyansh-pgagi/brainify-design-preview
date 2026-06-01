@@ -1,4 +1,4 @@
-name: Deploy Brainify Landing Page to Cloud Run
+name: Deploy Brainify Landing to Cloud Run
 
 on:
   push:
