@@ -7,6 +7,8 @@ import Languages from "./components/sections/Languages";
 import RealTools from "./components/sections/RealTools";
 import Certification from "./components/sections/Certification";
 import Stats from "./components/sections/Stats";
+import Roadmap from "./components/sections/Roadmap";
+import FAQ from "./components/sections/FAQ";
 
 export default function Home() {
   return (
@@ -20,6 +22,8 @@ export default function Home() {
       <RealTools />
       <Certification />
       <Stats />
+      <Roadmap />
+      <FAQ />
     </main>
   );
 }
