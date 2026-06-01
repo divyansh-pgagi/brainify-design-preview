@@ -14,6 +14,7 @@ const PATHS = [
       "Understand, use, and build with AI. Automate your work, design smarter workflows, and turn AI fluency into real opportunity.",
     bullets: ["Ship real AI automations", "Design smarter workflows", "Turn fluency into income"],
     image: "/images/educators/ryan.png",
+    pathImage: "/learning path/AI Path.png",
   },
   {
     id: 2,
@@ -25,6 +26,7 @@ const PATHS = [
       "Master content strategy and creation. Build an audience, monetize your expertise, and grow a creator business from scratch.",
     bullets: ["Build a content engine", "Grow & monetize an audience", "Launch a creator business"],
     image: "/images/educators/sarah.png",
+    pathImage: "/learning path/content creator.png",
   },
   {
     id: 3,
@@ -36,10 +38,11 @@ const PATHS = [
       "Learn modern digital marketing from paid ads to SEO. Drive real growth for businesses and build a marketable skill set.",
     bullets: ["Run paid ad campaigns", "Master SEO & content", "Measure & scale growth"],
     image: "/images/educators/adam.png",
+    pathImage: "/learning path/digital marketing.png",
   },
   {
     id: 4,
-    name: "Financial Literacy Path",
+    name: "Financial Intelligence Path",
     audience: "Wealth-Builders",
     audienceColor: "#fbbf24",
     educator: "Daniel",
@@ -47,6 +50,7 @@ const PATHS = [
       "Understand money, investing, and building wealth. Go from financial basics to advanced strategies with real-world application.",
     bullets: ["Understand investing basics", "Build a wealth strategy", "Make money work for you"],
     image: "/images/educators/daniel.png",
+    pathImage: "/learning path/Financial literacy.png",
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const PATHS = [
       "Navigate Web3, crypto, and the on-chain economy. Learn to build, invest, and operate in the decentralised digital world.",
     bullets: ["Understand Web3 & crypto", "Build on-chain businesses", "Navigate DeFi & NFTs"],
     image: "/images/educators/steve.png",
+    pathImage: "/learning path/digital currency.png",
   },
   {
     id: 6,
@@ -69,6 +74,7 @@ const PATHS = [
       "Designed for teens aged 13–18. Fun, project-based AI education that builds real skills and confidence for the future.",
     bullets: ["Learn AI without jargon", "Build first AI projects", "Future-proof your skills"],
     image: "/images/educators/luke.png",
+    pathImage: "/learning path/youth.png",
   },
 ] as const;
 
@@ -188,6 +194,18 @@ export default function LearningPaths() {
               <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 520 }}>
                 {path.description}
               </p>
+
+              {/* Path image */}
+              <div className="relative w-full rounded-xl overflow-hidden" style={{ border: "1px solid rgba(74,158,255,0.15)" }}>
+                <Image
+                  src={path.pathImage}
+                  alt={`${path.name} preview`}
+                  width={800}
+                  height={420}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
 
               {/* Feature pills */}
               <div className="flex flex-wrap gap-3">
