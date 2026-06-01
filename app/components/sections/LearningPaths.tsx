@@ -39,7 +39,7 @@ const PATHS = [
     description:
       "Learn modern digital marketing from paid ads to SEO. Drive real growth for businesses and build a marketable skill set.",
     bullets: ["Run paid ad campaigns", "Master SEO & content", "Measure & scale growth"],
-    image: "/images/educators/adam.png",
+    image: "/images/educators/educator-adam-hTD7sTlA.png",
     pathImage: "/learning-path/digital-marketing.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/f1c4f685-5f92-4124-abe5-1884e44f87bd?language=en",
   },
@@ -52,7 +52,7 @@ const PATHS = [
     description:
       "Understand money, investing, and building wealth. Go from financial basics to advanced strategies with real-world application.",
     bullets: ["Understand investing basics", "Build a wealth strategy", "Make money work for you"],
-    image: "/images/educators/daniel.png",
+    image: "/images/educators/educator-daniel-gk8GJ7P9.png",
     pathImage: "/learning-path/financial-literacy.png",
     videoUrl: "https://share.synthesia.io/embeds/videos/eefad282-400b-4c2b-aa27-6e96fc5f6b00?language=en",
   },
