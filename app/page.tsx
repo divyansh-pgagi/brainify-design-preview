@@ -9,6 +9,7 @@ import Certification from "./components/sections/Certification";
 import Stats from "./components/sections/Stats";
 import Roadmap from "./components/sections/Roadmap";
 import FAQ from "./components/sections/FAQ";
+import Footer from "./components/sections/Footer";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <Stats />
       <Roadmap />
       <FAQ />
+      <Footer />
     </main>
   );
 }

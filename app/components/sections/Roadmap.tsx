@@ -6,39 +6,39 @@ const PHASES = [
   {
     phase: "PHASE 01",
     title: "KHDA\nCERTIFICATION",
-    desc: "Launch UAE accredited certification attested by the Dubai Government",
+    desc: "Launch UAE accredited\ncertification attested by\nthe Dubai Government",
     active: false,
-    rail: "top",
+    rail: "top" as const,
   },
   {
     phase: "PHASE 02",
     title: "APPLICATION\nLAB",
-    desc: "Expand on project-led applications",
+    desc: "Expand on project-led\napplications",
     active: true,
-    rail: "bottom",
+    rail: "bottom" as const,
   },
   {
     phase: "PHASE 03",
-    title: "MINI VIDEO\nLESSSONS",
-    desc: "Expand library of mini videos for every course/path",
+    title: "MINI VIDEO\nLESSONS",
+    desc: "Expand library of mini\nvideos for every\ncourse/path",
     active: false,
-    rail: "top",
+    rail: "top" as const,
   },
   {
     phase: "PHASE 04",
     title: "VIRTUAL\nWORKSHOPS",
-    desc: "Introduce virtual workshops for interactivity and support",
+    desc: "Introduce virtual\nworkshops for\ninteractivity and support",
     active: true,
-    rail: "bottom",
+    rail: "bottom" as const,
   },
   {
     phase: "PHASE 05",
     title: "EXPANDING\nPATHS",
-    desc: "Create more paths and courses to provide more variety and options",
+    desc: "Create more paths and\ncourses to provide more\nvariety and options",
     active: false,
-    rail: "top",
+    rail: "top" as const,
   },
-] as const;
+];
 
 function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -56,129 +56,132 @@ function useInView(threshold = 0.1) {
   return { ref, inView };
 }
 
+/*
+  Fixed canvas layout (all px):
+
+  Row 0 — top-note zone        (top-rail desc + active-node top note)
+  Row 1 — top-rail nodes       (inactive circles, centered)
+  Row 2 — phase labels row     (for BOTH top and bottom rail)
+  Row 3 — bottom-rail nodes    (active circles, centered)
+  Row 4 — bottom-note zone     (active-node bottom desc)
+
+  We keep separate heights for each row so every element
+  is pinned by simple arithmetic — no floating offsets.
+*/
+const R0_H  = 64;   // top note row
+const R1_H  = 88;   // top-rail node row  (node dia = 80)
+const R2_H  = 34;   // phase label row
+const R3_H  = 108;  // bottom-rail node row (node dia = 100)
+const R4_H  = 70;   // bottom note row
+
+const CANVAS_H = R0_H + R1_H + R2_H + R3_H + R4_H;  // 364
+
+// SVG viewBox Y-centres for the curve paths
+const TOP_CY = R0_H + R1_H / 2;                            // centre of row1
+const BOT_CY = R0_H + R1_H + R2_H + R3_H / 2;             // centre of row3
+
+// Node diameters
+const TOP_D = 80;
+const BOT_D = 100;
+
+// X positions (% of container width)
+const X_PCTS = [10, 27.5, 50, 72.5, 90];
+
 export default function Roadmap() {
   const { ref, inView } = useInView(0.1);
 
-  // Node centers for SVG connector paths (as % of container width)
-  // 5 nodes equally spaced: 10%, 27.5%, 50%, 72.5%, 90%
-  const nodeXPcts = [10, 27.5, 50, 72.5, 90];
-
-  // Vertical positions in the SVG (total height = 220px)
-  // top-rail node center Y = 80, bottom-rail node center Y = 140
-  const topY = 80;
-  const botY = 140;
-
   return (
     <section id="roadmap" className="relative overflow-hidden" style={{ background: "#060f1e" }}>
-      <div
-        aria-hidden
-        className="absolute pointer-events-none"
-        style={{
-          width: 800, height: 500,
-          top: "20%", left: "50%",
-          transform: "translateX(-50%)",
-          background: "radial-gradient(ellipse, rgba(0,80,200,0.09) 0%, transparent 70%)",
-          filter: "blur(90px)",
-        }}
-      />
+      <div aria-hidden className="absolute pointer-events-none" style={{ width: 700, height: 400, top: "30%", left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,70,180,0.07) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
       <style>{`
-        @keyframes rm-dash { to { stroke-dashoffset: -22; } }
+        @keyframes rm-dash  { to { stroke-dashoffset: -22; } }
         @keyframes rm-pulse {
-          0%,100% { box-shadow: 0 0 24px 5px rgba(0,210,240,0.50), 0 0 55px 12px rgba(0,150,200,0.28); }
-          50%      { box-shadow: 0 0 38px 9px rgba(0,235,255,0.70), 0 0 75px 18px rgba(0,165,225,0.40); }
+          0%,100% { box-shadow: 0 0 16px 3px rgba(0,185,220,0.32), 0 0 36px 7px rgba(0,125,185,0.16); }
+          50%     { box-shadow: 0 0 24px 6px rgba(0,205,240,0.44), 0 0 50px 10px rgba(0,140,200,0.22); }
         }
         @keyframes rm-ring {
-          0%   { transform: scale(1);    opacity: 0.40; }
-          100% { transform: scale(1.50); opacity: 0; }
+          0%   { transform: scale(1);    opacity: 0.32; }
+          100% { transform: scale(1.45); opacity: 0; }
         }
         @keyframes rm-ring2 {
-          0%   { transform: scale(1);    opacity: 0.25; }
-          100% { transform: scale(1.80); opacity: 0; }
+          0%   { transform: scale(1);    opacity: 0.16; }
+          100% { transform: scale(1.72); opacity: 0; }
         }
       `}</style>
 
-      <div ref={ref} className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 py-24">
+      <div ref={ref} className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 pt-24 pb-10">
 
-        {/* ── Header ── */}
-        <div
-          className="mb-12"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
-        >
+        {/* Header */}
+        <div className="mb-12" style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}>
           <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#4a9eff", marginBottom: 12 }}>
             What&apos;s next
           </p>
           <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}>
             Product Roadmap
           </h2>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.55)", maxWidth: 480 }}>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 16, lineHeight: "26px", color: "rgba(199,210,220,0.50)", maxWidth: 480 }}>
             Where brAInify is heading next — accreditation, deeper labs, more paths.
           </p>
         </div>
 
         {/* ── DESKTOP CARD ── */}
         <div
-          className="hidden md:block relative rounded-2xl overflow-visible"
+          className="hidden md:block relative rounded-2xl"
           style={{
             opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(32px)",
+            transform: inView ? "translateY(0)" : "translateY(28px)",
             transition: "opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s",
-            background: "linear-gradient(145deg, rgba(4,14,44,0.94) 0%, rgba(2,8,26,0.98) 100%)",
-            border: "1.5px solid rgba(0,200,240,0.30)",
-            boxShadow: "0 0 0 1px rgba(0,200,240,0.05), 0 0 80px rgba(0,130,200,0.10)",
-            padding: "0",
+            background: "linear-gradient(160deg, rgba(5,16,48,0.95) 0%, rgba(2,8,26,0.98) 100%)",
+            border: "1.5px solid rgba(0,195,235,0.22)",
+            boxShadow: "0 0 60px rgba(0,120,190,0.07)",
+            padding: "28px 24px 24px",
+            overflow: "hidden",
           }}
         >
-          <div aria-hidden className="absolute pointer-events-none inset-0 rounded-2xl" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(0,80,200,0.07) 0%, transparent 60%)" }} />
+          <div aria-hidden className="absolute pointer-events-none inset-0 rounded-2xl" style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(0,70,180,0.05) 0%, transparent 60%)" }} />
 
-          {/* SVG connector layer — full width, positioned behind nodes */}
-          <div className="relative w-full" style={{ height: 220 }}>
+          {/* ── Canvas ── */}
+          <div className="relative w-full" style={{ height: CANVAS_H }}>
+
+            {/* SVG curves — behind everything */}
             <svg
-              viewBox="0 0 1000 220"
+              viewBox={`0 0 1000 ${CANVAS_H}`}
               preserveAspectRatio="none"
               className="absolute inset-0 w-full h-full"
-              style={{ overflow: "visible" }}
+              style={{ overflow: "visible", zIndex: 0 }}
               aria-hidden
             >
               <defs>
-                <filter id="rm-glow-f" x="-80%" y="-80%" width="260%" height="260%">
-                  <feGaussianBlur stdDeviation="3" result="b" />
+                <filter id="gl" x="-60%" y="-60%" width="220%" height="220%">
+                  <feGaussianBlur stdDeviation="2.2" result="b" />
                   <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
-                <linearGradient id="rm-line-grad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%"   stopColor="rgba(0,195,240,0.45)" />
-                  <stop offset="50%"  stopColor="rgba(0,235,255,0.85)" />
-                  <stop offset="100%" stopColor="rgba(0,195,240,0.45)" />
+                <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stopColor="rgba(0,180,225,0.38)" />
+                  <stop offset="50%"  stopColor="rgba(0,220,252,0.72)" />
+                  <stop offset="100%" stopColor="rgba(0,180,225,0.38)" />
                 </linearGradient>
               </defs>
 
               {PHASES.slice(0, -1).map((p, i) => {
                 const next = PHASES[i + 1];
-                const x1 = nodeXPcts[i] * 10;
-                const x2 = nodeXPcts[i + 1] * 10;
-                const y1 = p.rail === "top" ? topY : botY;
-                const y2 = next.rail === "top" ? topY : botY;
-                // Smooth S-curve: control points pull toward the midpoint
+                const x1 = X_PCTS[i]     * 10;
+                const x2 = X_PCTS[i + 1] * 10;
+                const y1 = p.rail    === "top" ? TOP_CY : BOT_CY;
+                const y2 = next.rail === "top" ? TOP_CY : BOT_CY;
                 const mx = (x1 + x2) / 2;
-                const d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+                const d  = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
                 return (
                   <g key={`c-${i}`}>
-                    <path d={d} fill="none" stroke="rgba(0,175,215,0.16)" strokeWidth="1.5" strokeDasharray="6 5" />
+                    <path d={d} fill="none" stroke="rgba(0,160,205,0.13)" strokeWidth="1.5" strokeDasharray="6 5" />
                     <path
-                      d={d}
-                      fill="none"
-                      stroke="url(#rm-line-grad)"
-                      strokeWidth="2"
-                      strokeDasharray="6 5"
-                      filter="url(#rm-glow-f)"
+                      d={d} fill="none" stroke="url(#lg)" strokeWidth="1.8" strokeDasharray="6 5"
+                      filter="url(#gl)"
                       style={{
                         opacity: inView ? 1 : 0,
-                        transition: `opacity 0.5s ease ${i * 160 + 600}ms`,
-                        animation: inView ? `rm-dash ${1.6 + i * 0.15}s linear infinite` : "none",
+                        transition: `opacity 0.5s ease ${i * 150 + 600}ms`,
+                        animation: inView ? `rm-dash ${1.7 + i * 0.15}s linear infinite` : "none",
                       }}
                     />
                   </g>
@@ -186,162 +189,152 @@ export default function Roadmap() {
               })}
             </svg>
 
-            {/* Node + label overlays */}
+            {/* ── Per-column elements ── */}
             {PHASES.map((p, i) => {
-              const nodeD = p.active ? 104 : 82;
-              const xPct = nodeXPcts[i];
-              const yCenter = p.rail === "top" ? topY : botY;
+              const xPct  = X_PCTS[i];
+              const isTop = p.rail === "top";
+              const nodeD = isTop ? TOP_D : BOT_D;
+
+              /* Vertical tops of each element in the column */
+              // Node centre is at TOP_CY or BOT_CY, so node top = centre - radius
+              const nodeCY   = isTop ? TOP_CY : BOT_CY;
+              const nodeTopY = nodeCY - nodeD / 2;
+
+              // Phase label: sits just below the node (8px gap)
+              const labelY   = nodeTopY + nodeD + 8;
+
+              // Desc text:
+              //   top-rail  → inside R0, aligned to bottom (above node)
+              //   bottom-rail → inside R4, aligned to top (below label)
+              const noteY    = isTop
+                ? 0                                       // start of R0
+                : R0_H + R1_H + R2_H + R3_H + 8;         // start of R4 + small gap
+
+              const noteH    = isTop ? R0_H - 6 : R4_H - 8;
+
+              const delay = i * 120;
 
               return (
-                <div
-                  key={`n-${i}`}
-                  className="absolute flex flex-col items-center"
-                  style={{
-                    left: `${xPct}%`,
-                    top: yCenter,
-                    transform: "translate(-50%, -50%)",
-                    width: 140,
-                  }}
-                >
-                  {/* Node circle */}
+                <div key={`col-${i}`}>
+
+                  {/* ── Desc / note text ── */}
                   <div
-                    className="relative flex items-center justify-center rounded-full shrink-0"
+                    className="absolute text-center"
                     style={{
+                      left: `${xPct}%`,
+                      top: noteY,
+                      height: noteH,
+                      transform: "translateX(-50%)",
+                      width: 140,
+                      display: "flex",
+                      alignItems: isTop ? "flex-end" : "flex-start",
+                      justifyContent: "center",
+                      paddingBottom: isTop ? 6 : 0,
+                      paddingTop:    isTop ? 0  : 4,
+                      opacity: inView ? 1 : 0,
+                      transition: `opacity 0.5s ease ${delay + 680}ms`,
+                      zIndex: 1,
+                    }}
+                  >
+                    <p style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: 11.5,
+                      fontWeight: 400,
+                      color: "rgba(155,180,205,0.65)",
+                      lineHeight: 1.62,
+                      whiteSpace: "pre-line",
+                      textAlign: "center",
+                    }}>
+                      {p.desc}
+                    </p>
+                  </div>
+
+                  {/* ── Node circle ── */}
+                  <div
+                    className="absolute flex items-center justify-center rounded-full"
+                    style={{
+                      left: `${xPct}%`,
+                      top: nodeTopY,
+                      transform: inView ? "translateX(-50%) scale(1)" : "translateX(-50%) scale(0.65)",
                       width: nodeD,
                       height: nodeD,
                       background: p.active
-                        ? "radial-gradient(circle at 40% 32%, #55e8ff 0%, #1ab8e8 20%, #0577c2 50%, #033d88 76%, #011e50 100%)"
-                        : "radial-gradient(circle at 40% 32%, #1c3468 0%, #0d1e45 55%, #060e26 100%)",
+                        ? "radial-gradient(circle at 38% 30%, #45d8f2 0%, #12a4d3 18%, #0565ac 46%, #032e72 72%, #011644 100%)"
+                        : "radial-gradient(circle at 38% 30%, #192d5c 0%, #0c1b3b 55%, #060d22 100%)",
                       border: p.active
-                        ? "2px solid rgba(0,228,255,0.60)"
-                        : "1.5px solid rgba(0,175,220,0.24)",
-                      animation: p.active && inView ? "rm-pulse 2.8s ease-in-out infinite" : "none",
-                      transition: `opacity 0.5s ease ${i * 120 + 350}ms, transform 0.5s ease ${i * 120 + 350}ms`,
+                        ? "1.5px solid rgba(0,210,245,0.48)"
+                        : "1.5px solid rgba(0,160,210,0.20)",
+                      animation: p.active && inView ? "rm-pulse 3s ease-in-out infinite" : "none",
                       opacity: inView ? 1 : 0,
-                      transform: inView ? "scale(1)" : "scale(0.6)",
-                      zIndex: 2,
+                      transition: `opacity 0.5s ease ${delay + 350}ms, transform 0.5s ease ${delay + 350}ms`,
+                      zIndex: 3,
                     }}
                   >
                     {p.active && inView && (
                       <>
-                        <div className="absolute rounded-full pointer-events-none" style={{ inset: -10, border: "1.5px solid rgba(0,220,255,0.30)", animation: "rm-ring 2.4s ease-out infinite" }} />
-                        <div className="absolute rounded-full pointer-events-none" style={{ inset: -18, border: "1px solid rgba(0,220,255,0.15)", animation: "rm-ring2 2.4s ease-out infinite 0.6s" }} />
+                        <div className="absolute rounded-full pointer-events-none" style={{ inset: -9,  border: "1px solid rgba(0,205,242,0.24)", animation: "rm-ring  2.6s ease-out infinite" }} />
+                        <div className="absolute rounded-full pointer-events-none" style={{ inset: -17, border: "1px solid rgba(0,205,242,0.11)", animation: "rm-ring2 2.6s ease-out infinite 0.7s" }} />
                       </>
                     )}
                     <p style={{
                       fontFamily: "var(--font-body)",
-                      fontSize: p.active ? 11 : 9,
+                      fontSize: p.active ? 10.5 : 9,
                       fontWeight: 800,
-                      color: "#ffffff",
+                      color: "#fff",
                       textAlign: "center",
-                      letterSpacing: "0.5px",
+                      letterSpacing: "0.4px",
                       whiteSpace: "pre-line",
                       lineHeight: 1.35,
-                      textShadow: p.active ? "0 0 14px rgba(180,245,255,0.60)" : "none",
+                      padding: "0 6px",
                       userSelect: "none",
-                      padding: "0 8px",
                     }}>
                       {p.title}
                     </p>
                   </div>
 
-                  {/* Phase label — always below node */}
-                  <p
+                  {/* ── Phase label ── */}
+                  <div
+                    className="absolute text-center"
                     style={{
+                      left: `${xPct}%`,
+                      top: labelY,
+                      transform: "translateX(-50%)",
+                      width: 110,
+                      opacity: inView ? 1 : 0,
+                      transition: `opacity 0.5s ease ${delay + 520}ms`,
+                      zIndex: 1,
+                    }}
+                  >
+                    <p style={{
                       fontFamily: "var(--font-body)",
                       fontSize: 10,
                       fontWeight: 700,
-                      color: p.active ? "rgba(0,228,255,0.90)" : "#4a9eff",
+                      color: p.active ? "rgba(0,210,248,0.78)" : "rgba(74,158,255,0.78)",
                       letterSpacing: "1.5px",
                       textTransform: "uppercase",
-                      marginTop: 10,
-                      textAlign: "center",
                       whiteSpace: "nowrap",
-                      opacity: inView ? 1 : 0,
-                      transition: `opacity 0.5s ease ${i * 120 + 500}ms`,
-                    }}
-                  >
-                    {p.phase}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Notes row — positioned below the SVG canvas */}
-          {/* Top-rail notes go BELOW, bottom-rail (active) notes go ABOVE */}
-          {/* We render them as absolutely positioned text relative to the card */}
-          <div className="relative w-full" style={{ height: 80 }}>
-            {PHASES.map((p, i) => {
-              const xPct = nodeXPcts[i];
-              return (
-                <div
-                  key={`desc-${i}`}
-                  className="absolute text-center"
-                  style={{
-                    left: `${xPct}%`,
-                    top: 0,
-                    transform: "translateX(-50%)",
-                    width: 150,
-                    opacity: inView ? 1 : 0,
-                    transition: `opacity 0.5s ease ${i * 120 + 650}ms`,
-                  }}
-                >
-                  {/* Only show desc for top-rail (inactive) nodes here — below the card timeline */}
-                  {p.rail === "top" && (
-                    <p style={{
-                      fontFamily: "var(--font-body)",
-                      fontSize: 12,
-                      fontWeight: 400,
-                      color: "rgba(199,210,220,0.55)",
-                      lineHeight: 1.6,
                     }}>
-                      {p.desc}
+                      {p.phase}
                     </p>
-                  )}
+                  </div>
+
                 </div>
               );
             })}
           </div>
-
-          {/* Active node top-notes: rendered above the SVG canvas */}
-          <div className="absolute top-0 w-full" style={{ pointerEvents: "none" }}>
-            {PHASES.map((p, i) => {
-              if (!p.active) return null;
-              const xPct = nodeXPcts[i];
-              return (
-                <div
-                  key={`tnote-${i}`}
-                  className="absolute text-center"
-                  style={{
-                    left: `${xPct}%`,
-                    top: 12,
-                    transform: "translateX(-50%)",
-                    width: 160,
-                    opacity: inView ? 1 : 0,
-                    transition: `opacity 0.5s ease ${i * 120 + 650}ms`,
-                  }}
-                >
-                  <p style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: 12,
-                    fontWeight: 400,
-                    color: "rgba(199,210,220,0.60)",
-                    lineHeight: 1.6,
-                  }}>
-                    {p.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Bottom padding */}
-          <div style={{ height: 20 }} />
         </div>
 
         {/* ── MOBILE vertical list ── */}
-        <div className="md:hidden flex flex-col gap-0">
+        <div
+          className="md:hidden rounded-2xl overflow-hidden"
+          style={{
+            opacity: inView ? 1 : 0,
+            transition: "opacity 0.6s ease 0.2s",
+            background: "linear-gradient(160deg, rgba(5,16,48,0.95) 0%, rgba(2,8,26,0.98) 100%)",
+            border: "1.5px solid rgba(0,195,235,0.20)",
+            padding: "28px 20px",
+          }}
+        >
           {PHASES.map((p, i) => (
             <div key={`mob-${i}`} className="flex gap-4 items-start">
               <div className="flex flex-col items-center shrink-0">
@@ -350,32 +343,32 @@ export default function Roadmap() {
                   style={{
                     width: 60, height: 60,
                     background: p.active
-                      ? "radial-gradient(circle at 40% 32%, #55e8ff, #0577c2, #011e50)"
-                      : "radial-gradient(circle at 40% 32%, #1c3468, #060e26)",
-                    border: p.active ? "2px solid rgba(0,228,255,0.55)" : "1.5px solid rgba(0,175,220,0.24)",
-                    boxShadow: p.active ? "0 0 22px rgba(0,210,240,0.45)" : "none",
+                      ? "radial-gradient(circle at 38% 30%, #45d8f2, #0565ac, #011644)"
+                      : "radial-gradient(circle at 38% 30%, #192d5c, #060d22)",
+                    border: p.active ? "1.5px solid rgba(0,210,245,0.48)" : "1.5px solid rgba(0,160,210,0.20)",
+                    boxShadow: p.active ? "0 0 14px rgba(0,190,225,0.28)" : "none",
                     opacity: inView ? 1 : 0,
                     transition: `opacity 0.5s ease ${i * 100 + 300}ms`,
                     flexShrink: 0,
                   }}
                 >
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: 8.5, fontWeight: 800, color: "#fff", textAlign: "center", whiteSpace: "pre-line", lineHeight: 1.35, padding: "0 6px" }}>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: 8.5, fontWeight: 800, color: "#fff", textAlign: "center", whiteSpace: "pre-line", lineHeight: 1.35, padding: "0 5px" }}>
                     {p.title}
                   </p>
                 </div>
                 {i < PHASES.length - 1 && (
-                  <div style={{ width: 1.5, height: 40, marginTop: 4, marginBottom: 4, background: "linear-gradient(to bottom, rgba(0,210,240,0.45), rgba(0,150,200,0.10))" }} />
+                  <div style={{ width: 1.5, height: 36, marginTop: 3, marginBottom: 3, background: "linear-gradient(to bottom, rgba(0,190,230,0.32), rgba(0,135,185,0.07))" }} />
                 )}
               </div>
-              <div className="pt-2 pb-5" style={{ opacity: inView ? 1 : 0, transition: `opacity 0.5s ease ${i * 100 + 350}ms` }}>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 700, color: p.active ? "rgba(0,228,255,0.9)" : "#4a9eff", letterSpacing: "1.3px", textTransform: "uppercase", marginBottom: 5 }}>
+              <div className="pt-2 pb-4" style={{ opacity: inView ? 1 : 0, transition: `opacity 0.5s ease ${i * 100 + 360}ms` }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 700, color: p.active ? "rgba(0,210,248,0.82)" : "rgba(74,158,255,0.82)", letterSpacing: "1.3px", textTransform: "uppercase", marginBottom: 4 }}>
                   {p.phase}
                 </p>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 700, color: "#c7d2dc", marginBottom: 5 }}>
+                <p style={{ fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 700, color: "#c7d2dc", marginBottom: 5 }}>
                   {p.title.replace("\n", " ")}
                 </p>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(199,210,220,0.55)", lineHeight: 1.65 }}>
-                  {p.desc}
+                <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(155,180,205,0.60)", lineHeight: 1.65 }}>
+                  {p.desc.replace(/\n/g, " ")}
                 </p>
               </div>
             </div>

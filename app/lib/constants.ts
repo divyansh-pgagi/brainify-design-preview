@@ -1,6 +1,6 @@
 export const NAV_LINKS = [
   { label: "Paths", href: "#paths" },
-  { label: "Features", href: "#features" },
+  { label: "Features", href: "#inside-app" },
   { label: "Certification", href: "#certification" },
   { label: "Roadmap", href: "#roadmap" },
   { label: "FAQ", href: "#faq" },

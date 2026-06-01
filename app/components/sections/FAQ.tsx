@@ -155,7 +155,7 @@ export default function FAQ() {
       {/* ambient glow */}
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 600, height: 600, bottom: 0, left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,60,180,0.09) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
-      <div ref={ref} className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 py-24">
+      <div ref={ref} className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 pt-8 pb-24">
 
         {/* Header */}
         <div
