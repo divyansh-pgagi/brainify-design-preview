@@ -17,12 +17,16 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "brAInify — The way you learn is about to change",
+  title: "brAInify — Innovative Learning",
   description:
     "brAInify isn't another course platform. It's a complete AI-powered learning ecosystem that guides you from foundation to mastery. Live in 175 countries · 11 languages.",
   keywords: ["AI learning", "online courses", "AI education", "learning ecosystem", "certification", "brAInify"],
+  icons: {
+    icon: [{ url: "/ios-dark.png", type: "image/png" }],
+    apple: [{ url: "/ios-dark.png", type: "image/png" }],
+  },
   openGraph: {
-    title: "brAInify — The way you learn is about to change",
+    title: "brAInify — Innovative Learning",
     description: "A complete AI-powered learning ecosystem. Project-led, not video-soup.",
     type: "website",
   },
@@ -31,6 +35,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${plusJakartaSans.variable} h-full antialiased`}>
+      <head>
+        <link rel="icon" href="/ios-dark.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/ios-dark.png" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#0b1424]">{children}</body>
     </html>
   );

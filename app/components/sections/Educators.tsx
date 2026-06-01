@@ -150,7 +150,6 @@ export default function Educators() {
               lineHeight: "29.25px",
               color: "rgba(199,210,220,0.7)",
               maxWidth: 900,
-              whiteSpace: "nowrap",
               margin: "0 auto",
             }}
           >
