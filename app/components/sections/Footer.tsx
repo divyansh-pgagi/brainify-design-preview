@@ -85,13 +85,13 @@ export default function Footer() {
 
       {/* ── Footer ── */}
       <footer style={{ background: "#04090f", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div className="w-full max-w-[1192px] mx-auto px-6 md:px-10 py-6 flex flex-row items-center justify-between">
+        <div className="w-full max-w-[1192px] mx-auto px-6 md:px-10 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex-1 flex justify-start">
             <Image src="/logo-with-txt.svg" alt="brAInify" width={100} height={28} className="h-7 w-auto opacity-60" loading="lazy" />
           </div>
 
-          <div className="flex flex-col items-center gap-3">
-            <p style={{ fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(160,200,240,0.45)" }}>
+          <div className="flex flex-col items-center gap-2">
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 9, fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(160,200,240,0.45)" }}>
               Follow Brainify
             </p>
           <a
@@ -100,7 +100,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-full transition-all duration-200 hover:opacity-90 active:scale-95"
             style={{
-              padding: "9px 20px",
+              padding: "6px 14px",
               background: "rgba(255,255,255,0.04)",
               border: "1px solid rgba(255,255,255,0.09)",
               textDecoration: "none",
@@ -109,11 +109,11 @@ export default function Footer() {
           >
             <span
               className="flex items-center justify-center rounded-full shrink-0"
-              style={{ width: 26, height: 26, background: "linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)", color: "#fff", flexShrink: 0 }}
+              style={{ width: 20, height: 20, background: "linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)", color: "#fff", flexShrink: 0 }}
             >
-              <InstagramIcon size={14} />
+              <InstagramIcon size={11} />
             </span>
-            <span style={{ fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 400 }}>
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 400 }}>
               @brainifybyignite
             </span>
           </a>
