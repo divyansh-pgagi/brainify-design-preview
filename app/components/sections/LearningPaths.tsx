@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 const PATHS = [
   {
@@ -164,7 +165,13 @@ export default function LearningPaths() {
         <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] py-24">
 
           {/* Header */}
-          <div className="mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-10"
+          >
             <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
               Courses &amp; Paths
             </p>
@@ -174,15 +181,26 @@ export default function LearningPaths() {
             <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 500 }}>
               Each path is a complete career arc — designed to take you from beginner to a real, monetizable skill, with project-led learning at every step.
             </p>
-          </div>
+          </motion.div>
 
           {/* Two-column layout */}
           <div className="flex flex-col lg:flex-row gap-4">
 
             {/* LEFT — path selector list */}
-            <div className="flex flex-col gap-2 lg:w-[340px] shrink-0">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.1 }
+                }
+              }}
+              className="flex flex-col gap-2 lg:w-[340px] shrink-0"
+            >
               {PATHS.map((p, i) => (
-                <button
+                <motion.button
                   key={p.id}
                   onClick={() => { setActive(i); setVideoOpen(false); }}
                   className="flex items-center gap-3 rounded-xl text-left transition-all duration-200 w-full"
@@ -223,12 +241,16 @@ export default function LearningPaths() {
                   <svg viewBox="0 0 8 14" className="shrink-0" style={{ width: 8, height: 14, opacity: active === i ? 1 : 0.35 }} fill="none" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M1 1l6 6-6 6" />
                   </svg>
-                </button>
+                </motion.button>
               ))}
-            </div>
+            </motion.div>
 
             {/* RIGHT — detail panel */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               className="flex-1 rounded-2xl relative overflow-hidden"
               style={{
                 background: "linear-gradient(135deg, rgba(7,28,70,0.95) 0%, rgba(5,18,45,0.98) 100%)",
@@ -241,8 +263,16 @@ export default function LearningPaths() {
               {/* teal glow inside panel */}
               <div aria-hidden className="absolute pointer-events-none" style={{ width: 400, height: 400, top: -100, right: -100, background: "radial-gradient(ellipse, rgba(0,180,200,0.08) 0%, transparent 70%)", filter: "blur(40px)" }} />
 
-              <div className="relative z-10 flex flex-col h-full gap-6">
-                {/* educator + audience tag */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="relative z-10 flex flex-col h-full gap-6"
+                >
+                  {/* educator + audience tag */}
                 <div className="flex items-center gap-3">
                   <div className="relative rounded-xl overflow-hidden shrink-0" style={{ width: 52, height: 52, border: "1.5px solid rgba(74,158,255,0.3)" }}>
                     <Image
@@ -326,8 +356,9 @@ export default function LearningPaths() {
                     Explore Path
                   </button>
                 </div>
-              </div>
-            </div>
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
           </div>
         </div>
       </section>
