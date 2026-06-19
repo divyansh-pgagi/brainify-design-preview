@@ -31,7 +31,7 @@ export const EDUCATORS = [
   { name: "Ryan",   specialty: "AI",                 image: "/images/educators/ryan.png"   },
   { name: "Sarah",  specialty: "Content Creator",    image: "/images/educators/sarah.png"  },
   { name: "Adam",   specialty: "Digital Marketing",  image: "/images/educators/adam.png"   },
-  { name: "Daniel", specialty: "Financial Literacy", image: "/images/educators/daniel.png" },
+  { name: "Daniel", specialty: "Financial Intelligence", image: "/images/educators/daniel.png" },
   { name: "Steve",  specialty: "Digital Economy",    image: "/images/educators/steve.png"  },
   { name: "Luke",   specialty: "AI Youth",           image: "/images/educators/luke.png"   },
   { name: "Carol",  specialty: "Tools",              image: "/images/educators/carol.png"  },
