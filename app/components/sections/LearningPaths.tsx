@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import DecodeText from "@/app/components/ui/DecodeText";
+import DataStream from "@/app/components/ui/DataStream";
 
 const PATHS = [
   {
@@ -175,9 +177,11 @@ export default function LearningPaths() {
             <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
               Courses &amp; Paths
             </p>
-            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}>
-              Six learning paths. Which one is yours?
-            </h2>
+            <DecodeText
+              as="h2"
+              text="Six learning paths. Which one is yours?"
+              style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}
+            />
             <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 500 }}>
               Each path is a complete career arc — designed to take you from beginner to a real, monetizable skill, with project-led learning at every step.
             </p>
@@ -262,6 +266,9 @@ export default function LearningPaths() {
             >
               {/* teal glow inside panel */}
               <div aria-hidden className="absolute pointer-events-none" style={{ width: 400, height: 400, top: -100, right: -100, background: "radial-gradient(ellipse, rgba(0,180,200,0.08) 0%, transparent 70%)", filter: "blur(40px)" }} />
+
+              {/* Falling data-stream backdrop */}
+              <DataStream columns={12} color="rgba(74,158,255,0.22)" />
 
               <AnimatePresence mode="wait">
                 <motion.div

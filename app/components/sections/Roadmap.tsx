@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import DecodeText from "@/app/components/ui/DecodeText";
 
 const PHASES = [
   {
@@ -117,9 +118,11 @@ export default function Roadmap() {
           <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#4a9eff", marginBottom: 12 }}>
             What&apos;s next
           </p>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}>
-            Product Roadmap
-          </h2>
+          <DecodeText
+            as="h2"
+            text="Product Roadmap"
+            style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}
+          />
           <p style={{ fontFamily: "var(--font-body)", fontSize: 16, lineHeight: "26px", color: "rgba(199,210,220,0.50)", maxWidth: 480 }}>
             Where brAInify is heading next — accreditation, deeper labs, more paths.
           </p>

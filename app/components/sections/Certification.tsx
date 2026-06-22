@@ -1,4 +1,5 @@
 import Image from "next/image";
+import DecodeText from "@/app/components/ui/DecodeText";
 
 const BULLETS = [
   "Project-validated, not quiz-validated",
@@ -29,9 +30,11 @@ export default function Certification() {
                 brAInify Certification
               </p>
 
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", lineHeight: 1.15, marginBottom: 20 }}>
-                Proof of skill, not proof of attendance.
-              </h2>
+              <DecodeText
+                as="h2"
+                text="Proof of skill, not proof of attendance."
+                style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", lineHeight: 1.15, marginBottom: 20 }}
+              />
 
               <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, lineHeight: "24px", color: "rgba(199,210,220,0.65)", marginBottom: 24 }}>
                 Graduates don&apos;t just leave with a certificate — they leave with{" "}

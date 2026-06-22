@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import DecodeText from "@/app/components/ui/DecodeText";
 
 const FAQS = [
   {
@@ -169,9 +170,11 @@ export default function FAQ() {
           <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#4a9eff", marginBottom: 12 }}>
             Honest answers
           </p>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", lineHeight: 1.15 }}>
-            Questions you&apos;re about to ask.
-          </h2>
+          <DecodeText
+            as="h2"
+            text="Questions you're about to ask."
+            style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", lineHeight: 1.15 }}
+          />
         </div>
 
         {/* Accordion list */}

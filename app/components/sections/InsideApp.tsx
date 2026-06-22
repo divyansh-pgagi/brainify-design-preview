@@ -1,4 +1,5 @@
 import Image from "next/image";
+import DecodeText from "@/app/components/ui/DecodeText";
 
 const LEFT_FEATURES = [
   {
@@ -97,9 +98,11 @@ export default function InsideApp() {
           <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
             Inside the app
           </p>
-          <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}>
-            A learning ecosystem
-          </h2>
+          <DecodeText
+            as="h2"
+            text="A learning ecosystem"
+            style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}
+          />
           <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 460 }}>
             Project-led lessons, gamified progress, XP, and a mentor —{" "}
             <br className="hidden md:block" />

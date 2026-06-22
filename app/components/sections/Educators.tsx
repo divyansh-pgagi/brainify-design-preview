@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { EDUCATORS } from "@/app/lib/constants";
+import DecodeText from "@/app/components/ui/DecodeText";
+import TiltCard from "@/app/components/ui/TiltCard";
 
 function EducatorCard({
   name,
@@ -13,8 +15,8 @@ function EducatorCard({
   image: string;
 }) {
   return (
-    <div
-      className="flex flex-col items-center cursor-pointer group transition-transform duration-300 hover:scale-[1.04]"
+    <TiltCard
+      className="flex flex-col items-center cursor-pointer group"
       style={{
         background: "linear-gradient(145deg, #0d1f40 0%, #091428 100%)",
         border: "1.5px solid rgba(74,158,255,0.22)",
@@ -23,7 +25,6 @@ function EducatorCard({
         width: 140,
         gap: 10,
         boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
-        transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s",
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLDivElement;
@@ -85,7 +86,7 @@ function EducatorCard({
       >
         {specialty}
       </p>
-    </div>
+    </TiltCard>
   );
 }
 
@@ -175,7 +176,9 @@ export default function Educators() {
           </p>
 
           {/* H2 — Space Grotesk Bold 34px, -0.85px tracking */}
-          <h2
+          <DecodeText
+            as="h2"
+            text="AI experts. Real specialties."
             style={{
               fontFamily: "var(--font-heading)",
               fontSize: 34,
@@ -185,9 +188,7 @@ export default function Educators() {
               color: "#c7d2dc",
               marginBottom: 12,
             }}
-          >
-            AI experts. Real specialties.
-          </h2>
+          />
 
           {/* Subtext — Plus Jakarta Sans Regular 16px */}
           <p

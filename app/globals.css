@@ -222,6 +222,15 @@ body {
   100% { transform: translateY(-100%); opacity: 0; }
 }
 
+/* Falling data-stream segment — `top` is relative to the container, so a single
+   keyframe traverses the full height of any parent regardless of its size. */
+@keyframes data-stream-fall {
+  0%   { top: -16%; opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { top: 116%; opacity: 0; }
+}
+
 /* ───────────────────────────────────────────────────────────────
    CUSTOM CURSOR — neon glow dot + lagging ring
    ─────────────────────────────────────────────────────────────── */
@@ -290,4 +299,5 @@ body {
     scroll-behavior: auto !important;
   }
   .cyber-grid, .aurora, .reactor-ring { animation: none !important; }
+  .cursor-dot, .cursor-ring, .cursor-spotlight { display: none !important; }
 }

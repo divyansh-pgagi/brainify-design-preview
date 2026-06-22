@@ -1,3 +1,7 @@
+import DecodeText from "@/app/components/ui/DecodeText";
+import TiltCard from "@/app/components/ui/TiltCard";
+import DataStream from "@/app/components/ui/DataStream";
+
 // Tool icons matched pixel-perfect from Figma screenshot
 const TOOLS = [
   {
@@ -104,15 +108,20 @@ export default function RealTools() {
         >
           <div aria-hidden className="absolute pointer-events-none" style={{ width: 500, height: 400, top: -100, right: -100, background: "radial-gradient(ellipse, rgba(0,80,200,0.1) 0%, transparent 70%)", filter: "blur(60px)" }} />
 
+          {/* Falling data-stream backdrop */}
+          <DataStream columns={20} color="rgba(74,158,255,0.35)" />
+
           <div className="relative z-10">
             {/* Header */}
             <div className="mb-10" style={{ borderBottom: "1px dashed rgba(74,158,255,0.2)", paddingBottom: 20 }}>
               <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
                 Use real tools
               </p>
-              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}>
-                The same tools the pros are billing for.
-              </h2>
+              <DecodeText
+                as="h2"
+                text="The same tools the pros are billing for."
+                style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}
+              />
               <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, lineHeight: "24px", color: "rgba(199,210,220,0.6)", maxWidth: 480 }}>
                 Not toy projects. Production-quality walkthroughs of the AI tools you&apos;ll actually be hired to use — taught in the language you choose.
               </p>
@@ -121,9 +130,11 @@ export default function RealTools() {
             {/* Tool cards */}
             <div className="flex flex-wrap gap-3">
               {TOOLS.map((tool) => (
-                <div
+                <TiltCard
                   key={tool.name}
-                  className="flex flex-col items-center gap-3 rounded-2xl transition-all duration-200 hover:scale-[1.03] hover:border-white/20 cursor-default"
+                  className="flex flex-col items-center gap-3 rounded-2xl hover:border-white/20 cursor-default"
+                  max={10}
+                  glareColor={`${tool.categoryColor}33`}
                   style={{
                     background: `linear-gradient(145deg, ${tool.bg} 0%, #040d1e 100%)`,
                     border: "1px solid rgba(255,255,255,0.08)",
@@ -139,7 +150,7 @@ export default function RealTools() {
                   <p style={{ fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: tool.categoryColor, textAlign: "center", lineHeight: 1.3 }}>
                     {tool.category}
                   </p>
-                </div>
+                </TiltCard>
               ))}
             </div>
 
