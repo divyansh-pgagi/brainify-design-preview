@@ -223,6 +223,63 @@ body {
 }
 
 /* ───────────────────────────────────────────────────────────────
+   CUSTOM CURSOR — neon glow dot + lagging ring
+   ─────────────────────────────────────────────────────────────── */
+.custom-cursor-active,
+.custom-cursor-active a,
+.custom-cursor-active button,
+.custom-cursor-active [role='button'],
+.custom-cursor-active label,
+.custom-cursor-active summary {
+  cursor: none;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00c2ff;
+  box-shadow: 0 0 8px rgba(0,194,255,0.9), 0 0 16px rgba(0,71,255,0.5);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,194,255,0.55);
+  box-shadow: 0 0 14px rgba(0,194,255,0.25), 0 0 10px rgba(0,194,255,0.15) inset;
+  transition: width .25s ease, height .25s ease, border-color .25s ease,
+    box-shadow .25s ease, background-color .25s ease;
+}
+
+/* Over interactive elements: expand + brighten */
+.cursor-ring.is-hover {
+  width: 54px;
+  height: 54px;
+  border-color: rgba(0,194,255,0.9);
+  background: rgba(0,194,255,0.06);
+  box-shadow: 0 0 24px rgba(0,194,255,0.45), 0 0 16px rgba(0,71,255,0.2) inset;
+}
+
+/* Click pulse */
+.cursor-ring.is-down {
+  width: 24px;
+  height: 24px;
+  border-color: rgba(77,139,255,0.9);
+}
+
+/* ───────────────────────────────────────────────────────────────
    ACCESSIBILITY — respect reduced motion
    ─────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

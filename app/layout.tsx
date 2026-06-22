@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
+import CustomCursor from "./components/ui/CustomCursor";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -46,7 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/ios-dark.png" type="image/png" />
         <link rel="apple-touch-icon" href="/ios-dark.png" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0b1424]">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#0b1424]">
+        <CustomCursor />
+        {children}
+      </body>
     </html>
   );
 }
