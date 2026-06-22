@@ -21,7 +21,7 @@ const FAQS = [
   },
   {
     q: "What language can I learn in?",
-    a: "English, Arabic, Hindi, French, Russian, Farsi, Tamil, Spanish, and Sinhala — without changing the curriculum.",
+    a: "English, Arabic, Hindi, French, Russian, Farsi, German, Spanish, Turkish, Kurdish and Vietnamese — without changing the curriculum.",
   },
   {
     q: "Is the certification recognised?",
