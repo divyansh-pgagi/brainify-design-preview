@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { EDUCATORS } from "@/app/lib/constants";
-import DecodeText from "@/app/components/ui/DecodeText";
 import TiltCard from "@/app/components/ui/TiltCard";
 
 function EducatorCard({
@@ -176,9 +175,7 @@ export default function Educators() {
           </p>
 
           {/* H2 — Space Grotesk Bold 34px, -0.85px tracking */}
-          <DecodeText
-            as="h2"
-            text="AI experts. Real specialties."
+          <h2
             style={{
               fontFamily: "var(--font-heading)",
               fontSize: 34,
@@ -188,7 +185,9 @@ export default function Educators() {
               color: "#c7d2dc",
               marginBottom: 12,
             }}
-          />
+          >
+            AI experts. Real specialties.
+          </h2>
 
           {/* Subtext — Plus Jakarta Sans Regular 16px */}
           <p

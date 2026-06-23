@@ -1,4 +1,3 @@
-import DecodeText from "@/app/components/ui/DecodeText";
 import TiltCard from "@/app/components/ui/TiltCard";
 import DataStream from "@/app/components/ui/DataStream";
 
@@ -117,11 +116,9 @@ export default function RealTools() {
               <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
                 Use real tools
               </p>
-              <DecodeText
-                as="h2"
-                text="The same tools the pros are billing for."
-                style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}
-              />
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.65px", color: "#c7d2dc", marginBottom: 10, lineHeight: 1.15 }}>
+                The same tools the pros are billing for.
+              </h2>
               <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, lineHeight: "24px", color: "rgba(199,210,220,0.6)", maxWidth: 480 }}>
                 Not toy projects. Production-quality walkthroughs of the AI tools you&apos;ll actually be hired to use — taught in the language you choose.
               </p>

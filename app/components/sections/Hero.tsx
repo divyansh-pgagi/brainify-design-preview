@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion, useAnimationControls } from "framer-motion";
 import ParticleField from "@/app/components/ui/ParticleField";
 import {
   HERO_BADGE_TEXT,
@@ -118,6 +118,46 @@ function PhoneCluster() {
     return () => window.removeEventListener("mousemove", onMove);
   }, [mx, my, reduce]);
 
+  // Robot fly-in: from the top-left corner, arc through the page center, then settle
+  const robotRef = useRef<HTMLDivElement>(null);
+  const robotControls = useAnimationControls();
+
+  useEffect(() => {
+    if (reduce) {
+      robotControls.set({ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 });
+      return;
+    }
+    const robotEl = robotRef.current;
+    if (!robotEl) {
+      robotControls.start({ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0, transition: { duration: 1 } });
+      return;
+    }
+    const r = robotEl.getBoundingClientRect();
+    // robot's resting center, in viewport coords
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    // waypoints as offsets from the resting spot
+    const startX = -60 - cx;          // just off the top-left corner
+    const startY = -60 - cy;
+    const midX = window.innerWidth / 2 - cx;   // through the middle of the page
+    const midY = window.innerHeight / 2 - cy;
+
+    robotControls.set({ x: startX, y: startY, opacity: 0, scale: 0.2, rotate: -35 });
+    robotControls.start({
+      x: [startX, midX, 0],
+      y: [startY, midY, 0],
+      opacity: [0, 1, 1],
+      scale: [0.25, 1.6, 1],
+      rotate: [-35, -8, 0],
+      transition: {
+        duration: 2.2,
+        delay: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+        times: [0, 0.55, 1],
+      },
+    });
+  }, [reduce, robotControls]);
+
   return (
     <motion.div
       ref={ref}
@@ -168,20 +208,29 @@ function PhoneCluster() {
         />
       </motion.div>
 
-      {/* AI Robot floating */}
+      {/* AI Robot — flies in from the navbar logo, then floats */}
       <motion.div
-        className="absolute z-30 pointer-events-none animate-float"
-        style={{ top: -20, left: 75, width: 120, height: 145, x: robotX, y: robotY }}
+        ref={robotRef}
+        className="absolute z-30 pointer-events-none"
+        style={{ top: -20, left: 75, width: 120, height: 145 }}
+        initial={{ opacity: 0 }}
+        animate={robotControls}
         aria-hidden
       >
-        <Image
-          src="/images/ai-robot.png"
-          alt=""
-          width={120}
-          height={145}
-          className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(74,158,255,0.7)]"
-          priority
-        />
+        {/* mouse parallax layer */}
+        <motion.div className="w-full h-full" style={{ x: robotX, y: robotY }}>
+          {/* idle float layer (CSS transform, isolated from parallax) */}
+          <div className="w-full h-full animate-float">
+            <Image
+              src="/images/ai-robot.png"
+              alt=""
+              width={120}
+              height={145}
+              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(74,158,255,0.7)]"
+              priority
+            />
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Floating HUD chips */}
