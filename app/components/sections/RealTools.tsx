@@ -95,7 +95,7 @@ const TOOLS = [
 
 export default function RealTools() {
   return (
-    <section id="tools" className="relative overflow-hidden" style={{ background: "#0b1424" }}>
+    <section id="tools" className="relative overflow-hidden" style={{ background: "transparent" }}>
       <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-20 py-6">
         <div
           className="relative rounded-2xl overflow-hidden"

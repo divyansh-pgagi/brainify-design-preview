@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion, useAnimationControls } from "framer-motion";
-import ParticleField from "@/app/components/ui/ParticleField";
 import {
   HERO_BADGE_TEXT,
   HERO_SUBHEADING,
@@ -311,22 +310,10 @@ export default function Hero() {
     <section
       id="hero"
       className="relative flex flex-col overflow-hidden scanlines"
-      style={{ background: "#0b1424", minHeight: "100vh" }}
+      style={{ background: "transparent", minHeight: "100vh" }}
     >
-      {/* ── Background atmosphere ── */}
-      <div aria-hidden className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        <div className="aurora" />
-        <div className="cyber-grid" />
-        <div className="dot-matrix opacity-60" />
-        {/* gradient blobs */}
-        <div className="absolute rounded-full" style={{ width: 700, height: 750, top: -200, right: -160, background: "radial-gradient(ellipse, rgba(20,70,220,0.30) 0%, rgba(8,35,130,0.16) 45%, transparent 70%)", filter: "blur(70px)" }} />
-        <div className="absolute rounded-full" style={{ width: 480, height: 580, top: "12%", left: -120, background: "radial-gradient(ellipse, rgba(0,70,180,0.14) 0%, transparent 70%)", filter: "blur(70px)" }} />
-      </div>
-
-      {/* Particle network layer */}
-      <div aria-hidden className="absolute inset-0 z-[1]">
-        <ParticleField density={68} linkDistance={132} />
-      </div>
+      {/* Atmosphere (aurora, grid, blobs, particles) is provided site-wide by
+          <SiteBackground /> in the root layout. */}
 
       {/* top scanning beam */}
       <div aria-hidden className="absolute top-0 left-0 right-0 h-px z-[2] overflow-hidden">

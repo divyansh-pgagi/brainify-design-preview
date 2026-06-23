@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <>
       {/* ── CTA Section ── */}
-      <section className="relative overflow-hidden" style={{ background: "#060f1e" }}>
+      <section className="relative overflow-hidden" style={{ background: "transparent" }}>
         <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 80%, rgba(0,100,220,0.18) 0%, transparent 65%)", filter: "blur(40px)" }} />
 
         <div className="relative z-10 w-full max-w-[1192px] mx-auto px-6 md:px-10 pt-4 pb-20">

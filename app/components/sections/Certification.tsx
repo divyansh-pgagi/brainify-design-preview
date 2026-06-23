@@ -8,7 +8,7 @@ const BULLETS = [
 
 export default function Certification() {
   return (
-    <section id="certification" className="relative overflow-hidden" style={{ background: "#0b1424" }}>
+    <section id="certification" className="relative overflow-hidden" style={{ background: "transparent" }}>
       <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] py-6">
         <div
           className="relative rounded-2xl overflow-hidden"

@@ -159,7 +159,7 @@ export default function LearningPaths() {
 
   return (
     <>
-      <section id="paths" className="relative overflow-hidden" style={{ background: "#0b1424" }}>
+      <section id="paths" className="relative overflow-hidden" style={{ background: "transparent" }}>
         {/* ambient glow */}
         <div aria-hidden className="absolute pointer-events-none" style={{ width: 600, height: 500, top: "20%", right: -100, background: "radial-gradient(ellipse, rgba(0,80,200,0.12) 0%, transparent 70%)", filter: "blur(70px)" }} />
 

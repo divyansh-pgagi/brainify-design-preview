@@ -8,7 +8,7 @@ export default function Languages() {
   const items = [...LANGUAGES, ...LANGUAGES, ...LANGUAGES];
 
   return (
-    <section className="relative overflow-hidden" style={{ background: "#0b1424", padding: "0 0 0 0" }}>
+    <section className="relative overflow-hidden" style={{ background: "transparent", padding: "0 0 0 0" }}>
       <div
         className="relative mx-auto w-full max-w-[1280px] px-6 md:px-[80px] py-4"
       >

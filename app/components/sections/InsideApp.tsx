@@ -86,7 +86,7 @@ function FeatureItem({ title, desc, icon, align }: { title: string; desc: string
 
 export default function InsideApp() {
   return (
-    <section id="inside-app" className="relative overflow-hidden" style={{ background: "#0b1424" }}>
+    <section id="inside-app" className="relative overflow-hidden" style={{ background: "transparent" }}>
       {/* ambient glow */}
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 700, height: 600, top: "10%", left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,80,200,0.1) 0%, transparent 70%)", filter: "blur(80px)" }} />
 

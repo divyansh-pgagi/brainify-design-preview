@@ -7,7 +7,7 @@ const STATS = [
 
 export default function Stats() {
   return (
-    <section className="relative overflow-hidden" style={{ background: "#0b1424" }}>
+    <section className="relative overflow-hidden" style={{ background: "transparent" }}>
       <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] pb-24 pt-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {STATS.map((stat) => (

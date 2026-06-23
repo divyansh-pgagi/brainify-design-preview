@@ -94,7 +94,7 @@ export default function Educators() {
     <section
       id="features"
       className="relative overflow-hidden"
-      style={{ background: "#0b1424" }}
+      style={{ background: "transparent" }}
     >
       {/* Ambient glow */}
       <div

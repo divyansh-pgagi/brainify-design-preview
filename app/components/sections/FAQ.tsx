@@ -151,7 +151,7 @@ export default function FAQ() {
   const { ref, inView } = useInView(0.1);
 
   return (
-    <section id="faq" className="relative overflow-hidden" style={{ background: "#060f1e" }}>
+    <section id="faq" className="relative overflow-hidden" style={{ background: "transparent" }}>
       {/* ambient glow */}
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 600, height: 600, bottom: 0, left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,60,180,0.09) 0%, transparent 70%)", filter: "blur(80px)" }} />
 

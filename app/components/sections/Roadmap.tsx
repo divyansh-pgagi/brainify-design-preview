@@ -91,7 +91,7 @@ export default function Roadmap() {
   const { ref, inView } = useInView(0.1);
 
   return (
-    <section id="roadmap" className="relative overflow-hidden" style={{ background: "#060f1e" }}>
+    <section id="roadmap" className="relative overflow-hidden" style={{ background: "transparent" }}>
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 700, height: 400, top: "30%", left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,70,180,0.07) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
       <style>{`
