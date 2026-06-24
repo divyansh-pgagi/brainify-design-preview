@@ -111,50 +111,53 @@ export default function Educators() {
         }}
       />
 
-      <div
-        className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] pb-24"
-        style={{ paddingTop: 0 }}
-      >
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] pt-16 md:pt-24 pb-24">
 
-        {/* ── Info banner — exact Figma gradient + fonts ── */}
+        {/* ── Info banner — navy/glass card to match the rest of the page ── */}
         <div
-          className="mb-20 rounded-2xl text-center"
+          className="mb-16 rounded-2xl text-center relative overflow-hidden neon-border"
           style={{
-            background: "linear-gradient(135deg, rgba(4,76,143,0.6) 0%, rgba(15,34,65,0.96) 64%)",
-            border: "1px solid rgba(74,158,255,0.12)",
-            padding: "40px 48px",
+            background: "linear-gradient(160deg, rgba(5,16,48,0.95) 0%, rgba(2,8,26,0.98) 100%)",
+            boxShadow: "0 0 60px rgba(0,120,190,0.07)",
+            padding: "32px 40px",
           }}
         >
-          <p
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: 26,
-              fontWeight: 700,
-              letterSpacing: "-0.65px",
-              lineHeight: "35.75px",
-              color: "#c7d2dc",
-              marginBottom: 12,
-            }}
-          >
-            YouTube videos. Saved posts. Half-finished courses.
-            <br />
-            <span style={{ color: "#4a9eff" }}>
-              Information isn&apos;t your problem. Structure is.
-            </span>
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: 14,
-              fontWeight: 400,
-              lineHeight: "29.25px",
-              color: "rgba(199,210,220,0.7)",
-              maxWidth: 900,
-              margin: "0 auto",
-            }}
-          >
-            brAInify was built to fix the one thing the rest of the internet can&apos;t: a system that actually finishes you.
-          </p>
+          {/* soft inner glow + top accent line */}
+          <div aria-hidden className="absolute pointer-events-none inset-0" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(0,90,220,0.12) 0%, transparent 58%)" }} />
+          <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 h-px" style={{ width: "60%", background: "linear-gradient(90deg, transparent, rgba(0,194,255,0.55), transparent)" }} />
+
+          <div className="relative z-10">
+            <p
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontSize: 22,
+                fontWeight: 700,
+                letterSpacing: "-0.55px",
+                lineHeight: "30px",
+                color: "#c7d2dc",
+                marginBottom: 8,
+              }}
+            >
+              YouTube videos. Saved posts. Half-finished courses.
+              <br />
+              <span className="gradient-text">
+                Information isn&apos;t your problem. Structure is.
+              </span>
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: 14,
+                fontWeight: 400,
+                lineHeight: "23px",
+                color: "rgba(199,210,220,0.7)",
+                maxWidth: 900,
+                margin: "0 auto",
+              }}
+            >
+              brAInify was built to fix the one thing the rest of the internet can&apos;t: a system that actually finishes you.
+            </p>
+          </div>
         </div>
 
         {/* ── Section header ── */}
