@@ -111,7 +111,7 @@ export default function Educators() {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] pt-16 md:pt-24 pb-24">
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] pt-4 md:pt-24 pb-24">
 
         {/* ── Info banner — navy/glass card to match the rest of the page ── */}
         <div

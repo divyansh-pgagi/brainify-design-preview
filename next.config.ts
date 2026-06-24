@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Emit a fully static site into ./out so it can be hosted on any static
+  // host (Cloudflare Pages, GitHub Pages, Netlify Drop, etc.) with no server.
+  output: "export",
   images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920],
-    imageSizes: [36, 52, 80, 128, 160, 200, 260, 300],
+    // Static export has no image-optimization server, so serve images as-is.
+    unoptimized: true,
   },
   compress: true,
 };
