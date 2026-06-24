@@ -79,7 +79,7 @@ export default function TiltCard({
         transformStyle: "preserve-3d",
         willChange: "transform",
         ...style,
-        transition: "transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+        transition: "transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease",
       }}
       onMouseMove={handleMove}
       onMouseEnter={handleEnter}

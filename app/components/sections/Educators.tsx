@@ -15,7 +15,7 @@ function EducatorCard({
 }) {
   return (
     <TiltCard
-      className="flex flex-col items-center cursor-pointer group"
+      className="flex flex-col items-center cursor-pointer group transition-opacity duration-300 group-hover/cards:opacity-40 hover:!opacity-100"
       style={{
         background: "linear-gradient(145deg, #0d1f40 0%, #091428 100%)",
         border: "1.5px solid rgba(74,158,255,0.22)",
@@ -208,8 +208,8 @@ export default function Educators() {
           </p>
         </div>
 
-        {/* ── Cards ── */}
-        <div className="flex flex-wrap md:flex-nowrap justify-center gap-4">
+        {/* ── Cards (hovering one dims the rest) ── */}
+        <div className="flex flex-wrap md:flex-nowrap justify-center gap-4 group/cards">
           {EDUCATORS.map((educator) => (
             <EducatorCard
               key={educator.name}

@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { LANGUAGES } from "@/app/lib/constants";
+
+const LANGUAGES_SENTENCE = `${LANGUAGES.slice(0, -1).join(", ")} and ${LANGUAGES[LANGUAGES.length - 1]}`;
 
 const FAQS = [
   {
@@ -21,7 +24,7 @@ const FAQS = [
   },
   {
     q: "What language can I learn in?",
-    a: "English, Arabic, Hindi, French, Russian, Farsi, German, Spanish, Turkish, Kurdish and Vietnamese — without changing the curriculum.",
+    a: `${LANGUAGES_SENTENCE} — without changing the curriculum.`,
   },
   {
     q: "Is the certification recognised?",
@@ -128,7 +131,15 @@ function AccordionItem({ faq, index, isOpen, onToggle, inView }: {
           transition: "height 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
-        <div ref={answerRef} className="px-6 pb-5">
+        <div
+          ref={answerRef}
+          className="px-6 pb-5"
+          style={{
+            opacity: isOpen ? 1 : 0,
+            transform: isOpen ? "translateY(0)" : "translateY(-6px)",
+            transition: "opacity 0.35s ease 0.08s, transform 0.35s ease 0.08s",
+          }}
+        >
           <div style={{ width: "100%", height: 1, background: "rgba(74,158,255,0.12)", marginBottom: 16 }} />
           <p style={{
             fontFamily: "var(--font-body)",

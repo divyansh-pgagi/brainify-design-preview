@@ -3,6 +3,7 @@ import { Space_Grotesk, Plus_Jakarta_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "./components/ui/CustomCursor";
 import SiteBackground from "./components/ui/SiteBackground";
+import ScrollProgress from "./components/ui/ScrollProgress";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-full flex flex-col bg-[#0b1424]">
         <SiteBackground />
+        <ScrollProgress />
         <CustomCursor />
         {children}
       </body>

@@ -13,6 +13,13 @@ export const HERO_TRUST_BADGES = [
 
 export const HERO_BADGE_TEXT = "Live in 175 countries · 11 languages";
 
+/** Single source of truth for supported languages — used by the Languages
+    carousel and the FAQ answer so the two can never drift apart. */
+export const LANGUAGES = [
+  "English", "Arabic", "Hindi", "French", "Russian", "Farsi",
+  "German", "Spanish", "Turkish", "Kurdish", "Vietnamese",
+] as const;
+
 export const HERO_HEADING = "The way you learn is about to";
 
 export const HERO_HEADING_HIGHLIGHT = "change.";

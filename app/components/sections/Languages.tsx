@@ -1,7 +1,4 @@
-const LANGUAGES = [
-  "English", "Arabic", "Hindi", "French", "Russian",
-  "Farsi", "Tamil", "Spanish", "Sinhala",
-] as const;
+import { LANGUAGES } from "@/app/lib/constants";
 
 export default function Languages() {
   // Duplicate for seamless loop
@@ -52,28 +49,38 @@ export default function Languages() {
             , live in 175 countries.
           </h2>
 
-          {/* Marquee */}
+          <style>{`
+            .lang-pill {
+              padding: 9px 22px;
+              border-radius: 999px;
+              border: 1px solid rgba(74,158,255,0.3);
+              background: rgba(74,158,255,0.05);
+              font-family: var(--font-body);
+              font-size: 14px;
+              font-weight: 500;
+              color: #c7d2dc;
+              white-space: nowrap;
+              flex-shrink: 0;
+              transition: transform .25s ease, border-color .25s ease,
+                background-color .25s ease, box-shadow .25s ease, color .25s ease;
+            }
+            .lang-pill:hover {
+              transform: translateY(-3px) scale(1.05);
+              border-color: rgba(0,194,255,0.7);
+              background: rgba(0,194,255,0.12);
+              box-shadow: 0 0 18px rgba(0,194,255,0.35);
+              color: #ffffff;
+            }
+          `}</style>
+
+          {/* Marquee — pauses on hover (see .animate-marquee in globals.css) */}
           <div className="relative overflow-hidden" style={{ maskImage: "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)" }}>
             <div
               className="flex gap-3 animate-marquee"
               style={{ width: "max-content" }}
             >
               {items.map((lang, i) => (
-                <span
-                  key={`${lang}-${i}`}
-                  style={{
-                    padding: "9px 22px",
-                    borderRadius: 999,
-                    border: "1px solid rgba(74,158,255,0.3)",
-                    background: "rgba(74,158,255,0.05)",
-                    fontFamily: "var(--font-body)",
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: "#c7d2dc",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
-                >
+                <span key={`${lang}-${i}`} className="lang-pill">
                   {lang}
                 </span>
               ))}
