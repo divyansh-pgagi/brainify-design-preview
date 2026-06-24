@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Logo from "../ui/Logo";
-import Button from "../ui/Button";
+import Magnetic from "../ui/Magnetic";
 import { NAV_LINKS } from "@/app/lib/constants";
 
 const VIDEO_URL = "https://share.synthesia.io/embeds/videos/3d140381-ded2-45c3-973f-5a20da398bfb";
@@ -112,6 +112,7 @@ export default function Navbar() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-2">
           {/* Watch button */}
+          <Magnetic strength={12}>
           <button
             onClick={() => setVideoOpen(true)}
             className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-200 text-sm font-medium text-white backdrop-blur-sm"
@@ -123,6 +124,8 @@ export default function Navbar() {
             </span>
             Watch
           </button>
+          </Magnetic>
+          <Magnetic strength={12}>
           <a
             href="https://app.brainify.world"
             target="_blank"
@@ -131,6 +134,7 @@ export default function Navbar() {
           >
             Login
           </a>
+          </Magnetic>
         </div>
 
         {/* Mobile hamburger */}

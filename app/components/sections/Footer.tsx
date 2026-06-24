@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Magnetic from "../ui/Magnetic";
 
 function InstagramIcon({ size = 14 }: { size?: number }) {
   const s = { width: size, height: size, display: "block" } as const;
@@ -53,6 +54,7 @@ export default function Footer() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-3 mb-5">
+                <Magnetic strength={14}>
                 <a href="https://apps.apple.com/ca/app/brainify-app/id6759913473" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl transition-all duration-200 hover:brightness-110 active:scale-95"
                   style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", padding: "10px 20px", textDecoration: "none" }}>
                   <svg viewBox="0 0 24 24" style={{ width: 22, height: 22, flexShrink: 0 }} fill="#c7d2dc" aria-hidden>
@@ -63,7 +65,9 @@ export default function Footer() {
                     <span style={{ fontSize: 14, color: "#c7d2dc", fontFamily: "var(--font-body)", fontWeight: 600 }}>App Store</span>
                   </div>
                 </a>
+                </Magnetic>
 
+                <Magnetic strength={14}>
                 <a href="https://play.google.com/store/apps/details?id=com.brainify.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 rounded-xl transition-all duration-200 hover:brightness-110 active:scale-95"
                   style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", padding: "10px 20px", textDecoration: "none" }}>
                   <img src="/playstore.png" alt="Google Play" style={{ width: 22, height: 22, flexShrink: 0, objectFit: "contain" }} aria-hidden />
@@ -72,6 +76,7 @@ export default function Footer() {
                     <span style={{ fontSize: 14, color: "#c7d2dc", fontFamily: "var(--font-body)", fontWeight: 600 }}>Google Play</span>
                   </div>
                 </a>
+                </Magnetic>
               </div>
 
               <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(185,205,225,0.38)", letterSpacing: "0.2px" }}>

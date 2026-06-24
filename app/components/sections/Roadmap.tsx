@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 
 const PHASES = [
   {
@@ -87,15 +88,58 @@ const BOT_D = 100;
 // X positions (% of container width)
 const X_PCTS = [10, 27.5, 50, 72.5, 90];
 
+/* One connector segment that "draws" itself as the section scrolls past.
+   Each segment i owns the scroll window [i/total, (i+1)/total], so the line
+   grows left-to-right across the timeline in step with the scrollbar. */
+function ScrollPath({
+  d,
+  index,
+  total,
+  progress,
+  reduce,
+}: {
+  d: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  reduce: boolean | null;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const drawn = useTransform(progress, [start, end], [0, 1], { clamp: true });
+  const pathLength = useSpring(drawn, { stiffness: 120, damping: 26, mass: 0.5 });
+
+  return (
+    <motion.path
+      d={d}
+      fill="none"
+      stroke="url(#lg)"
+      strokeWidth="2"
+      strokeLinecap="round"
+      filter="url(#gl)"
+      style={{ pathLength: reduce ? 1 : pathLength }}
+    />
+  );
+}
+
 export default function Roadmap() {
   const { ref, inView } = useInView(0.1);
+  const reduce = useReducedMotion();
+
+  // Drive the connector draw from the card's travel through the viewport:
+  // 0 when the card first appears at the bottom, 1 when its centre reaches
+  // the middle of the screen — a long, clearly visible scrub.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "center center"],
+  });
 
   return (
     <section id="roadmap" className="relative overflow-hidden" style={{ background: "transparent" }}>
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 700, height: 400, top: "30%", left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,70,180,0.07) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
       <style>{`
-        @keyframes rm-dash  { to { stroke-dashoffset: -22; } }
         @keyframes rm-pulse {
           0%,100% { box-shadow: 0 0 16px 3px rgba(0,185,220,0.32), 0 0 36px 7px rgba(0,125,185,0.16); }
           50%     { box-shadow: 0 0 24px 6px rgba(0,205,240,0.44), 0 0 50px 10px rgba(0,140,200,0.22); }
@@ -127,6 +171,7 @@ export default function Roadmap() {
 
         {/* ── DESKTOP CARD ── */}
         <div
+          ref={cardRef}
           className="hidden md:block relative rounded-2xl"
           style={{
             opacity: inView ? 1 : 0,
@@ -174,15 +219,15 @@ export default function Roadmap() {
                 const d  = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
                 return (
                   <g key={`c-${i}`}>
+                    {/* faint dashed track */}
                     <path d={d} fill="none" stroke="rgba(0,160,205,0.13)" strokeWidth="1.5" strokeDasharray="6 5" />
-                    <path
-                      d={d} fill="none" stroke="url(#lg)" strokeWidth="1.8" strokeDasharray="6 5"
-                      filter="url(#gl)"
-                      style={{
-                        opacity: inView ? 1 : 0,
-                        transition: `opacity 0.5s ease ${i * 150 + 600}ms`,
-                        animation: inView ? `rm-dash ${1.7 + i * 0.15}s linear infinite` : "none",
-                      }}
+                    {/* glowing line that draws on scroll */}
+                    <ScrollPath
+                      d={d}
+                      index={i}
+                      total={PHASES.length - 1}
+                      progress={scrollYProgress}
+                      reduce={reduce}
                     />
                   </g>
                 );

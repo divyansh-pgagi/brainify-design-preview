@@ -1,8 +1,10 @@
+import CountUp from "../ui/CountUp";
+
 const STATS = [
-  { value: "175", label: "Countries live" },
-  { value: "11", label: "Languages" },
-  { value: "6", label: "Career paths" },
-  { value: "6", label: "Ecosystem features" },
+  { value: 175, label: "Countries live" },
+  { value: 11, label: "Languages" },
+  { value: 6, label: "Career paths" },
+  { value: 6, label: "Ecosystem features" },
 ] as const;
 
 export default function Stats() {
@@ -19,7 +21,8 @@ export default function Stats() {
                 border: "1px solid rgba(255,255,255,0.07)",
               }}
             >
-              <span
+              <CountUp
+                to={stat.value}
                 className="text-[3rem] md:text-[3.5rem] font-extrabold leading-none tracking-tight"
                 style={{
                   background: "linear-gradient(135deg, #00c2ff 0%, #3b6fff 100%)",
@@ -27,9 +30,7 @@ export default function Stats() {
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                 }}
-              >
-                {stat.value}
-              </span>
+              />
               <span className="text-sm font-medium text-white/50 tracking-wide">
                 {stat.label}
               </span>
