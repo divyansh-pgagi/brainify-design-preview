@@ -1,5 +1,6 @@
 import Navbar from "./components/sections/Navbar";
 import Hero from "./components/sections/Hero";
+import BrandStory from "./components/sections/BrandStory";
 import Educators from "./components/sections/Educators";
 import LearningPaths from "./components/sections/LearningPaths";
 import InsideApp from "./components/sections/InsideApp";
@@ -16,6 +17,7 @@ export default function Home() {
     <main className="relative z-0 min-h-screen">
       <Navbar />
       <Hero />
+      <BrandStory />
       <Educators />
       <LearningPaths />
       <InsideApp />

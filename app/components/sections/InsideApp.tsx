@@ -1,4 +1,15 @@
+"use client";
+
 import Image from "next/image";
+import { useRef, useState } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+  useReducedMotion,
+} from "framer-motion";
+import { INSIDE_APP_CHAT } from "@/app/lib/constants";
 
 const LEFT_FEATURES = [
   {
@@ -84,9 +95,172 @@ function FeatureItem({ title, desc, icon, align }: { title: string; desc: string
   );
 }
 
-export default function InsideApp() {
+/* ── Chat bubble ─────────────────────────────────────────────── */
+function ChatBubble({ from, text }: { from: string; text: string }) {
+  if (from === "system") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.7 }}
+        transition={{ type: "spring", stiffness: 400, damping: 24 }}
+        className="self-center flex items-center gap-1.5 rounded-full"
+        style={{
+          padding: "5px 14px",
+          background: "rgba(251,191,36,0.1)",
+          border: "1px solid rgba(251,191,36,0.35)",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          fontWeight: 700,
+          color: "#fbbf24",
+          letterSpacing: "0.5px",
+        }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" style={{ width: 12, height: 12 }} aria-hidden>
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#fbbf24" strokeWidth="2" strokeLinejoin="round" fill="rgba(251,191,36,0.3)" />
+        </svg>
+        {text}
+      </motion.div>
+    );
+  }
+
+  const isUser = from === "user";
   return (
-    <section id="inside-app" className="relative overflow-hidden" style={{ background: "transparent" }}>
+    <motion.div
+      initial={{ opacity: 0, y: 14, scale: 0.92 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.92 }}
+      transition={{ type: "spring", stiffness: 380, damping: 26 }}
+      className={`max-w-[85%] ${isUser ? "self-end" : "self-start"}`}
+      style={{
+        padding: "9px 13px",
+        borderRadius: isUser ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+        background: isUser
+          ? "linear-gradient(135deg, #3b6fff 0%, #2a5ae0 100%)"
+          : "rgba(255,255,255,0.07)",
+        border: isUser ? "none" : "1px solid rgba(255,255,255,0.09)",
+        boxShadow: isUser ? "0 4px 16px rgba(59,111,255,0.35)" : "none",
+        fontFamily: "var(--font-body)",
+        fontSize: 12.5,
+        lineHeight: 1.45,
+        color: isUser ? "#fff" : "rgba(199,210,220,0.9)",
+      }}
+    >
+      {text}
+    </motion.div>
+  );
+}
+
+/* ── Typing indicator ────────────────────────────────────────── */
+function TypingDots() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      className="self-start flex items-center gap-1 rounded-2xl"
+      style={{ padding: "10px 14px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.09)" }}
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="rounded-full"
+          style={{ width: 5, height: 5, background: "rgba(199,210,220,0.7)" }}
+          animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
+/* ── Phone with scroll-driven AI-mentor chat ─────────────────── */
+function ChatPhone({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const reduce = useReducedMotion();
+  const total = INSIDE_APP_CHAT.length;
+
+  // progress through the section drives how many messages are visible
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 0.75", "end 0.85"],
+  });
+  const [visible, setVisible] = useState(reduce ? total : 0);
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (reduce) return;
+    // messages appear one by one across the first 90% of the section
+    setVisible(Math.min(total, Math.floor(v * (total + 1) * 1.1)));
+  });
+
+  const next = INSIDE_APP_CHAT[visible];
+  const showTyping = !reduce && visible < total && next?.from === "mentor";
+
+  return (
+    <div
+      className="relative flex flex-col overflow-hidden"
+      style={{
+        width: 264,
+        height: 540,
+        borderRadius: 36,
+        background: "linear-gradient(160deg, #0a1830 0%, #060f20 100%)",
+        border: "1.5px solid rgba(74,158,255,0.35)",
+        boxShadow: "0 40px 80px rgba(0,50,180,0.5), inset 0 0 40px rgba(0,50,150,0.12)",
+      }}
+    >
+      {/* notch */}
+      <div aria-hidden className="absolute left-1/2 -translate-x-1/2 top-2.5 rounded-full" style={{ width: 84, height: 18, background: "#03060e" }} />
+
+      {/* header */}
+      <div className="flex items-center gap-2.5 px-4 pb-3" style={{ paddingTop: 38, borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+        <div className="relative shrink-0">
+          <Image src="/images/ai-robot.png" alt="" width={34} height={34} className="w-[34px] h-auto object-contain" loading="lazy" aria-hidden />
+          <span className="absolute -bottom-0.5 -right-0.5 rounded-full" style={{ width: 9, height: 9, background: "#1bd79d", border: "2px solid #060f20" }} />
+        </div>
+        <div className="leading-tight">
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 700, color: "#c7d2dc" }}>AI Mentor</p>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: 10, color: "#1bd79d" }}>online</p>
+        </div>
+        <svg viewBox="0 0 24 24" fill="none" className="ml-auto w-4 h-4" style={{ opacity: 0.4 }} aria-hidden>
+          <circle cx="5" cy="12" r="1.6" fill="#c7d2dc" /><circle cx="12" cy="12" r="1.6" fill="#c7d2dc" /><circle cx="19" cy="12" r="1.6" fill="#c7d2dc" />
+        </svg>
+      </div>
+
+      {/* messages */}
+      <div className="flex-1 flex flex-col justify-end gap-2.5 px-3.5 py-4 overflow-hidden">
+        <AnimatePresence initial={false}>
+          {INSIDE_APP_CHAT.slice(0, visible).map((m, i) => (
+            <ChatBubble key={i} from={m.from} text={m.text} />
+          ))}
+          {showTyping && <TypingDots key="typing" />}
+        </AnimatePresence>
+      </div>
+
+      {/* input bar */}
+      <div className="px-3.5 pb-4">
+        <div
+          className="flex items-center gap-2 rounded-full px-4"
+          style={{ height: 40, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+        >
+          <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(199,210,220,0.4)" }}>Ask anything…</span>
+          <span
+            className="ml-auto flex items-center justify-center rounded-full shrink-0"
+            style={{ width: 26, height: 26, background: "linear-gradient(135deg, #3b6fff, #00c2ff)" }}
+          >
+            <svg viewBox="0 0 14 14" style={{ width: 11, height: 11 }} fill="none" aria-hidden>
+              <path d="M7 11V3M3.5 6.5L7 3l3.5 3.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function InsideApp() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  return (
+    <section ref={sectionRef} id="inside-app" className="relative overflow-hidden" style={{ background: "transparent" }}>
       {/* ambient glow */}
       <div aria-hidden className="absolute pointer-events-none" style={{ width: 700, height: 600, top: "10%", left: "50%", transform: "translateX(-50%)", background: "radial-gradient(ellipse, rgba(0,80,200,0.1) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
@@ -117,19 +291,9 @@ export default function InsideApp() {
             ))}
           </div>
 
-          {/* CENTER — phone screenshot */}
+          {/* CENTER — live AI-mentor chat phone */}
           <div className="flex justify-center shrink-0" style={{ width: 280 }}>
-            <div className="relative">
-              <Image
-                src="/phone-app-img/chapterCircles.png"
-                alt="brAInify app — chapter view"
-                width={260}
-                height={540}
-                className="w-[260px] h-auto object-contain"
-                style={{ filter: "drop-shadow(0 40px 80px rgba(0,50,180,0.5))" }}
-                loading="lazy"
-              />
-            </div>
+            <ChatPhone sectionRef={sectionRef} />
           </div>
 
           {/* RIGHT features */}

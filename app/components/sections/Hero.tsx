@@ -3,13 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion, useAnimationControls } from "framer-motion";
-import {
-  HERO_BADGE_TEXT,
-  HERO_SUBHEADING,
-  HERO_DOWNLOAD_LABEL,
-  HERO_CTA_LINK,
-  HERO_TRUST_BADGES,
-} from "@/app/lib/constants";
 
 /* ── App Store Badge ─────────────────────────────────────────── */
 function AppStoreBadge({ store }: { store: "apple" | "google" }) {
@@ -61,17 +54,19 @@ function HudChip({
   className = "",
   delay = 0,
   float = 5,
+  show = true,
 }: {
   label: string;
   value: string;
   className?: string;
   delay?: number;
   float?: number;
+  show?: boolean;
 }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.6 }}
-      animate={{ opacity: 1, scale: 1, y: [0, -float, 0] }}
+      animate={show ? { opacity: 1, scale: 1, y: [0, -float, 0] } : { opacity: 0, scale: 0.6 }}
       transition={{
         opacity: { delay, duration: 0.6 },
         scale: { delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
@@ -87,8 +82,65 @@ function HudChip({
   );
 }
 
-/* ── Phone + Robot cluster with mouse parallax ───────────────── */
-function PhoneCluster() {
+/* ── Looping transparent robot animation ─────────────────────── */
+/* VP9 webm with alpha (Chrome/Firefox/Edge) → animated WebP (Safari)
+   → static poster (reduced motion). Seamless ping-pong loop. */
+function RobotLoop({ className = "" }: { className?: string }) {
+  const reduce = useReducedMotion();
+  const [safari, setSafari] = useState(false);
+
+  useEffect(() => {
+    // Safari doesn't composite VP9 alpha — fall back to animated WebP
+    const ua = navigator.userAgent;
+    setSafari(/^((?!chrome|android|crios|fxios).)*safari/i.test(ua));
+  }, []);
+
+  if (reduce) {
+    return (
+      <Image
+        src="/images/robot/robot-poster.webp"
+        alt=""
+        width={460}
+        height={533}
+        className={className}
+        priority
+      />
+    );
+  }
+
+  if (safari) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src="/images/robot/robot-loop.webp"
+        alt=""
+        width={460}
+        height={533}
+        className={className}
+        fetchPriority="high"
+      />
+    );
+  }
+
+  return (
+    <video
+      autoPlay
+      muted
+      loop
+      playsInline
+      poster="/images/robot/robot-poster.webp"
+      width={460}
+      height={533}
+      className={className}
+      aria-hidden
+    >
+      <source src="/images/robot/robot-loop.webm" type="video/webm" />
+    </video>
+  );
+}
+
+/* ── Robot centerpiece + phones cluster with mouse parallax ──── */
+function PhoneCluster({ onIntroDone }: { onIntroDone: () => void }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -97,11 +149,7 @@ function PhoneCluster() {
   const sx = useSpring(mx, { stiffness: 120, damping: 18 });
   const sy = useSpring(my, { stiffness: 120, damping: 18 });
 
-  // depth layers move different amounts
-  const backX = useTransform(sx, [-1, 1], [18, -18]);
-  const backY = useTransform(sy, [-1, 1], [14, -14]);
-  const frontX = useTransform(sx, [-1, 1], [30, -30]);
-  const frontY = useTransform(sy, [-1, 1], [22, -22]);
+  // parallax depth
   const robotX = useTransform(sx, [-1, 1], [46, -46]);
   const robotY = useTransform(sy, [-1, 1], [34, -34]);
 
@@ -124,118 +172,84 @@ function PhoneCluster() {
   useEffect(() => {
     if (reduce) {
       robotControls.set({ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0 });
+      onIntroDone();
       return;
     }
     const robotEl = robotRef.current;
     if (!robotEl) {
-      robotControls.start({ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0, transition: { duration: 1 } });
+      robotControls
+        .start({ x: 0, y: 0, opacity: 1, scale: 1, rotate: 0, transition: { duration: 1 } })
+        .then(onIntroDone);
       return;
     }
     const r = robotEl.getBoundingClientRect();
-    // robot's resting center, in viewport coords
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
-    // waypoints as offsets from the resting spot
-    const startX = -60 - cx;          // just off the top-left corner
+    const startX = -60 - cx;
     const startY = -60 - cy;
-    const midX = window.innerWidth / 2 - cx;   // through the middle of the page
+    const midX = window.innerWidth / 2 - cx;
     const midY = window.innerHeight / 2 - cy;
 
     robotControls.set({ x: startX, y: startY, opacity: 0, scale: 0.2, rotate: -35 });
-    robotControls.start({
-      x: [startX, midX, 0],
-      y: [startY, midY, 0],
-      opacity: [0, 1, 1],
-      scale: [0.25, 1.6, 1],
-      rotate: [-35, -8, 0],
-      transition: {
-        duration: 2.2,
-        delay: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-        times: [0, 0.55, 1],
-      },
-    });
+    robotControls
+      .start({
+        x: [startX, midX, 0],
+        y: [startY, midY, 0],
+        opacity: [0, 1, 1],
+        scale: [0.2, 1.12, 1],
+        rotate: [-35, -8, 0],
+        transition: {
+          duration: 2.2,
+          delay: 0.2,
+          ease: [0.22, 1, 0.36, 1],
+          times: [0, 0.55, 1],
+        },
+      })
+      .then(onIntroDone);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduce, robotControls]);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       className="relative scale-[0.78] md:scale-100 origin-top -translate-x-6 md:translate-x-0"
       style={{ width: 420, height: 600 }}
     >
-      {/* Reactor glow behind cluster */}
+      {/* Reactor glow behind robot */}
       <div
         aria-hidden
         className="absolute rounded-full animate-pulse-glow"
         style={{
-          width: 360, height: 360, left: 40, top: 110,
-          background: "radial-gradient(circle, rgba(0,120,255,0.35), transparent 65%)",
-          filter: "blur(30px)",
+          width: 400, height: 400, left: 10, top: 110,
+          background: "radial-gradient(circle, rgba(0,120,255,0.4), transparent 65%)",
+          filter: "blur(34px)",
         }}
       />
       {/* Orbiting conic rings */}
-      <div aria-hidden className="absolute" style={{ width: 380, height: 380, left: 30, top: 100 }}>
+      <div aria-hidden className="absolute" style={{ width: 420, height: 420, left: 0, top: 100 }}>
         <div className="absolute inset-0 rounded-full reactor-ring opacity-50" style={{ maskImage: "radial-gradient(circle, transparent 62%, #000 64%, #000 66%, transparent 68%)", WebkitMaskImage: "radial-gradient(circle, transparent 62%, #000 64%, #000 66%, transparent 68%)" }} />
         <div className="absolute inset-6 rounded-full animate-spin-reverse" style={{ border: "1px dashed rgba(0,194,255,0.25)" }} />
         <div className="absolute inset-16 rounded-full animate-spin-slow" style={{ border: "1px solid rgba(77,139,255,0.18)" }} />
       </div>
 
-      {/* Back phone */}
-      <motion.div className="absolute z-10" style={{ right: -40, top: 40, width: 230, x: backX, y: backY }}>
-        <Image
-          src="/phone-app-img/AiMentor2.png"
-          alt="brAInify app screen 2"
-          width={230}
-          height={480}
-          className="w-full h-auto object-contain drop-shadow-[0_30px_60px_rgba(0,40,160,0.5)]"
-          priority
-        />
-      </motion.div>
-
-      {/* Front phone */}
-      <motion.div className="absolute z-20" style={{ left: 90, top: 60, width: 250, x: frontX, y: frontY }}>
-        <Image
-          src="/phone-app-img/AiMentor.png"
-          alt="brAInify app screen"
-          width={250}
-          height={520}
-          className="w-full h-auto object-contain drop-shadow-[0_40px_80px_rgba(0,50,200,0.55)]"
-          priority
-        />
-      </motion.div>
-
-      {/* AI Robot — flies in from the navbar logo, then floats */}
+      {/* AI Robot centerpiece — flies in, then loops its float animation */}
       <motion.div
         ref={robotRef}
         className="absolute z-30 pointer-events-none"
-        style={{ top: -20, left: 75, width: 120, height: 145 }}
+        style={{ top: 90, left: 30, width: 360, height: 417 }}
         initial={{ opacity: 0 }}
         animate={robotControls}
         aria-hidden
       >
         {/* mouse parallax layer */}
         <motion.div className="w-full h-full" style={{ x: robotX, y: robotY }}>
-          {/* idle float layer (CSS transform, isolated from parallax) */}
-          <div className="w-full h-full animate-float">
-            <Image
-              src="/images/ai-robot.png"
-              alt=""
-              width={120}
-              height={145}
-              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(74,158,255,0.7)]"
-              priority
-            />
-          </div>
+          <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_60px_rgba(74,158,255,0.65)]" />
         </motion.div>
       </motion.div>
 
-      {/* Floating HUD chips */}
-      <HudChip label="Active learners" value="2.4M+" className="absolute z-40 left-[-8px] top-[180px]" delay={0.9} float={6} />
-      <HudChip label="Countries" value="175" className="absolute z-40 right-[-6px] top-[120px]" delay={1.1} float={4} />
-      <HudChip label="AI mentor" value="ONLINE" className="absolute z-40 right-[10px] bottom-[70px]" delay={1.3} float={7} />
     </motion.div>
   );
 }
@@ -245,13 +259,13 @@ function PhoneCluster() {
 const HEADLINE_FULL = "The way you learn is about to change.";
 const HEADLINE_HIGHLIGHT = "change.";
 
-function TypewriterHeadline() {
+function TypewriterHeadline({ start = true }: { start?: boolean }) {
   const reduce = useReducedMotion();
   const hlStart = HEADLINE_FULL.length - HEADLINE_HIGHLIGHT.length;
   const [count, setCount] = useState(reduce ? HEADLINE_FULL.length : 0);
 
   useEffect(() => {
-    if (reduce) return;
+    if (reduce || !start) return;
     const id = setInterval(() => {
       setCount((c) => {
         if (c >= HEADLINE_FULL.length) {
@@ -262,7 +276,7 @@ function TypewriterHeadline() {
       });
     }, 62);
     return () => clearInterval(id);
-  }, [reduce]);
+  }, [reduce, start]);
 
   const plain = HEADLINE_FULL.slice(0, Math.min(count, hlStart));
   const highlight = count > hlStart ? HEADLINE_FULL.slice(hlStart, count) : "";
@@ -270,7 +284,7 @@ function TypewriterHeadline() {
 
   const h1Style: React.CSSProperties = {
     fontFamily: "var(--font-heading)",
-    fontSize: "clamp(2.4rem, 5vw, 3.85rem)",
+    fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)",
     fontWeight: 700,
     lineHeight: 1.06,
     letterSpacing: "-1.5px",
@@ -306,6 +320,9 @@ function TypewriterHeadline() {
 
 /* ── Hero ─────────────────────────────────────────────────────── */
 export default function Hero() {
+  // Intro sequence: robot flies in and settles → then content reveals
+  const [introDone, setIntroDone] = useState(false);
+
   return (
     <section
       id="hero"
@@ -325,105 +342,26 @@ export default function Hero() {
         <div className="flex flex-col md:flex-row items-center gap-10 lg:gap-16 w-full">
 
           {/* LEFT */}
-          <div className="flex-1 flex flex-col gap-6 text-center md:text-left max-w-[580px] mx-auto md:mx-0">
+          <div className="flex-1 flex flex-col gap-8 text-center md:text-left max-w-[580px] mx-auto md:mx-0">
 
-            {/* HUD system-status badge */}
+            {/* Typewriter H1 — starts typing after the robot settles */}
+            <TypewriterHeadline start={introDone} />
+
+            {/* App store buttons */}
             <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex justify-center md:justify-start"
-            >
-              <span className="inline-flex items-center gap-2 rounded-full glass neon-border" style={{ padding: "6px 16px" }}>
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-[#1bd79d] opacity-75 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1bd79d]" />
-                </span>
-                <span className="hud-label animate-flicker" style={{ fontSize: 10.5, color: "#c7d2dc" }}>
-                  {HERO_BADGE_TEXT}
-                </span>
-              </span>
-            </motion.div>
-
-            {/* Typewriter H1 */}
-            <TypewriterHeadline />
-
-            {/* Subheading */}
-            <motion.p
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
+              animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
               transition={{ delay: 0.7, duration: 0.7 }}
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 18,
-                fontWeight: 400,
-                lineHeight: "29.25px",
-                color: "#c7d2dc",
-                maxWidth: 520,
-                margin: "0 auto",
-              }}
-              className="md:mx-0"
+              className="flex flex-wrap justify-center md:justify-start gap-3"
             >
-              {HERO_SUBHEADING}
-            </motion.p>
-
-            {/* Download label + app buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.85, duration: 0.7 }}
-              className="flex flex-col items-center md:items-start gap-3"
-            >
-              <p className="hud-label" style={{ fontSize: 11, letterSpacing: "1.98px", color: "rgba(0,194,255,0.8)" }}>
-                {HERO_DOWNLOAD_LABEL}
-              </p>
-              <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                <AppStoreBadge store="apple" />
-                <AppStoreBadge store="google" />
-              </div>
-            </motion.div>
-
-            {/* CTA link */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 0.7 }}
-              className="flex justify-center md:justify-start"
-            >
-              <a
-                href="#inside-app"
-                style={{ fontFamily: "var(--font-body)", fontSize: 14, color: "#4a9eff" }}
-                className="group inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-              >
-                {HERO_CTA_LINK}
-              </a>
-            </motion.div>
-
-            {/* Trust badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1, duration: 0.7 }}
-              className="flex flex-wrap justify-center md:justify-start gap-x-5 gap-y-2"
-            >
-              {HERO_TRUST_BADGES.map((badge) => (
-                <span
-                  key={badge}
-                  className="flex items-center gap-1.5"
-                  style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 400, color: "rgba(199,210,220,0.7)" }}
-                >
-                  <svg viewBox="0 0 12 12" className="w-3 h-3 shrink-0" fill="none" aria-hidden>
-                    <path d="M2 6l3 3 5-5" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  {badge}
-                </span>
-              ))}
+              <AppStoreBadge store="apple" />
+              <AppStoreBadge store="google" />
             </motion.div>
           </div>
 
           {/* RIGHT — phone + robot cluster */}
           <div className="flex-shrink-0 flex justify-center md:justify-end pt-16 pb-10 md:pt-20 md:pb-0">
-            <PhoneCluster />
+            <PhoneCluster onIntroDone={() => setIntroDone(true)} />
           </div>
         </div>
       </div>
@@ -432,7 +370,7 @@ export default function Hero() {
       <motion.div
         aria-hidden
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={introDone ? { opacity: 1 } : { opacity: 0 }}
         transition={{ delay: 1.4, duration: 0.8 }}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
       >

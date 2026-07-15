@@ -31,6 +31,20 @@ export const HERO_DOWNLOAD_LABEL = "Download the app · Free to start";
 
 export const HERO_CTA_LINK = "Or see how the ecosystem works →";
 
+export const STORY_SCROLL_HINT = "Scroll to play";
+
+/** TODO: replace with the real brAInify WhatsApp channel invite link. */
+export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/brainify";
+
+/** Scroll-driven chat played inside the InsideApp phone mockup. */
+export const INSIDE_APP_CHAT = [
+  { from: "user",   text: "I want to build an AI agent but I've never coded." },
+  { from: "mentor", text: "Perfect starting point. Module 1 is no-jargon, project-first. You'll ship something real today." },
+  { from: "mentor", text: "Quick win: let's automate one boring task from your week." },
+  { from: "user",   text: "Let's do it." },
+  { from: "system", text: "+50 XP · Streak day 3" },
+] as const;
+
 export const MARQUEE_TEXT =
   "YouTube videos. Saved posts. Half-finished courses. Information isn't your problem. Structure is. · brAInify was built to fix the one thing the rest of the internet can't: a system that actually finishes you.";
 
