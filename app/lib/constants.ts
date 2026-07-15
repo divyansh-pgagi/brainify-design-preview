@@ -33,8 +33,7 @@ export const HERO_CTA_LINK = "Or see how the ecosystem works →";
 
 export const STORY_SCROLL_HINT = "Scroll to play";
 
-/** TODO: replace with the real brAInify WhatsApp channel invite link. */
-export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/brainify";
+export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/0029Vb7w7AlHAdNeB2w8Nb3a";
 
 /** Scroll-driven chat played inside the InsideApp phone mockup. */
 export const INSIDE_APP_CHAT = [

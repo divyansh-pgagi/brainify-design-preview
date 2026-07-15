@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Magnetic from "../ui/Magnetic";
+import { WHATSAPP_CHANNEL_URL } from "@/app/lib/constants";
 
 function InstagramIcon({ size = 14 }: { size?: number }) {
   const s = { width: size, height: size, display: "block" } as const;
@@ -133,7 +134,7 @@ export default function Footer() {
             </span>
           </a>
           <a
-            href="https://whatsapp.com/channel/0029Vb7w7AlHAdNeB2w8Nb3a"
+            href={WHATSAPP_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-full transition-all duration-200 hover:opacity-90 active:scale-95"
