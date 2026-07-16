@@ -12,7 +12,7 @@ import { STORY_SCROLL_HINT } from "@/app/lib/constants";
 
 /**
  * BrandStory — scroll-scrubbed video sequence.
- *
+ * 
  * 120 JPG frames extracted from the brand video are drawn onto a
  * <canvas>; the frame index is bound to scroll progress through a
  * 300vh sticky section, so scrolling "plays" the video:
@@ -93,7 +93,7 @@ export default function BrandStory() {
     requestAnimationFrame(() => draw(v));
   });
 
-  // Reduced motion: show the final logo frame as a static image
+  // Reduced motion: show the final logo frame as a static image 
   if (reduce) {
     return (
       <section className="relative py-16 flex justify-center">
