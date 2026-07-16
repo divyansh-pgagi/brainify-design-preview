@@ -11,13 +11,14 @@ import Stats from "./components/sections/Stats";
 // import Roadmap from "./components/sections/Roadmap";
 import FAQ from "./components/sections/FAQ";
 import Footer from "./components/sections/Footer";
+import RobotJourney from "./components/ui/RobotJourney";
 
 export default function Home() {
   return (
     <main className="relative z-0 min-h-screen">
+      <RobotJourney />
       <Navbar />
       <Hero />
-      <BrandStory />
       <Educators />
       <LearningPaths />
       <InsideApp />
@@ -27,6 +28,7 @@ export default function Home() {
       <Stats />
       {/* <Roadmap /> */}
       <FAQ />
+      <BrandStory />
       <Footer />
     </main>
   );

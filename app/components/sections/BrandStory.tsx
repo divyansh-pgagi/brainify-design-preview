@@ -112,9 +112,10 @@ export default function BrandStory() {
   }
 
   return (
-    <section ref={outerRef} className="relative" style={{ height: "300vh" }} aria-label="brAInify brand story">
+    <section id="story" ref={outerRef} className="relative" style={{ height: "300vh" }} aria-label="brAInify brand story">
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         <canvas
+          id="story-canvas"
           ref={canvasRef}
           width={FRAME_W}
           height={FRAME_H}

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import DataStream from "@/app/components/ui/DataStream";
 
 const PATHS = [
@@ -86,8 +86,6 @@ const PATHS = [
   },
 ] as const;
 
-type Path = (typeof PATHS)[number];
-
 function VideoModal({ url, name, onClose }: { url: string; name: string; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -154,206 +152,18 @@ function VideoModal({ url, name, onClose }: { url: string; name: string; onClose
   );
 }
 
-/* ── Single path card (shared between pinned + stacked layouts) ── */
-function PathCard({
-  path,
-  index,
-  onExplore,
-}: {
-  path: Path;
-  index: number;
-  onExplore: () => void;
-}) {
-  return (
-    <div
-      className="relative overflow-hidden rounded-2xl flex flex-col gap-5 shrink-0"
-      style={{
-        width: "min(85vw, 620px)",
-        minHeight: 420,
-        padding: "36px 36px 28px",
-        background: "linear-gradient(135deg, rgba(7,28,70,0.95) 0%, rgba(5,18,45,0.98) 100%)",
-        border: "1.5px solid rgba(74,158,255,0.3)",
-        boxShadow: "0 0 40px rgba(74,158,255,0.08), inset 0 0 60px rgba(0,50,150,0.1)",
-      }}
-    >
-      {/* teal glow inside panel */}
-      <div aria-hidden className="absolute pointer-events-none" style={{ width: 400, height: 400, top: -100, right: -100, background: "radial-gradient(ellipse, rgba(0,180,200,0.08) 0%, transparent 70%)", filter: "blur(40px)" }} />
-
-      {/* Falling data-stream backdrop */}
-      <DataStream columns={10} color="rgba(74,158,255,0.18)" />
-
-      <div className="relative z-10 flex flex-col h-full gap-5">
-        {/* educator + audience tag */}
-        <div className="flex items-center gap-3">
-          <div className="relative rounded-xl overflow-hidden shrink-0" style={{ width: 52, height: 52, border: "1.5px solid rgba(74,158,255,0.3)" }}>
-            <Image
-              src={path.pathImage}
-              alt={path.name}
-              width={52}
-              height={52}
-              className="object-cover w-full h-full"
-              loading="lazy"
-            />
-          </div>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: path.audienceColor }}>
-            {path.audience} · with {path.educator}
-          </p>
-        </div>
-
-        {/* Path name */}
-        <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.5rem, 3vw, 1.9rem)", fontWeight: 700, letterSpacing: "-0.5px", color: "#c7d2dc", lineHeight: 1.2 }}>
-          {path.name}
-        </h3>
-
-        {/* Description */}
-        <p style={{ fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 400, lineHeight: "25px", color: "rgba(199,210,220,0.65)" }}>
-          {path.description}
-        </p>
-
-        {/* Feature pills */}
-        <div className="flex flex-wrap gap-2.5">
-          {path.bullets.map((b) => (
-            <span
-              key={b}
-              className="flex items-center gap-2"
-              style={{
-                padding: "7px 14px",
-                borderRadius: 999,
-                border: "1px solid rgba(74,158,255,0.25)",
-                background: "rgba(74,158,255,0.06)",
-                fontFamily: "var(--font-body)",
-                fontSize: 12.5,
-                fontWeight: 400,
-                color: "rgba(199,210,220,0.8)",
-              }}
-            >
-              <svg viewBox="0 0 12 10" style={{ width: 12, height: 10, flexShrink: 0 }} fill="none" aria-hidden>
-                <path d="M1 5l3.5 3.5L11 1" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {b}
-            </span>
-          ))}
-        </div>
-
-        {/* Footer row: counter + explore button */}
-        <div className="mt-auto pt-4 flex items-center justify-between gap-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, color: "rgba(199,210,220,0.35)", letterSpacing: "1px" }}>
-            PATH ·{" "}
-            <span style={{ color: "#4a9eff", fontWeight: 700 }}>
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            {" / 06"}
-          </p>
-
-          <button
-            onClick={onExplore}
-            className="flex items-center gap-2 rounded-xl transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
-            style={{
-              padding: "10px 20px",
-              background: "linear-gradient(135deg, #3b6fff 0%, #00c2ff 100%)",
-              boxShadow: "0 0 20px rgba(59,111,255,0.35)",
-              fontFamily: "var(--font-body)",
-              fontSize: 13,
-              fontWeight: 700,
-              color: "#fff",
-              letterSpacing: "0.3px",
-            }}
-          >
-            <svg viewBox="0 0 16 16" style={{ width: 14, height: 14, flexShrink: 0 }} fill="none" aria-hidden>
-              <circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
-              <path d="M6.5 5.5l4 2.5-4 2.5V5.5z" fill="white" />
-            </svg>
-            Explore Path
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Section header (shared) ─────────────────────────────────── */
-function PathsHeader() {
-  return (
-    <div>
-      <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
-        Courses &amp; Paths
-      </p>
-      <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}>
-        Six learning paths. Which one is yours?
-      </h2>
-      <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 500 }}>
-        Each path is a complete career arc — designed to take you from beginner to a real, monetizable skill, with project-led learning at every step.
-      </p>
-    </div>
-  );
-}
-
 export default function LearningPaths() {
-  const reduce = useReducedMotion();
-  const [videoPath, setVideoPath] = useState<Path | null>(null);
-
-  const outerRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [maxShift, setMaxShift] = useState(0);
-
-  // measure how far the track must translate to show the last card
-  const measure = useCallback(() => {
-    const track = trackRef.current;
-    const viewport = viewportRef.current;
-    if (!track || !viewport) return;
-    setMaxShift(Math.max(0, track.scrollWidth - viewport.clientWidth));
-  }, []);
-
-  useEffect(() => {
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
-
-  const { scrollYProgress } = useScroll({
-    target: outerRef,
-    offset: ["start start", "end end"],
-  });
-  const x = useTransform(scrollYProgress, [0, 1], [0, -maxShift]);
-  const progressScale = scrollYProgress;
-
-  /* Reduced motion → simple vertical stack, no pinning */
-  if (reduce) {
-    return (
-      <>
-        <section id="paths" className="relative overflow-hidden" style={{ background: "transparent" }}>
-          <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] py-24 flex flex-col gap-10">
-            <PathsHeader />
-            <div className="flex flex-col items-center gap-6">
-              {PATHS.map((p, i) => (
-                <PathCard key={p.id} path={p} index={i} onExplore={() => setVideoPath(p)} />
-              ))}
-            </div>
-          </div>
-        </section>
-        {videoPath && (
-          <VideoModal url={videoPath.videoUrl} name={videoPath.name} onClose={() => setVideoPath(null)} />
-        )}
-      </>
-    );
-  }
+  const [active, setActive] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
+  const path = PATHS[active];
 
   return (
     <>
-      {/* Tall scroll zone — vertical scroll drives horizontal card travel */}
-      <section
-        id="paths"
-        ref={outerRef}
-        className="relative"
-        style={{ height: `${PATHS.length * 55}vh`, background: "transparent" }}
-      >
-        <div
-          ref={viewportRef}
-          className="sticky top-0 h-screen flex flex-col justify-center gap-8 overflow-hidden"
-        >
-          {/* ambient glow */}
-          <div aria-hidden className="absolute pointer-events-none" style={{ width: 600, height: 500, top: "20%", right: -100, background: "radial-gradient(ellipse, rgba(0,80,200,0.12) 0%, transparent 70%)", filter: "blur(70px)" }} />
+      <section id="paths" className="relative overflow-hidden" style={{ background: "transparent" }}>
+        {/* ambient glow */}
+        <div aria-hidden className="absolute pointer-events-none" style={{ width: 600, height: 500, top: "20%", right: -100, background: "radial-gradient(ellipse, rgba(0,80,200,0.12) 0%, transparent 70%)", filter: "blur(70px)" }} />
+
+        <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px] py-24">
 
           {/* Header */}
           <motion.div
@@ -361,40 +171,208 @@ export default function LearningPaths() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px]"
+            className="mb-10"
           >
-            <PathsHeader />
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "2.16px", textTransform: "uppercase", color: "#ebfce4", marginBottom: 14 }}>
+              Courses &amp; Paths
+            </p>
+            <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.85px", color: "#c7d2dc", marginBottom: 12, lineHeight: 1.15 }}>
+              Six learning paths. Which one is yours?
+            </h2>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 500 }}>
+              Each path is a complete career arc — designed to take you from beginner to a real, monetizable skill, with project-led learning at every step.
+            </p>
           </motion.div>
 
-          {/* Horizontal track */}
-          <motion.div
-            ref={trackRef}
-            style={{ x }}
-            className="relative z-10 flex gap-6 items-stretch px-6 md:px-[80px] w-max"
-          >
-            {PATHS.map((p, i) => (
-              <PathCard key={p.id} path={p} index={i} onExplore={() => setVideoPath(p)} />
-            ))}
-          </motion.div>
+          {/* Two-column layout */}
+          <div className="flex flex-col lg:flex-row gap-4">
 
-          {/* Scroll progress rail */}
-          <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-[80px]">
-            <div className="h-[3px] w-full max-w-[360px] rounded-full overflow-hidden" style={{ background: "rgba(74,158,255,0.15)" }}>
-              <motion.div
-                className="h-full rounded-full origin-left"
-                style={{
-                  scaleX: progressScale,
-                  background: "linear-gradient(90deg, #3b6fff, #00c2ff)",
-                  boxShadow: "0 0 10px rgba(0,194,255,0.6)",
-                }}
-              />
-            </div>
+            {/* LEFT — path selector list */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.1 }
+                }
+              }}
+              className="flex flex-col gap-2 lg:w-[340px] shrink-0"
+            >
+              {PATHS.map((p, i) => (
+                <motion.button
+                  key={p.id}
+                  onClick={() => { setActive(i); setVideoOpen(false); }}
+                  className="flex items-center gap-3 rounded-xl text-left transition-all duration-200 w-full"
+                  style={{
+                    padding: "14px 16px",
+                    background: active === i
+                      ? "linear-gradient(135deg, rgba(10,40,90,0.95) 0%, rgba(7,25,60,0.95) 100%)"
+                      : "linear-gradient(135deg, rgba(13,31,64,0.6) 0%, rgba(9,20,40,0.6) 100%)",
+                    border: active === i
+                      ? "1.5px solid rgba(74,158,255,0.5)"
+                      : "1.5px solid rgba(255,255,255,0.07)",
+                    boxShadow: active === i ? "0 0 20px rgba(74,158,255,0.12)" : "none",
+                  }}
+                >
+                  {/* Thumbnail */}
+                  <div className="relative rounded-lg overflow-hidden shrink-0" style={{ width: 36, height: 36 }}>
+                    <Image
+                      src={p.pathImage}
+                      alt={p.name}
+                      width={36}
+                      height={36}
+                      className="object-cover w-full h-full"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#c7d2dc", lineHeight: 1.3 }}>
+                      {p.name}
+                    </p>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 700, color: p.audienceColor, letterSpacing: "1.5px", textTransform: "uppercase", lineHeight: 1.4 }}>
+                      {p.audience}
+                    </p>
+                  </div>
+
+                  {/* Arrow */}
+                  <svg viewBox="0 0 8 14" className="shrink-0" style={{ width: 8, height: 14, opacity: active === i ? 1 : 0.35 }} fill="none" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M1 1l6 6-6 6" />
+                  </svg>
+                </motion.button>
+              ))}
+            </motion.div>
+
+            {/* RIGHT — detail panel */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              className="flex-1 rounded-2xl relative overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, rgba(7,28,70,0.95) 0%, rgba(5,18,45,0.98) 100%)",
+                border: "1.5px solid rgba(74,158,255,0.3)",
+                boxShadow: "0 0 40px rgba(74,158,255,0.08), inset 0 0 60px rgba(0,50,150,0.1)",
+                minHeight: 420,
+                padding: "40px 40px 32px",
+              }}
+            >
+              {/* teal glow inside panel */}
+              <div aria-hidden className="absolute pointer-events-none" style={{ width: 400, height: 400, top: -100, right: -100, background: "radial-gradient(ellipse, rgba(0,180,200,0.08) 0%, transparent 70%)", filter: "blur(40px)" }} />
+
+              {/* Falling data-stream backdrop */}
+              <DataStream columns={12} color="rgba(74,158,255,0.22)" />
+
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="relative z-10 flex flex-col h-full gap-6"
+                >
+                  {/* educator + audience tag */}
+                <div className="flex items-center gap-3">
+                  <div className="relative rounded-xl overflow-hidden shrink-0" style={{ width: 52, height: 52, border: "1.5px solid rgba(74,158,255,0.3)" }}>
+                    <Image
+                      src={path.pathImage}
+                      alt={path.name}
+                      width={52}
+                      height={52}
+                      className="object-cover w-full h-full"
+                      loading="lazy"
+                    />
+                  </div>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 700, letterSpacing: "1.8px", textTransform: "uppercase", color: path.audienceColor }}>
+                    {path.audience} · with {path.educator}
+                  </p>
+                </div>
+
+                {/* Path name */}
+                <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.6rem, 3vw, 2rem)", fontWeight: 700, letterSpacing: "-0.5px", color: "#c7d2dc", lineHeight: 1.2 }}>
+                  {path.name}
+                </h3>
+
+                {/* Description */}
+                <p style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: "26px", color: "rgba(199,210,220,0.65)", maxWidth: 520 }}>
+                  {path.description}
+                </p>
+
+                {/* Feature pills */}
+                <div className="flex flex-wrap gap-3">
+                  {path.bullets.map((b) => (
+                    <span
+                      key={b}
+                      className="flex items-center gap-2"
+                      style={{
+                        padding: "8px 16px",
+                        borderRadius: 999,
+                        border: "1px solid rgba(74,158,255,0.25)",
+                        background: "rgba(74,158,255,0.06)",
+                        fontFamily: "var(--font-body)",
+                        fontSize: 13,
+                        fontWeight: 400,
+                        color: "rgba(199,210,220,0.8)",
+                      }}
+                    >
+                      <svg viewBox="0 0 12 10" style={{ width: 12, height: 10, flexShrink: 0 }} fill="none" aria-hidden>
+                        <path d="M1 5l3.5 3.5L11 1" stroke="#4a9eff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      {b}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Footer row: counter + explore button */}
+                <div className="mt-auto pt-4 flex items-center justify-between gap-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, color: "rgba(199,210,220,0.35)", letterSpacing: "1px" }}>
+                    PATH ·{" "}
+                    <span style={{ color: "#4a9eff", fontWeight: 700 }}>
+                      {String(active + 1).padStart(2, "0")}
+                    </span>
+                    {" / 06"}
+                  </p>
+
+                  {/* Explore button */}
+                  <button
+                    onClick={() => setVideoOpen(true)}
+                    className="flex items-center gap-2 rounded-xl transition-all duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                    style={{
+                      padding: "10px 20px",
+                      background: "linear-gradient(135deg, #3b6fff 0%, #00c2ff 100%)",
+                      boxShadow: "0 0 20px rgba(59,111,255,0.35)",
+                      fontFamily: "var(--font-body)",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#fff",
+                      letterSpacing: "0.3px",
+                    }}
+                  >
+                    <svg viewBox="0 0 16 16" style={{ width: 14, height: 14, flexShrink: 0 }} fill="none" aria-hidden>
+                      <circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" />
+                      <path d="M6.5 5.5l4 2.5-4 2.5V5.5z" fill="white" />
+                    </svg>
+                    Explore Path
+                  </button>
+                </div>
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {videoPath && (
-        <VideoModal url={videoPath.videoUrl} name={videoPath.name} onClose={() => setVideoPath(null)} />
+      {videoOpen && (
+        <VideoModal
+          url={path.videoUrl}
+          name={path.name}
+          onClose={() => setVideoOpen(false)}
+        />
       )}
     </>
   );
