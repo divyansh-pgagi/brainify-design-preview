@@ -92,28 +92,29 @@ export default function RobotJourney() {
 
     const story = document.getElementById("story");
 
-    // Where the robot lives inside the scrub video's canvas, as fractions of
-    // the frame (measured from the actual footage): first frame vs last frame.
-    // Used to land the traveler exactly on its video self, and lift off from
-    // exactly where the video leaves it.
-    const canvasEl = document.getElementById("story-canvas");
+    // Where the robot lives inside the full-screen brand video, as fractions
+    // of the 1280x720 frame (measured from the footage): first vs last frame.
+    // The video uses object-cover, so map frame coords through the crop.
+    const videoEl = document.getElementById("story-video");
     let scrubStartP: number | null = null;
     let scrubEndP: number | null = null;
     let startBot = { x: vw * 0.5, y: vh * 0.5, s: 1 };
     let endBot = { x: vw * 0.6, y: vh * 0.55, s: 0.8 };
-    if (story && canvasEl) {
+    if (story && videoEl) {
       const sr = story.getBoundingClientRect();
       const storyTop = sr.top + window.scrollY;
-      scrubStartP = atY(storyTop);                  // canvas pins
-      scrubEndP = atY(storyTop + sr.height - vh);   // canvas unpins
-      const cw = canvasEl.getBoundingClientRect().width;
-      const ch = cw * (506 / 900);
-      const cLeft = (vw - cw) / 2;
-      const cTop = (vh - ch) / 2; // canvas is vertically centered while pinned
+      scrubStartP = atY(storyTop);                  // video pins full-screen
+      scrubEndP = atY(storyTop + sr.height - vh);   // video unpins
+      // object-cover mapping of the 1280x720 frame onto the viewport
+      const cover = Math.max(vw / 1280, vh / 720);
+      const dw = 1280 * cover;
+      const dh = 720 * cover;
+      const ox = (vw - dw) / 2;
+      const oy = (vh - dh) / 2;
       // first frame: robot centered-ish (cx .528, cy .53, width .313 of frame)
-      startBot = { x: cLeft + cw * 0.528, y: cTop + ch * 0.53, s: (cw * 0.313) / BASE_W };
+      startBot = { x: ox + dw * 0.528, y: oy + dh * 0.53, s: (dw * 0.313) / BASE_W };
       // last frame: robot sits right of the logo lockup (cx .80, cy .57, width .22)
-      endBot = { x: cLeft + cw * 0.80, y: cTop + ch * 0.57, s: (cw * 0.22) / BASE_W };
+      endBot = { x: ox + dw * 0.80, y: oy + dh * 0.57, s: (dw * 0.22) / BASE_W };
     }
     const educators = document.getElementById("features");
     const paths = document.getElementById("paths");
@@ -190,7 +191,7 @@ export default function RobotJourney() {
   }, [reduce, measure]);
 
   const { scrollYProgress } = useScroll();
-  const spring = useSpring(scrollYProgress, { stiffness: 55, damping: 17, mass: 0.6 });
+  const spring = useSpring(scrollYProgress, { stiffness: 38, damping: 21, mass: 0.9 });
 
   const x = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.x));
   const y = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.y));
@@ -209,9 +210,9 @@ export default function RobotJourney() {
 
   // lean into the direction of travel
   const velocity = useVelocity(scrollYProgress);
-  const rotate = useSpring(useTransform(velocity, [-0.8, 0, 0.8], [-14, 0, 14]), {
-    stiffness: 180,
-    damping: 22,
+  const rotate = useSpring(useTransform(velocity, [-0.8, 0, 0.8], [-10, 0, 10]), {
+    stiffness: 90,
+    damping: 20,
   });
 
   // mirror slowly to face the direction of horizontal travel
