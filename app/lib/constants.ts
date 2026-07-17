@@ -33,6 +33,18 @@ export const HERO_CTA_LINK = "Or see how the ecosystem works →";
 
 export const STORY_SCROLL_HINT = "Scroll to play";
 
+/** Speech-bubble lines the travelling robot says at each section. */
+export const ROBOT_JOURNEY_MESSAGES = [
+  { section: "features", text: "Meet our mentors!" },
+  { section: "paths", text: "Pick your path" },
+  { section: "inside-app", text: "That's me, your AI mentor!" },
+  { section: "tools", text: "Real tools, real skills" },
+  { section: "certification", text: "Earn certified proof" },
+  { section: "faq", text: "Got questions?" },
+  { section: "story", text: "Watch this!" },
+  { section: "footer", text: "Let's start shipping!" },
+] as const;
+
 export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/0029Vb7w7AlHAdNeB2w8Nb3a";
 
 /** Scroll-driven chat played inside the InsideApp phone mockup. */

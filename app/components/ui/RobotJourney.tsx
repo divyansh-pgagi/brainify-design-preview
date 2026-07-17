@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   motion,
+  AnimatePresence,
   useScroll,
   useSpring,
   useTransform,
@@ -11,6 +12,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import RobotLoop from "./RobotLoop";
+import { ROBOT_JOURNEY_MESSAGES } from "@/app/lib/constants";
 
 /**
  * RobotJourney — one continuous robot character across the whole page.
@@ -34,6 +36,8 @@ import RobotLoop from "./RobotLoop";
 
 const BASE_W = 110; // traveler's unscaled width (px)
 
+type MessageRange = { text: string; start: number; end: number };
+
 type Keyframes = {
   p: number[];
   x: number[];
@@ -41,9 +45,10 @@ type Keyframes = {
   s: number[];
   o: number[];
   detachP: number; // progress where hero robot ↔ traveler swap happens
+  messages: MessageRange[];
 };
 
-const EMPTY: Keyframes = { p: [0, 1], x: [0, 0], y: [0, 0], s: [1, 1], o: [0, 0], detachP: 0 };
+const EMPTY: Keyframes = { p: [0, 1], x: [0, 0], y: [0, 0], s: [1, 1], o: [0, 0], detachP: 0, messages: [] };
 
 function interp(v: number, stops: number[], values: number[]): number {
   if (v <= stops[0]) return values[0];
@@ -162,8 +167,32 @@ export default function RobotJourney() {
       { p: 1,                       x: vw * 0.18, y: vh * 0.55, s: 1.15, o: 1 },
     ];
 
+    // speech-bubble ranges per section
+    const messages: MessageRange[] = [];
+    for (const m of ROBOT_JOURNEY_MESSAGES) {
+      if (m.section === "story") {
+        // while flying down to land on its video self
+        const start = at(story, 0);
+        if (start !== null && scrubStartP !== null) {
+          messages.push({ text: m.text, start, end: scrubStartP });
+        }
+        continue;
+      }
+      if (m.section === "footer") {
+        const start = at(footer, 0.15);
+        if (start !== null) messages.push({ text: m.text, start, end: 1.01 });
+        continue;
+      }
+      const el = document.getElementById(m.section);
+      const start = at(el, 0.15);
+      const end = at(el, 0.75);
+      if (start !== null && end !== null && end > start) {
+        messages.push({ text: m.text, start, end });
+      }
+    }
+
     const kept = stops.filter((st): st is Stop & { p: number } => st.p !== null);
-    const frames: Keyframes = { p: [], x: [], y: [], s: [], o: [], detachP };
+    const frames: Keyframes = { p: [], x: [], y: [], s: [], o: [], detachP, messages };
     let last = -1;
     for (const k of kept) {
       const p = Math.max(k.p, last + 0.0001);
@@ -199,14 +228,22 @@ export default function RobotJourney() {
   const scale = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.s));
   const opacity = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.o));
 
-  // hero robot ↔ traveler swap: hide/show the hero robot around the detach point
+  // hero robot ↔ traveler swap + active speech bubble
+  const [message, setMessage] = useState<string | null>(null);
   useMotionValueEvent(spring, "change", (v) => {
     const heroEl = document.getElementById("hero-robot-visual");
-    if (!heroEl) return;
-    if (!heroEl.style.transition) heroEl.style.transition = "opacity 0.3s ease";
-    const show = v < framesRef.current.detachP;
-    const target = show ? "" : "0";
-    if (heroEl.style.opacity !== target) heroEl.style.opacity = target;
+    if (heroEl) {
+      if (!heroEl.style.transition) heroEl.style.transition = "opacity 0.3s ease";
+      const show = v < framesRef.current.detachP;
+      const target = show ? "" : "0";
+      if (heroEl.style.opacity !== target) heroEl.style.opacity = target;
+    }
+    // speech bubble: only while the robot itself is visible
+    const f = framesRef.current;
+    const visible = interp(v, f.p, f.o) > 0.5;
+    const active = visible ? f.messages.find((m) => v >= m.start && v <= m.end) : undefined;
+    const next = active ? active.text : null;
+    setMessage((prev) => (prev === next ? prev : next));
   });
 
   // lean into the direction of travel
@@ -273,6 +310,53 @@ export default function RobotJourney() {
           <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_28px_rgba(74,158,255,0.6)]" />
         </div>
       </motion.div>
+
+      {/* speech bubble — outside the flip/rotate wrappers so text never mirrors */}
+      <AnimatePresence>
+        {message && (
+          <motion.div
+            key={message}
+            initial={{ opacity: 0, scale: 0.5, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.6, y: 4 }}
+            transition={{ type: "spring", stiffness: 320, damping: 20 }}
+            className="absolute"
+            style={{
+              bottom: "94%",
+              left: "58%",
+              transformOrigin: "bottom left",
+              padding: "6px 12px",
+              borderRadius: 12,
+              borderBottomLeftRadius: 2,
+              background: "rgba(7,16,34,0.92)",
+              border: "1px solid rgba(0,194,255,0.4)",
+              boxShadow: "0 4px 20px rgba(0,80,220,0.35)",
+              fontFamily: "var(--font-body)",
+              fontSize: 11.5,
+              fontWeight: 600,
+              color: "#c7d2dc",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {message}
+            {/* tail */}
+            <span
+              aria-hidden
+              className="absolute"
+              style={{
+                left: -1,
+                bottom: -5,
+                width: 9,
+                height: 9,
+                background: "rgba(7,16,34,0.92)",
+                borderLeft: "1px solid rgba(0,194,255,0.4)",
+                borderBottom: "1px solid rgba(0,194,255,0.4)",
+                transform: "skewX(35deg) rotate(-8deg)",
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
