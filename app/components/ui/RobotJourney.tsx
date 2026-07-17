@@ -105,8 +105,9 @@ export default function RobotJourney() {
       const storyTop = sr.top + window.scrollY;
       scrubStartP = atY(storyTop);                  // video pins full-screen
       scrubEndP = atY(storyTop + sr.height - vh);   // video unpins
-      // object-cover mapping of the 1280x720 frame onto the viewport
-      const cover = Math.max(vw / 1280, vh / 720);
+      // frame → viewport mapping: object-contain below md, object-cover above
+      const cover =
+        vw < 768 ? Math.min(vw / 1280, vh / 720) : Math.max(vw / 1280, vh / 720);
       const dw = 1280 * cover;
       const dh = 720 * cover;
       const ox = (vw - dw) / 2;
@@ -242,7 +243,7 @@ export default function RobotJourney() {
   return (
     <motion.div
       aria-hidden
-      className="hidden lg:block fixed z-40 pointer-events-none"
+      className="fixed z-40 pointer-events-none"
       style={{
         left: 0,
         top: 0,

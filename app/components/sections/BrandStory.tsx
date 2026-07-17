@@ -52,7 +52,7 @@ export default function BrandStory() {
           playsInline
           preload="auto"
           src="/videos/brand-story.mp4"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain md:object-cover"
           style={{ mixBlendMode: "screen" }}
           aria-hidden
         />

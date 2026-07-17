@@ -159,8 +159,8 @@ function PhoneCluster({ onIntroDone }: { onIntroDone: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="relative scale-[0.78] md:scale-100 origin-top -translate-x-6 md:translate-x-0"
-      style={{ width: 420, height: 600 }}
+      className="relative scale-[0.78] md:scale-100 origin-top mx-auto"
+      style={{ width: 420, height: 600, maxWidth: "100vw" }}
     >
       {/* Reactor glow behind robot */}
       <div
