@@ -14,6 +14,65 @@ import {
 import RobotLoop from "./RobotLoop";
 import { ROBOT_JOURNEY_MESSAGES } from "@/app/lib/constants";
 
+/* ── Typewriter speech bubble ───────────────────────────────────── */
+function SpeechBubble({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  // Reset and replay typewriter on each new message
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    // small initial delay so the bubble pop-in finishes first
+    const start = setTimeout(() => {
+      const id = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) {
+          clearInterval(id);
+          setDone(true);
+        }
+      }, 38);
+      return () => clearInterval(id);
+    }, 180);
+    return () => clearTimeout(start);
+  }, [text]);
+
+  return (
+    <span>
+      {displayed}
+      {/* animated speaking dots while typing */}
+      {!done && (
+        <span
+          aria-hidden
+          style={{ display: "inline-flex", gap: 2, marginLeft: 3, verticalAlign: "middle" }}
+        >
+          {[0, 1, 2].map((i) => (
+            <motion.span
+              key={i}
+              style={{
+                display: "inline-block",
+                width: 3,
+                height: 3,
+                borderRadius: "50%",
+                background: "#00c2ff",
+              }}
+              animate={{ y: [0, -3, 0], opacity: [0.4, 1, 0.4] }}
+              transition={{
+                duration: 0.7,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.18,
+              }}
+            />
+          ))}
+        </span>
+      )}
+    </span>
+  );
+}
+
 /**
  * RobotJourney — one continuous robot character across the whole page.
  *
@@ -228,8 +287,28 @@ export default function RobotJourney() {
   const scale = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.s));
   const opacity = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.o));
 
+  // Bubble position: fixed in viewport with clamped x so it never clips off either edge
+  const BUBBLE_W = 200;
+  const ROBOT_H = Math.round(BASE_W * 1.159);
+  const bubbleX = useTransform(x, (rx) => {
+    const vw = typeof window !== "undefined" ? window.innerWidth : 800;
+    // center the bubble on the robot, then clamp to keep it within viewport
+    return Math.max(12, Math.min(vw - BUBBLE_W - 12, rx - BUBBLE_W / 2));
+  });
+  // Position bubble above the robot's visual top: center_y - scaled_half_height - gap
+  const scaledHalfH = useTransform(scale, (s) => (ROBOT_H * s) / 2);
+  const bubbleY = useTransform([y, scaledHalfH], ([ry, sh]) => (ry as number) - (sh as number) - 52);
+
   // hero robot ↔ traveler swap + active speech bubble
   const [message, setMessage] = useState<string | null>(null);
+  // hide the speech bubble entirely on mobile — not enough room
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
   useMotionValueEvent(spring, "change", (v) => {
     const heroEl = document.getElementById("hero-robot-visual");
     if (heroEl) {
@@ -278,85 +357,126 @@ export default function RobotJourney() {
   if (reduce) return null;
 
   return (
-    <motion.div
-      aria-hidden
-      className="fixed z-40 pointer-events-none"
-      style={{
-        left: 0,
-        top: 0,
-        x,
-        y,
-        scale,
-        opacity,
-        width: BASE_W,
-        height: Math.round(BASE_W * 1.159),
-        marginLeft: -BASE_W / 2,
-        marginTop: -Math.round(BASE_W * 1.159) / 2,
-      }}
-    >
-      {/* power-up glow burst on footer dock */}
+    <>
+      {/* ── Robot body ─────────────────────────────────────────────── */}
       <motion.div
-        className="absolute rounded-full"
+        aria-hidden
+        className="fixed z-40 pointer-events-none"
         style={{
-          inset: -30,
-          opacity: glowOpacity,
-          scale: glowScale,
-          background: "radial-gradient(circle, rgba(0,194,255,0.5), rgba(59,111,255,0.2) 55%, transparent 75%)",
-          filter: "blur(12px)",
+          left: 0,
+          top: 0,
+          x,
+          y,
+          scale,
+          opacity,
+          width: BASE_W,
+          height: ROBOT_H,
+          marginLeft: -BASE_W / 2,
+          marginTop: -ROBOT_H / 2,
         }}
-      />
-      <motion.div className="w-full h-full" style={{ rotate, scaleX: flip }}>
-        <div className="w-full h-full animate-float">
-          <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_28px_rgba(74,158,255,0.6)]" />
-        </div>
+      >
+        {/* power-up glow burst on footer dock */}
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            inset: -30,
+            opacity: glowOpacity,
+            scale: glowScale,
+            background: "radial-gradient(circle, rgba(0,194,255,0.5), rgba(59,111,255,0.2) 55%, transparent 75%)",
+            filter: "blur(12px)",
+          }}
+        />
+        <motion.div className="w-full h-full" style={{ rotate, scaleX: flip }}>
+          <div className="w-full h-full animate-float">
+            <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_28px_rgba(74,158,255,0.6)]" />
+          </div>
+        </motion.div>
       </motion.div>
 
-      {/* speech bubble — outside the flip/rotate wrappers so text never mirrors */}
+      {/* ── Speech bubble — desktop only, viewport-clamped ── */}
       <AnimatePresence>
-        {message && (
+        {message && !isMobile && (
           <motion.div
             key={message}
-            initial={{ opacity: 0, scale: 0.5, y: 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.6, y: 4 }}
-            transition={{ type: "spring", stiffness: 320, damping: 20 }}
-            className="absolute"
+            aria-hidden
+            className="fixed z-50 pointer-events-none"
             style={{
-              bottom: "94%",
-              left: "58%",
-              transformOrigin: "bottom left",
-              padding: "6px 12px",
-              borderRadius: 12,
-              borderBottomLeftRadius: 2,
-              background: "rgba(7,16,34,0.92)",
-              border: "1px solid rgba(0,194,255,0.4)",
-              boxShadow: "0 4px 20px rgba(0,80,220,0.35)",
-              fontFamily: "var(--font-body)",
-              fontSize: 11.5,
-              fontWeight: 600,
-              color: "#c7d2dc",
-              whiteSpace: "nowrap",
+              left: 0,
+              top: 0,
+              x: bubbleX,
+              y: bubbleY,
+              opacity,
+              width: BUBBLE_W,
             }}
+            initial={{ opacity: 0, scale: 0.55, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 6 }}
+            transition={{ type: "spring", stiffness: 340, damping: 22 }}
           >
-            {message}
-            {/* tail */}
-            <span
-              aria-hidden
-              className="absolute"
+            <div
               style={{
-                left: -1,
-                bottom: -5,
-                width: 9,
-                height: 9,
-                background: "rgba(7,16,34,0.92)",
-                borderLeft: "1px solid rgba(0,194,255,0.4)",
-                borderBottom: "1px solid rgba(0,194,255,0.4)",
-                transform: "skewX(35deg) rotate(-8deg)",
+                position: "relative",
+                padding: "8px 14px",
+                borderRadius: 14,
+                borderBottomLeftRadius: 3,
+                background: "linear-gradient(135deg, rgba(5,14,32,0.97) 0%, rgba(10,22,50,0.97) 100%)",
+                border: "1px solid rgba(0,194,255,0.55)",
+                boxShadow:
+                  "0 0 0 1px rgba(0,194,255,0.12), 0 6px 28px rgba(0,80,220,0.45), 0 0 18px rgba(0,194,255,0.20) inset",
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                fontWeight: 600,
+                lineHeight: 1.45,
+                color: "#dce8f5",
+                whiteSpace: "nowrap",
               }}
-            />
+            >
+              {/* pulsing neon glow */}
+              <motion.span
+                aria-hidden
+                className="absolute inset-0 rounded-[14px] pointer-events-none"
+                animate={{
+                  boxShadow: [
+                    "0 0 8px rgba(0,194,255,0.15)",
+                    "0 0 20px rgba(0,194,255,0.45)",
+                    "0 0 8px rgba(0,194,255,0.15)",
+                  ],
+                }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              {/* cyan shimmer bar */}
+              <span
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 12,
+                  right: 12,
+                  height: 1.5,
+                  borderRadius: 1,
+                  background: "linear-gradient(90deg, transparent, rgba(0,194,255,0.7), transparent)",
+                }}
+              />
+              <SpeechBubble text={message} />
+              {/* tail */}
+              <span
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  left: 14,
+                  bottom: -6,
+                  width: 10,
+                  height: 10,
+                  background: "rgba(8,18,42,0.97)",
+                  borderLeft: "1px solid rgba(0,194,255,0.55)",
+                  borderBottom: "1px solid rgba(0,194,255,0.55)",
+                  transform: "skewX(30deg) rotate(-6deg)",
+                }}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </>
   );
 }

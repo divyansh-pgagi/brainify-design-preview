@@ -42,7 +42,7 @@ export const ROBOT_JOURNEY_MESSAGES = [
   { section: "certification", text: "Earn certified proof" },
   { section: "faq", text: "Got questions?" },
   { section: "story", text: "Watch this!" },
-  { section: "footer", text: "Let's start shipping!" },
+  { section: "footer", text: "Download Now!" },
 ] as const;
 
 export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/0029Vb7w7AlHAdNeB2w8Nb3a";
