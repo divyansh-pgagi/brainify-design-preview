@@ -159,7 +159,24 @@ export default function Footer() {
           </div>
           </div>
 
-          <div className="flex-1 flex justify-end">
+          <div className="flex-1 flex flex-col md:items-end gap-2">
+            <nav className="flex flex-wrap gap-x-4 gap-y-1">
+              {[
+                { label: "Privacy", href: "/privacy" },
+                { label: "Terms", href: "/terms" },
+                { label: "Support", href: "/support" },
+                { label: "Delete Account", href: "/deleteAccount" },
+              ].map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="hover:text-white transition-colors"
+                  style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(160,200,230,0.55)" }}
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(160,200,230,0.38)" }}>
               © 2026 brAInify · Ignite Social Enterprise
             </p>

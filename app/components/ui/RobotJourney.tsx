@@ -288,7 +288,15 @@ export default function RobotJourney() {
   const opacity = useTransform(spring, (v) => interp(v, framesRef.current.p, framesRef.current.o));
 
   // Bubble position: fixed in viewport with clamped x so it never clips off either edge
-  const BUBBLE_W = 200;
+  // compact bubble on small screens
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  const BUBBLE_W = isMobile ? 150 : 200;
   const ROBOT_H = Math.round(BASE_W * 1.159);
   const bubbleX = useTransform(x, (rx) => {
     const vw = typeof window !== "undefined" ? window.innerWidth : 800;
@@ -301,14 +309,6 @@ export default function RobotJourney() {
 
   // hero robot ↔ traveler swap + active speech bubble
   const [message, setMessage] = useState<string | null>(null);
-  // hide the speech bubble entirely on mobile — not enough room
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
   useMotionValueEvent(spring, "change", (v) => {
     const heroEl = document.getElementById("hero-robot-visual");
     if (heroEl) {
@@ -393,9 +393,9 @@ export default function RobotJourney() {
         </motion.div>
       </motion.div>
 
-      {/* ── Speech bubble — desktop only, viewport-clamped ── */}
+      {/* ── Speech bubble — viewport-clamped on all screens ── */}
       <AnimatePresence>
-        {message && !isMobile && (
+        {message && (
           <motion.div
             key={message}
             aria-hidden
@@ -416,6 +416,9 @@ export default function RobotJourney() {
             <div
               style={{
                 position: "relative",
+                width: "max-content",
+                maxWidth: "100%",
+                margin: "0 auto",
                 padding: "8px 14px",
                 borderRadius: 14,
                 borderBottomLeftRadius: 3,
@@ -424,11 +427,12 @@ export default function RobotJourney() {
                 boxShadow:
                   "0 0 0 1px rgba(0,194,255,0.12), 0 6px 28px rgba(0,80,220,0.45), 0 0 18px rgba(0,194,255,0.20) inset",
                 fontFamily: "var(--font-body)",
-                fontSize: 12,
+                fontSize: isMobile ? 11 : 12,
                 fontWeight: 600,
                 lineHeight: 1.45,
                 color: "#dce8f5",
-                whiteSpace: "nowrap",
+                whiteSpace: "normal",
+                textAlign: "center",
               }}
             >
               {/* pulsing neon glow */}
