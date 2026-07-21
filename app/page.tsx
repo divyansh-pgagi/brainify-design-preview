@@ -4,10 +4,9 @@ import BrandStory from "./components/sections/BrandStory";
 import Educators from "./components/sections/Educators";
 import LearningPaths from "./components/sections/LearningPaths";
 import InsideApp from "./components/sections/InsideApp";
-import Languages from "./components/sections/Languages";
+import GlobalReach from "./components/sections/GlobalReach";
 import RealTools from "./components/sections/RealTools";
 import Certification from "./components/sections/Certification";
-import Stats from "./components/sections/Stats";
 // import Roadmap from "./components/sections/Roadmap";
 import FAQ from "./components/sections/FAQ";
 import Footer from "./components/sections/Footer";
@@ -22,10 +21,9 @@ export default function Home() {
       <Educators />
       <LearningPaths />
       <InsideApp />
-      <Languages />
+      <GlobalReach />
       <RealTools />
       <Certification />
-      <Stats />
       {/* <Roadmap /> */}
       <FAQ />
       <BrandStory />

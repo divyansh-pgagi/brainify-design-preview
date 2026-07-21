@@ -33,6 +33,18 @@ export const HERO_CTA_LINK = "Or see how the ecosystem works →";
 
 export const STORY_SCROLL_HINT = "Scroll to play";
 
+/** Global Reach section (world map + stats). */
+export const GLOBAL_REACH_BADGE = "Global Reach";
+export const GLOBAL_REACH_HEADING_PRE = "Learning ";
+export const GLOBAL_REACH_HEADING_HIGHLIGHT = "Without Limits";
+export const GLOBAL_REACH_HEADING_POST = "Across the World";
+export const GLOBAL_REACH_STATS = [
+  { value: 8, suffix: "k", label: "Learners" },
+  { value: 14, suffix: "", label: "Languages" },
+  { value: 175, suffix: "", label: "Countries" },
+  { value: 5, suffix: ".0", label: "App Rating" },
+] as const;
+
 /** Speech-bubble lines the travelling robot says at each section. */
 export const ROBOT_JOURNEY_MESSAGES = [
   { section: "features", text: "Meet our mentors!" },
