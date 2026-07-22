@@ -22,7 +22,7 @@ export default function GlobalReach() {
       {/* world map backdrop */}
       <div className="relative w-full" style={{ minHeight: "min(92vh, 780px)" }}>
         <Image
-          src="/images/world-map.png"
+          src="/images/world-map.webp"
           alt=""
           fill
           className="object-cover object-center"
@@ -69,32 +69,53 @@ export default function GlobalReach() {
               fontWeight: 700,
               letterSpacing: "-1px",
               lineHeight: 1.15,
-              color: "#e8eef6",
+              color: "#ffffff",
+              textShadow: "0 2px 24px rgba(3,8,20,0.9), 0 0 60px rgba(3,8,20,0.7)",
             }}
           >
             {GLOBAL_REACH_HEADING_PRE}
-            <span className="gradient-text text-glow-blue">{GLOBAL_REACH_HEADING_HIGHLIGHT}</span>
+            <span
+              style={{
+                // brighter cyan gradient + dark halo so it reads over the bright map
+                background: "linear-gradient(92deg, #8fdcff 0%, #c9ecff 55%, #8fb8ff 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+                filter:
+                  "drop-shadow(0 2px 10px rgba(3,8,20,0.95)) drop-shadow(0 0 26px rgba(0,120,255,0.55))",
+              }}
+            >
+              {GLOBAL_REACH_HEADING_HIGHLIGHT}
+            </span>
             <br />
             {GLOBAL_REACH_HEADING_POST}
           </motion.h2>
         </div>
 
-        {/* stats row */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-10 md:pb-14 px-6 md:px-[80px]">
-          <div className="w-full max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8">
+        {/* stats — four centered transparent glass cards */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-10 md:pb-14 px-6 flex justify-center">
+          <div className="w-full max-w-[1100px] grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
             {GLOBAL_REACH_STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.6, delay: i * 0.12 }}
-                className="flex flex-col gap-1"
+                transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className="flex flex-col items-center gap-1.5 text-center rounded-2xl"
+                style={{
+                  padding: "22px 12px 18px",
+                  background: "rgba(7, 16, 34, 0.35)",
+                  border: "1px solid rgba(158, 200, 245, 0.18)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: "0 16px 44px rgba(3, 8, 20, 0.4)",
+                }}
               >
                 <span
                   style={{
                     fontFamily: "var(--font-heading)",
-                    fontSize: "clamp(2.6rem, 5.5vw, 4rem)",
+                    fontSize: "clamp(2.2rem, 4.5vw, 3.4rem)",
                     fontWeight: 800,
                     lineHeight: 1,
                     color: "#8fb8ff",
@@ -106,9 +127,10 @@ export default function GlobalReach() {
                 <span
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: "clamp(0.95rem, 1.6vw, 1.25rem)",
+                    fontSize: "clamp(0.9rem, 1.4vw, 1.1rem)",
                     fontWeight: 500,
-                    color: "#e8eef6",
+                    color: "#ffffff",
+                    textShadow: "0 1px 12px rgba(3,8,20,0.8)",
                   }}
                 >
                   {stat.label}
