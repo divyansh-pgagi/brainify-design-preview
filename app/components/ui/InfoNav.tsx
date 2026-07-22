@@ -40,29 +40,30 @@ export default function InfoNav({ current }: { current: InfoPageId }) {
       {/* back to landing page */}
       <a
         href="/"
+        aria-label="Back to brAInify home"
         style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: 8,
+          gap: 10,
           textDecoration: "none",
-          color: "var(--ink, #0f2438)",
-          fontWeight: 800,
-          fontSize: 15,
-          letterSpacing: "-0.3px",
         }}
       >
-        <span aria-hidden style={{ fontSize: 17, lineHeight: 1 }}>←</span>
-        br<span style={{ color: "var(--accent, #d95f43)" }}>AI</span>nify
         <span
+          aria-hidden
           style={{
-            fontWeight: 600,
-            fontSize: 11,
-            color: "var(--ink-soft, #3a5063)",
-            marginLeft: 2,
+            fontSize: 17,
+            lineHeight: 1,
+            color: "var(--ink, #0f2438)",
           }}
         >
-          Home
+          ←
         </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/logo.png"
+          alt="brAInify"
+          style={{ height: 30, width: "auto", display: "block" }}
+        />
       </a>
 
       {/* page tabs */}
