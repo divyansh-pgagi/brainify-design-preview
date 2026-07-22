@@ -394,7 +394,7 @@ export default function RobotJourney() {
       </motion.div>
 
       {/* ── Speech bubble — viewport-clamped on all screens ── */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {message && (
           <motion.div
             key={message}
@@ -408,9 +408,9 @@ export default function RobotJourney() {
               opacity,
               width: BUBBLE_W,
             }}
-            initial={{ opacity: 0, scale: 0.55, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 6 }}
+            initial={{ opacity: 0, scale: 0.55 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.1, ease: "easeIn" } }}
             transition={{ type: "spring", stiffness: 340, damping: 22 }}
           >
             <div
