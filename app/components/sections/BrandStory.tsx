@@ -40,11 +40,10 @@ export default function BrandStory() {
     <section
       id="story"
       ref={outerRef}
-      className="relative"
-      style={{ height: "200vh" }}
+      className="relative h-[130vh] md:h-[200vh]"
       aria-label="brAInify brand story"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
         <video
           id="story-video"
           ref={videoRef}
@@ -52,7 +51,7 @@ export default function BrandStory() {
           playsInline
           preload="auto"
           src="/videos/brand-story.mp4"
-          className="absolute inset-0 w-full h-full object-contain md:object-cover"
+          className="absolute inset-0 w-full h-full object-contain md:object-cover object-center"
           style={{ mixBlendMode: "screen" }}
           aria-hidden
         />

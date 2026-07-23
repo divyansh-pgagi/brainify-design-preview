@@ -305,7 +305,7 @@ export default function Hero() {
           </div>
 
           {/* RIGHT — phone + robot cluster */}
-          <div className="flex-shrink-0 flex justify-center md:justify-end pt-16 pb-10 md:pt-20 md:pb-0">
+          <div className="flex-shrink-0 flex justify-center md:justify-end pt-2 pb-6 md:pt-20 md:pb-0">
             <PhoneCluster onIntroDone={() => setIntroDone(true)} />
           </div>
         </div>
