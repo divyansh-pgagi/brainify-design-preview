@@ -105,11 +105,11 @@ export default function GlobalReach() {
                 className="flex flex-col items-center gap-1.5 text-center rounded-2xl"
                 style={{
                   padding: "22px 12px 18px",
-                  background: "rgba(7, 16, 34, 0.35)",
-                  border: "1px solid rgba(158, 200, 245, 0.18)",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
-                  boxShadow: "0 16px 44px rgba(3, 8, 20, 0.4)",
+                  background: "rgba(7, 16, 34, 0.15)",
+                  border: "1px solid rgba(158, 200, 245, 0.12)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  boxShadow: "0 16px 44px rgba(3, 8, 20, 0.25)",
                 }}
               >
                 <span

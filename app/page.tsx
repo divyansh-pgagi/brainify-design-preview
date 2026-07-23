@@ -1,7 +1,7 @@
 import Navbar from "./components/sections/Navbar";
 import Hero from "./components/sections/Hero";
 import BrandStory from "./components/sections/BrandStory";
-import Educators from "./components/sections/Educators";
+import AIExperts from "./components/sections/AIExperts";
 import LearningPaths from "./components/sections/LearningPaths";
 import InsideApp from "./components/sections/InsideApp";
 import GlobalReach from "./components/sections/GlobalReach";
@@ -18,7 +18,7 @@ export default function Home() {
       <RobotJourney />
       <Navbar />
       <Hero />
-      <Educators />
+      <AIExperts />
       <LearningPaths />
       <InsideApp />
       <GlobalReach />

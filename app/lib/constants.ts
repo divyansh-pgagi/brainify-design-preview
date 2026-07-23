@@ -59,6 +59,32 @@ export const ROBOT_JOURNEY_MESSAGES = [
 
 export const WHATSAPP_CHANNEL_URL = "https://whatsapp.com/channel/0029Vb7w7AlHAdNeB2w8Nb3a";
 
+/** AI Experts section — Ryan featured in the centre, the rest orbit him. */
+export const AI_EXPERTS_BADGE = "Meet Your AI Experts";
+export const AI_EXPERTS_HEADING_PRE = "Learn From ";
+export const AI_EXPERTS_HEADING_HIGHLIGHT = "AI Experts";
+export const AI_EXPERTS_SUBHEADING =
+  "Learn from specialized AI mentors across multiple fields and build practical, future-ready skills through guided lessons and real-world knowledge.";
+export const AI_EXPERTS_CTA = "Start Learning Free";
+
+export const AI_EXPERT_FEATURED = {
+  name: "Ryan",
+  specialty: "AI",
+  color: "#4a9eff",
+  blurb: "Your go-to expert for everything AI.",
+  tags: ["AI Fundamentals", "Machine Learning", "Prompting"],
+  image: "/images/educators/ryan.png",
+} as const;
+
+export const AI_EXPERTS_ORBIT = [
+  { name: "Sarah",  specialty: "Content Creator",     color: "#c084fc", blurb: "Create content that connects and inspires.",           image: "/images/educators/sarah.png"  },
+  { name: "Adam",   specialty: "Digital Marketing",   color: "#34d399", blurb: "Grow smarter with data-driven strategies.",           image: "/images/educators/adam.png"   },
+  { name: "Steve",  specialty: "Digital Economy",     color: "#f97316", blurb: "Understand the digital world and tomorrow's economy.", image: "/images/educators/steve.png"  },
+  { name: "Carol",  specialty: "Tools",               color: "#22d3ee", blurb: "Discover the best AI tools to boost your productivity.", image: "/images/educators/carol.png" },
+  { name: "Luke",   specialty: "AI Youth",            color: "#a78bfa", blurb: "Inspiring the next generation to learn, build, and lead.", image: "/images/educators/luke.png" },
+  { name: "Daniel", specialty: "Financial Literacy",  color: "#fbbf24", blurb: "Build money confidence and master personal finance.",  image: "/images/educators/daniel.png" },
+] as const;
+
 /** Scroll-driven chat played inside the InsideApp phone mockup. */
 export const INSIDE_APP_CHAT = [
   { from: "user",   text: "I want to build an AI agent but I've never coded." },
