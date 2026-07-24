@@ -90,7 +90,7 @@ export default function Footer() {
               </div>
 
               <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(185,205,225,0.38)", letterSpacing: "0.2px" }}>
-                iOS · Android · Live in 175 countries · 11 languages
+                iOS · Android · Live in 175 countries · 14 languages
               </p>
             </div>
           </div>

@@ -120,15 +120,29 @@ function PathCard({ path, index, onExplore }: { path: Path; index: number; onExp
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group flex flex-col rounded-3xl overflow-hidden h-full"
+      className="group relative flex flex-col rounded-3xl overflow-hidden h-full"
       style={{
-        background: "linear-gradient(165deg, rgba(13,32,74,0.92) 0%, rgba(6,15,40,0.96) 100%)",
         border: "1px solid rgba(74,158,255,0.28)",
         boxShadow: "0 20px 50px rgba(0,0,0,0.4)",
       }}
     >
+      {/* orbital scene card background */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        <Image
+          src="/learning-path/paths-bg.png"
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 90vw, 380px"
+          loading="lazy"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+        />
+        {/* darken so text + thumbnail stay readable */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(165deg, rgba(8,18,46,0.82) 0%, rgba(5,12,32,0.9) 100%)" }} />
+      </div>
+
       {/* thumbnail */}
-      <div className="relative m-3 rounded-2xl overflow-hidden" style={{ aspectRatio: "16/10" }}>
+      <div className="relative z-10 m-3 rounded-2xl overflow-hidden" style={{ aspectRatio: "16/10" }}>
         <Image
           src={path.pathImage}
           alt={path.name}
@@ -141,7 +155,7 @@ function PathCard({ path, index, onExplore }: { path: Path; index: number; onExp
       </div>
 
       {/* body */}
-      <div className="flex flex-col flex-1 px-6 pb-6 pt-1">
+      <div className="relative z-10 flex flex-col flex-1 px-6 pb-6 pt-1">
         <h3 style={{ fontFamily: "var(--font-heading)", fontSize: 21, fontWeight: 800, color: "#eef3fb", lineHeight: 1.2 }}>
           {path.name}
         </h3>
