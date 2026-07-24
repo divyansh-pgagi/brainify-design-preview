@@ -120,7 +120,7 @@ function PhoneCluster({ onIntroDone }: { onIntroDone: () => void }) {
       >
         {/* mouse parallax layer */}
         <motion.div className="w-full h-full" style={{ x: robotX, y: robotY }}>
-          <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_60px_rgba(74,158,255,0.65)]" />
+          <RobotLoop className="w-full h-full object-contain" glow="rgba(74,158,255,0.55)" />
         </motion.div>
       </motion.div>
 

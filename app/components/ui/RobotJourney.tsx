@@ -388,7 +388,7 @@ export default function RobotJourney() {
         />
         <motion.div className="w-full h-full" style={{ rotate, scaleX: flip }}>
           <div className="w-full h-full animate-float">
-            <RobotLoop className="w-full h-full object-contain drop-shadow-[0_0_28px_rgba(74,158,255,0.6)]" />
+            <RobotLoop className="w-full h-full object-contain" glow="rgba(74,158,255,0.55)" />
           </div>
         </motion.div>
       </motion.div>
