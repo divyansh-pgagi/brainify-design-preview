@@ -54,13 +54,13 @@ function Avatar({ src, name, color, size = 52 }: { src: string; name: string; co
 }
 
 /* ── Orbiting expert card (clickable) ─────────────────────────── */
-function OrbitCard({ expert, onSelect }: { expert: Expert; onSelect: () => void }) {
+function OrbitCard({ expert, onSelect, centered = false }: { expert: Expert; onSelect: () => void; centered?: boolean }) {
   return (
     <button
       onClick={onSelect}
-      className="text-left rounded-2xl transition-transform duration-200 hover:scale-[1.04] cursor-pointer"
+      className="rounded-2xl transition-transform duration-200 hover:scale-[1.04] cursor-pointer"
       style={{
-        width: 210,
+        width: centered ? "100%" : 210,
         padding: "14px 16px",
         background: "linear-gradient(155deg, rgba(20,26,64,0.82) 0%, rgba(10,14,38,0.9) 100%)",
         border: "1px solid rgba(120,150,255,0.28)",
@@ -70,17 +70,28 @@ function OrbitCard({ expert, onSelect }: { expert: Expert; onSelect: () => void 
       }}
       aria-label={`Feature ${expert.name}, ${expert.specialty}`}
     >
-      <div className="flex items-start gap-3">
-        <Avatar src={expert.image} name={expert.name} color={expert.color} />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2">
+      {centered ? (
+        <div className="flex flex-col items-center text-center gap-2">
+          <Avatar src={expert.image} name={expert.name} color={expert.color} />
+          <div>
             <p style={{ fontFamily: "var(--font-body)", fontSize: 14.5, fontWeight: 700, color: "#eef3fb", lineHeight: 1.15 }}>{expert.name}</p>
-            <CategoryIcon name={expert.name} color={expert.color} />
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 700, color: expert.color, letterSpacing: "0.3px", lineHeight: 1.4, marginTop: 2 }}>{expert.specialty}</p>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 400, color: "rgba(199,210,220,0.6)", lineHeight: 1.4, marginTop: 5 }}>{expert.blurb}</p>
           </div>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 700, color: expert.color, letterSpacing: "0.3px", lineHeight: 1.4, marginTop: 2 }}>{expert.specialty}</p>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 400, color: "rgba(199,210,220,0.6)", lineHeight: 1.4, marginTop: 5 }}>{expert.blurb}</p>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-start gap-3 text-left">
+          <Avatar src={expert.image} name={expert.name} color={expert.color} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-start justify-between gap-2">
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 14.5, fontWeight: 700, color: "#eef3fb", lineHeight: 1.15 }}>{expert.name}</p>
+              <CategoryIcon name={expert.name} color={expert.color} />
+            </div>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 700, color: expert.color, letterSpacing: "0.3px", lineHeight: 1.4, marginTop: 2 }}>{expert.specialty}</p>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: 11, fontWeight: 400, color: "rgba(199,210,220,0.6)", lineHeight: 1.4, marginTop: 5 }}>{expert.blurb}</p>
+          </div>
+        </div>
+      )}
     </button>
   );
 }
@@ -252,9 +263,9 @@ export default function AIExperts() {
           {/* ── RIGHT: mobile fallback ── */}
           <div className="md:hidden w-full flex flex-col items-center gap-6">
             <FeaturedCard expert={featured} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-[440px]">
+            <div className="grid grid-cols-2 gap-3 w-full max-w-[440px]">
               {slots.map((name, i) => (
-                <OrbitCard key={i} expert={byName(name)} onSelect={() => selectSlot(i)} />
+                <OrbitCard key={i} expert={byName(name)} onSelect={() => selectSlot(i)} centered />
               ))}
             </div>
           </div>

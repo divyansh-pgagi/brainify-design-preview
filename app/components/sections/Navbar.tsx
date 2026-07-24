@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Logo from "../ui/Logo";
 import Magnetic from "../ui/Magnetic";
-import { NAV_LINKS, WHATSAPP_CHANNEL_URL } from "@/app/lib/constants";
+import { NAV_LINKS, WHATSAPP_CHANNEL_URL, DEMO_VIDEO_URL } from "@/app/lib/constants";
 
 function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -13,7 +13,7 @@ function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-const VIDEO_URL = "https://share.synthesia.io/embeds/videos/3d140381-ded2-45c3-973f-5a20da398bfb";
+const VIDEO_URL = DEMO_VIDEO_URL;
 
 function VideoModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {

@@ -1,87 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion, useAnimationControls } from "framer-motion";
 import RobotLoop from "../ui/RobotLoop";
-
-/* ── App Store Badge ─────────────────────────────────────────── */
-function AppStoreBadge({ store }: { store: "apple" | "google" }) {
-  const href =
-    store === "apple"
-      ? "https://apps.apple.com/ca/app/brainify-app/id6759913473"
-      : "https://play.google.com/store/apps/details?id=com.brainify.app";
-
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={{ y: -3, scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
-      transition={{ type: "spring", stiffness: 400, damping: 22 }}
-      className="group relative flex items-center gap-3 px-4 py-2.5 rounded-xl overflow-hidden neon-border"
-      style={{ background: "rgba(246,243,255,0.04)", minWidth: 148 }}
-    >
-      {/* sweeping beam */}
-      <span
-        aria-hidden
-        className="absolute inset-y-0 w-1/3 -skew-x-12 animate-beam"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(0,194,255,0.18), transparent)" }}
-      />
-      {store === "apple" ? (
-        <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0 relative z-10" fill="#c7d2dc" aria-hidden>
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.35 2.77M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-        </svg>
-      ) : (
-        <Image src="/playstore.png" alt="Google Play" width={24} height={24} className="w-6 h-6 shrink-0 object-contain relative z-10" aria-hidden />
-      )}
-      <div className="flex flex-col leading-tight relative z-10">
-        <span style={{ fontSize: 10, color: "rgba(199,210,220,0.5)", fontFamily: "var(--font-body)" }}>
-          {store === "apple" ? "Download on the" : "Get it on"}
-        </span>
-        <span style={{ fontSize: 13, color: "#c7d2dc", fontFamily: "var(--font-body)", fontWeight: 600 }}>
-          {store === "apple" ? "App Store" : "Google Play"}
-        </span>
-      </div>
-    </motion.a>
-  );
-}
-
-/* ── Floating HUD stat chip ──────────────────────────────────── */
-function HudChip({
-  label,
-  value,
-  className = "",
-  delay = 0,
-  float = 5,
-  show = true,
-}: {
-  label: string;
-  value: string;
-  className?: string;
-  delay?: number;
-  float?: number;
-  show?: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.6 }}
-      animate={show ? { opacity: 1, scale: 1, y: [0, -float, 0] } : { opacity: 0, scale: 0.6 }}
-      transition={{
-        opacity: { delay, duration: 0.6 },
-        scale: { delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-        y: { duration: 4 + float, repeat: Infinity, ease: "easeInOut", delay },
-      }}
-      className={`glass-strong rounded-xl px-3 py-2 shadow-[0_8px_30px_rgba(0,40,160,0.35)] ${className}`}
-    >
-      <div className="hud-label" style={{ fontSize: 8.5 }}>{label}</div>
-      <div className="gradient-text" style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: 15 }}>
-        {value}
-      </div>
-    </motion.div>
-  );
-}
+import {
+  HERO_BADGE_TEXT,
+  HERO_SUBHEADING,
+  HERO_PRIMARY_CTA,
+  HERO_SECONDARY_CTA,
+  HERO_TRUST_BADGES,
+  DEMO_VIDEO_URL,
+} from "@/app/lib/constants";
 
 /* ── Robot centerpiece + phones cluster with mouse parallax ──── */
 function PhoneCluster({ onIntroDone }: { onIntroDone: () => void }) {
@@ -201,8 +130,8 @@ function PhoneCluster({ onIntroDone }: { onIntroDone: () => void }) {
 
 /* ── Animated headline (word-by-word reveal) ─────────────────── */
 /* ── Typewriter headline ─────────────────────────────────────── */
-const HEADLINE_FULL = "The way you learn is about to change.";
-const HEADLINE_HIGHLIGHT = "change.";
+const HEADLINE_FULL = "Learn Smarter.\nBuild Your Future.";
+const HEADLINE_HIGHLIGHT = "Future.";
 
 function TypewriterHeadline({ start = true }: { start?: boolean }) {
   const reduce = useReducedMotion();
@@ -225,15 +154,14 @@ function TypewriterHeadline({ start = true }: { start?: boolean }) {
 
   const plain = HEADLINE_FULL.slice(0, Math.min(count, hlStart));
   const highlight = count > hlStart ? HEADLINE_FULL.slice(hlStart, count) : "";
-  const done = count >= HEADLINE_FULL.length;
 
   const h1Style: React.CSSProperties = {
     fontFamily: "var(--font-heading)",
-    fontSize: "clamp(2.6rem, 5.5vw, 4.4rem)",
-    fontWeight: 700,
-    lineHeight: 1.06,
-    letterSpacing: "-1.5px",
-    color: "#c7d2dc",
+    fontSize: "clamp(2.6rem, 5.5vw, 4.6rem)",
+    fontWeight: 800,
+    lineHeight: 1.04,
+    letterSpacing: "-1.8px",
+    color: "#eef2f8",
   };
 
   return (
@@ -246,18 +174,6 @@ function TypewriterHeadline({ start = true }: { start?: boolean }) {
       <span className="absolute inset-0" aria-hidden style={{ whiteSpace: "pre-wrap" }}>
         {plain}
         <span className="gradient-text text-glow-blue">{highlight}</span>
-        <span
-          className={`inline-block align-middle ${done ? "animate-blink" : ""}`}
-          style={{
-            width: 3,
-            height: "0.95em",
-            marginLeft: 4,
-            transform: "translateY(-0.06em)",
-            background: "linear-gradient(180deg, #4a9eff, #00c2ff)",
-            boxShadow: "0 0 10px rgba(0,194,255,0.9)",
-            borderRadius: 1,
-          }}
-        />
       </span>
     </h1>
   );
@@ -267,6 +183,18 @@ function TypewriterHeadline({ start = true }: { start?: boolean }) {
 export default function Hero() {
   // Intro sequence: robot flies in and settles → then content reveals
   const [introDone, setIntroDone] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
+
+  useEffect(() => {
+    if (!videoOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setVideoOpen(false); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [videoOpen]);
 
   return (
     <section
@@ -287,20 +215,94 @@ export default function Hero() {
         <div className="flex flex-col md:flex-row items-center gap-10 lg:gap-16 w-full">
 
           {/* LEFT */}
-          <div className="flex-1 flex flex-col gap-8 text-center md:text-left max-w-[580px] mx-auto md:mx-0">
+          <div className="flex-1 flex flex-col gap-6 text-center md:text-left max-w-[600px] mx-auto md:mx-0">
+
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: -12 }}
+              transition={{ duration: 0.6 }}
+              className="hidden md:flex justify-center md:justify-start"
+            >
+              <span
+                className="inline-flex items-center gap-2 rounded-full glass neon-border"
+                style={{ padding: "7px 18px", fontFamily: "var(--font-body)", fontSize: 12.5, fontWeight: 600, color: "#9ec8f5" }}
+              >
+                <span aria-hidden style={{ fontSize: 13 }}>✦</span>
+                {HERO_BADGE_TEXT}
+              </span>
+            </motion.div>
 
             {/* Typewriter H1 — starts typing after the robot settles */}
             <TypewriterHeadline start={introDone} />
 
-            {/* App store buttons */}
+            {/* Subheading */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: 17,
+                fontWeight: 400,
+                lineHeight: 1.6,
+                color: "rgba(199,210,220,0.7)",
+                maxWidth: 500,
+              }}
+              className="hidden md:block mx-auto md:mx-0"
+            >
+              {HERO_SUBHEADING}
+            </motion.p>
+
+            {/* CTA buttons */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              transition={{ delay: 0.7, duration: 0.7 }}
-              className="flex flex-wrap justify-center md:justify-start gap-3"
+              transition={{ delay: 0.75, duration: 0.7 }}
+              className="flex flex-col sm:flex-row justify-center md:justify-start gap-3 mt-1"
             >
-              <AppStoreBadge store="apple" />
-              <AppStoreBadge store="google" />
+              <a
+                href="#paths"
+                className="inline-flex items-center justify-center gap-2 rounded-xl transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+                style={{ padding: "14px 26px", background: "linear-gradient(135deg, #3b6fff 0%, #00c2ff 100%)", boxShadow: "0 0 28px rgba(59,111,255,0.4)", fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 700, color: "#fff" }}
+              >
+                {HERO_PRIMARY_CTA}
+                <span aria-hidden>→</span>
+              </a>
+              <button
+                onClick={() => setVideoOpen(true)}
+                className="inline-flex items-center justify-center gap-2 rounded-xl transition-colors duration-200 hover:bg-white/[0.06]"
+                style={{ padding: "14px 24px", border: "1.5px solid rgba(120,150,255,0.35)", background: "rgba(255,255,255,0.02)", fontFamily: "var(--font-body)", fontSize: 15, fontWeight: 600, color: "#c7d2dc" }}
+              >
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M10 8.5l5 3.5-5 3.5V8.5z" fill="currentColor" stroke="none" />
+                </svg>
+                {HERO_SECONDARY_CTA}
+              </button>
+            </motion.div>
+
+            {/* Trust badges */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+              transition={{ delay: 0.9, duration: 0.7 }}
+              className="hidden md:flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 mt-2"
+            >
+              {HERO_TRUST_BADGES.map((badge, i) => (
+                <span
+                  key={badge}
+                  className="inline-flex items-center gap-2"
+                  style={{ fontFamily: "var(--font-body)", fontSize: 13, fontWeight: 500, color: "rgba(199,210,220,0.75)" }}
+                >
+                  <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="#4a9eff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    {i === 0 && <><circle cx="10" cy="10" r="7.5" /><path d="M2.5 10h15M10 2.5c2.2 2.2 2.2 12.8 0 15M10 2.5c-2.2 2.2-2.2 12.8 0 15" /></>}
+                    {i === 1 && <><path d="M10 2l1.8 4.7L16.5 8l-4.7 1.8L10 14.5 8.2 9.8 3.5 8l4.7-1.3L10 2z" /></>}
+                    {i === 2 && <><path d="M6 3h8a1 1 0 0 1 1 1v11l-5-2.5L5 15V4a1 1 0 0 1 1-1z" /></>}
+                  </svg>
+                  {badge}
+                </span>
+              ))}
             </motion.div>
           </div>
 
@@ -328,6 +330,49 @@ export default function Hero() {
           />
         </div>
       </motion.div>
+
+      {/* "See How It Works" demo video modal */}
+      {videoOpen && (
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-8"
+          style={{ background: "rgba(3,8,20,0.88)", backdropFilter: "blur(8px)" }}
+          onClick={() => setVideoOpen(false)}
+        >
+          <div className="relative w-full flex flex-col" style={{ maxWidth: 900 }} onClick={(e) => e.stopPropagation()}>
+            <div
+              className="flex items-center justify-between px-5 py-3 rounded-t-2xl"
+              style={{ background: "rgba(7,28,70,0.98)", border: "1.5px solid rgba(74,158,255,0.3)", borderBottom: "none" }}
+            >
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 600, color: "#c7d2dc" }}>
+                brAInify App Demo
+              </p>
+              <button
+                onClick={() => setVideoOpen(false)}
+                className="flex items-center justify-center rounded-full transition-colors hover:bg-white/20"
+                style={{ width: 32, height: 32, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
+                aria-label="Close video"
+              >
+                <svg viewBox="0 0 14 14" className="w-3 h-3" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                  <line x1="1" y1="1" x2="13" y2="13" /><line x1="13" y1="1" x2="1" y2="13" />
+                </svg>
+              </button>
+            </div>
+            <div
+              className="relative w-full rounded-b-2xl overflow-hidden"
+              style={{ aspectRatio: "16/9", border: "1.5px solid rgba(74,158,255,0.3)", borderTop: "none", boxShadow: "0 40px 80px rgba(0,0,0,0.7)" }}
+            >
+              <iframe
+                src={DEMO_VIDEO_URL}
+                title="brAInify App Demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                allowFullScreen
+                className="w-full h-full"
+                style={{ border: "none", display: "block" }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

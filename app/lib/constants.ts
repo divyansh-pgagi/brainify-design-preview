@@ -6,12 +6,18 @@ export const NAV_LINKS = [
 ] as const;
 
 export const HERO_TRUST_BADGES = [
-  "Project-led, not video-soup",
-  "Built-in AI mentor",
-  "Earn certified proof of skill",
+  "14 Languages",
+  "AI Personalization",
+  "Personalized Certificates",
 ] as const;
 
-export const HERO_BADGE_TEXT = "Live in 175 countries · 11 languages";
+export const HERO_BADGE_TEXT = "AI-Powered Learning, Built Around You";
+
+export const HERO_PRIMARY_CTA = "Start Your Learning Path";
+export const HERO_SECONDARY_CTA = "See How It Works";
+
+/** brAInify demo video shown by the navbar "Watch" button and hero "See How It Works". */
+export const DEMO_VIDEO_URL = "https://share.synthesia.io/embeds/videos/3d140381-ded2-45c3-973f-5a20da398bfb";
 
 /** Single source of truth for supported languages — used by the Languages
     carousel and the FAQ answer so the two can never drift apart. */
