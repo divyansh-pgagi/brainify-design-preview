@@ -67,23 +67,18 @@ export const AI_EXPERTS_SUBHEADING =
   "Learn from specialized AI mentors across multiple fields and build practical, future-ready skills through guided lessons and real-world knowledge.";
 export const AI_EXPERTS_CTA = "Start Learning Free";
 
-export const AI_EXPERT_FEATURED = {
-  name: "Ryan",
-  specialty: "AI",
-  color: "#4a9eff",
-  blurb: "Your go-to expert for everything AI.",
-  tags: ["AI Fundamentals", "Machine Learning", "Prompting"],
-  image: "/images/educators/ryan.png",
-} as const;
-
-export const AI_EXPERTS_ORBIT = [
-  { name: "Sarah",  specialty: "Content Creator",     color: "#c084fc", blurb: "Create content that connects and inspires.",           image: "/images/educators/sarah.png"  },
-  { name: "Adam",   specialty: "Digital Marketing",   color: "#34d399", blurb: "Grow smarter with data-driven strategies.",           image: "/images/educators/adam.png"   },
-  { name: "Steve",  specialty: "Digital Economy",     color: "#f97316", blurb: "Understand the digital world and tomorrow's economy.", image: "/images/educators/steve.png"  },
-  { name: "Carol",  specialty: "Tools",               color: "#22d3ee", blurb: "Discover the best AI tools to boost your productivity.", image: "/images/educators/carol.png" },
-  { name: "Luke",   specialty: "AI Youth",            color: "#a78bfa", blurb: "Inspiring the next generation to learn, build, and lead.", image: "/images/educators/luke.png" },
-  { name: "Daniel", specialty: "Financial Literacy",  color: "#fbbf24", blurb: "Build money confidence and master personal finance.",  image: "/images/educators/daniel.png" },
+/** Full roster — any expert can be the featured (centre) one. Ryan is default. */
+export const AI_EXPERTS = [
+  { name: "Ryan",   specialty: "AI",                 color: "#4a9eff", blurb: "Your go-to expert for everything AI.",                    tags: ["AI Fundamentals", "Machine Learning", "Prompting"], image: "/images/educators/ryan.png"   },
+  { name: "Sarah",  specialty: "Content Creator",    color: "#c084fc", blurb: "Create content that connects and inspires.",             tags: ["Content Strategy", "Storytelling", "Social Media"], image: "/images/educators/sarah.png"  },
+  { name: "Adam",   specialty: "Digital Marketing",  color: "#34d399", blurb: "Grow smarter with data-driven strategies.",              tags: ["Paid Ads", "SEO", "Analytics"],                     image: "/images/educators/adam.png"   },
+  { name: "Steve",  specialty: "Digital Economy",    color: "#f97316", blurb: "Understand the digital world and tomorrow's economy.",   tags: ["Web3", "Crypto", "DeFi"],                           image: "/images/educators/steve.png"  },
+  { name: "Carol",  specialty: "Tools",              color: "#22d3ee", blurb: "Discover the best AI tools to boost your productivity.", tags: ["Automation", "Workflows", "No-Code"],               image: "/images/educators/carol.png"  },
+  { name: "Luke",   specialty: "AI Youth",           color: "#a78bfa", blurb: "Inspiring the next generation to learn, build, and lead.", tags: ["Beginner-Friendly", "Projects", "Confidence"],     image: "/images/educators/luke.png"   },
+  { name: "Daniel", specialty: "Financial Literacy", color: "#fbbf24", blurb: "Build money confidence and master personal finance.",    tags: ["Investing", "Budgeting", "Wealth"],                 image: "/images/educators/daniel.png" },
 ] as const;
+
+export const AI_EXPERTS_DEFAULT_FEATURED = "Ryan";
 
 /** Scroll-driven chat played inside the InsideApp phone mockup. */
 export const INSIDE_APP_CHAT = [
