@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   AI_EXPERTS_BADGE,
   AI_EXPERTS_HEADING_PRE,
@@ -164,22 +164,44 @@ export default function AIExperts() {
   const RADIUS = 250;
   const SPIN = 46;
 
+  const reduce = useReducedMotion();
   const byName = (n: string) => AI_EXPERTS.find((e) => e.name === n) ?? AI_EXPERTS[0];
 
   const [featuredName, setFeaturedName] = useState<string>(AI_EXPERTS_DEFAULT_FEATURED);
-  // Fixed orbit slots (stable DOM order) — only their content swaps on click,
+  // Fixed orbit slots (stable DOM order) — only their content swaps,
   // so the counter-rotation animation never remounts and stays in sync.
   const [slots, setSlots] = useState<string[]>(() =>
     AI_EXPERTS.filter((e) => e.name !== AI_EXPERTS_DEFAULT_FEATURED).map((e) => e.name)
   );
+  const [paused, setPaused] = useState(false);
 
   const featured = byName(featuredName);
 
-  const selectSlot = (slotIndex: number) => {
-    const picked = slots[slotIndex];
-    setSlots((prev) => prev.map((n, i) => (i === slotIndex ? featuredName : n)));
+  // refs so the auto-rotate interval always reads the latest values
+  const featuredRef = useRef(featuredName);
+  const slotsRef = useRef(slots);
+  featuredRef.current = featuredName;
+  slotsRef.current = slots;
+
+  const selectSlot = useCallback((slotIndex: number) => {
+    const picked = slotsRef.current[slotIndex];
+    const outgoing = featuredRef.current;
+    setSlots((prev) => prev.map((n, i) => (i === slotIndex ? outgoing : n)));
     setFeaturedName(picked);
-  };
+  }, []);
+
+  // auto-advance the featured expert every 4s (cycles through the roster).
+  // Restarts whenever featured changes, so a manual click resets the timer.
+  useEffect(() => {
+    if (reduce || paused) return;
+    const id = setInterval(() => {
+      const order: string[] = AI_EXPERTS.map((e) => e.name);
+      const next = order[(order.indexOf(featuredRef.current) + 1) % order.length];
+      const idx = slotsRef.current.indexOf(next);
+      if (idx >= 0) selectSlot(idx);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [reduce, paused, featuredName, selectSlot]);
 
   return (
     <section id="features" className="relative overflow-hidden" style={{ background: "transparent" }}>
@@ -221,7 +243,12 @@ export default function AIExperts() {
           </div>
 
           {/* ── RIGHT: orbit stage (desktop / tablet) ── */}
-          <div className="ai-orbit-stage relative hidden md:block flex-shrink-0" style={{ width: 660, height: 660, maxWidth: "100%" }}>
+          <div
+            className="ai-orbit-stage relative hidden md:block flex-shrink-0"
+            style={{ width: 660, height: 660, maxWidth: "100%" }}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
             <div aria-hidden className="absolute rounded-full" style={{ inset: "6%", border: "1px dashed rgba(120,150,255,0.13)" }} />
             <div aria-hidden className="absolute rounded-full" style={{ inset: "20%", border: "1px solid rgba(120,150,255,0.07)" }} />
 
